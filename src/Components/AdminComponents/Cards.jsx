@@ -1,0 +1,48 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+const Cards = ({
+  countData,
+  linkData,
+  titleData,
+  icon,
+  bgImg,
+  isAmcData,
+  labourPriceCount,
+  partsPriceCount,
+  vasPriceCount,
+}) => {
+  return (
+    <Link to={linkData}>
+      <div
+        className="bg-white px-6 text-black rounded-md border relative font-poppins border-[#E8E8E8] flex flex-col justify-between h-[230px] w-full transition-all duration-300 hover:shadow-md"
+        style={{
+          backgroundImage: `url(${bgImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Top Section */}
+        <div>
+          <span className="pt-3 rounded-md w-12 mt-1 block">
+            <img src={icon} alt="img" className="w-7 z-20" />
+          </span>
+          <p className="mt-3 text-[15px]">{titleData}</p>
+          <p className="text-[23px] mt-2 font-semibold">{countData}</p>
+        </div>
+
+        {/* Bottom Section (Only shows for AMC cards) */}
+        {isAmcData && (
+          <div className="text-[12px] font-semibold space-y-1 pb-8">
+            <p>Total VAS Price: {vasPriceCount}</p>
+            <p>Total Labour Price: {labourPriceCount}</p>
+            <p>Total Parts Price: {partsPriceCount}</p>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+};
+
+export default Cards;
