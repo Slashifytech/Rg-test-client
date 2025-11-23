@@ -576,7 +576,7 @@ const handleFileSelect = async (name, file) => {
           }}
         />
 
-           <div className="mt-4 w-96">
+           <div className="mt-[-80px] w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"

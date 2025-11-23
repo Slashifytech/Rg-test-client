@@ -9,6 +9,8 @@ import { FaRegAddressCard, FaRegIdCard } from "react-icons/fa6";
 import { fetchamcDataById } from "./../features/amcSlice";
 import { CustomTableFive } from "../Components/Table";
 import DataNotFound from "../admin/DataNotFound";
+import InputField from "../Components/Input";
+import { amcAssuredAddData } from "../features/AMCapi";
 
 const AmcProfileView = () => {
   const { amcByIdorStatus } = useSelector((state) => state.amc);
@@ -16,6 +18,20 @@ const AmcProfileView = () => {
   const location = useLocation();
   const [loading, setLoading] = useState();
   const id = location?.state?.id;
+
+  const [formData, setFormData] = useState({
+    expenses: "",
+    buybackOrSoldToRG: "",
+    refundedAmount: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     if (id) {
@@ -40,6 +56,22 @@ const AmcProfileView = () => {
     (sum, data) => sum + Number(data?.serviceTotalAmount || 0),
     0
   );
+
+
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      let res;
+      try {
+        res = await amcAssuredAddData(formData, amcByIdorStatus?.data?.vehicleDetails?.vinNumber );
+        toast.success(res?.message || "Submitted successfully");
+      } catch (error) {
+        toast.error(error?.message || "Something went wrong");
+        console.log("Error:", error);
+      }
+  
+    };
+
   return (
     <>
       <Header customLink="/agent/shortlist" />
@@ -224,12 +256,85 @@ const AmcProfileView = () => {
                 </span>
               </div>
             </div>
+            <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-6">
+              <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
+                <span className="flex flex-row gap-4 items-center pb-3">
+                  <span className="text-[24px]">
+                    <FaRegAddressCard />
+                  </span>
+                  <span className="font-semibold text-[22px]">AMC Assured</span>
+                </span>
+              </div>
+              <div className="flex flex-row w-full justify-between mt-6">
+                <span className="w-1/2 flex flex-col text-[15px]">
+                  <span className="font-light mt-4">VIN Number</span>
+                  <span className="font-medium">
+                    {" "}
+                    {amcByIdorStatus?.data?.vehicleDetails?.vinNumber || "NA"}
+                  </span>
+
+                  <span className="font-light mt-4">
+                    Buyback/Sold to RG status
+                  </span>
+
+                  <span className="font-medium">
+                    <InputField
+                      name="buybackOrSoldToRG"
+                      value={formData.buybackOrSoldToRG}
+                      onchange={handleChange}
+                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                      placeholder="Buyback/Sold to RG status"
+                    />
+                  </span>
+                  <span className="font-light mt-2">Refunded Amount</span>
+
+                  <span className="font-medium">
+                    <InputField
+                      name="refundedAmount"
+                      value={formData.refundedAmount}
+                      onchange={handleChange}
+                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                      placeholder="Refunded Amount"
+                    />
+                  </span>
+                </span>
+                <span className="w-1/2 flex flex-col text-[15px]">
+                  <span className="font-light mt-4">Total Amount</span>
+                  <span className="font-medium">
+                    {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
+                  </span>
+                  <span className="font-light mt-4">Expenses</span>
+
+                  <span className="font-medium">
+                    <InputField
+                      name="expenses"
+                      value={formData.expenses}
+                      onchange={handleChange}
+                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                      placeholder="Expenses"
+                    />
+                  </span>
+                </span>
+
+                
+              </div>
+                 <div className="">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="px-8 py-2 cursor-pointer rounded-lg text-white bg-primary"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
             <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-20">
               <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
                 <span className="flex flex-row gap-4 items-center pb-3">
                   <span className="text-[24px]">
                     <FaRegAddressCard />
                   </span>
+
                   <span className="font-semibold text-[22px]">
                     AMC Expense Details
                   </span>

@@ -21,6 +21,18 @@ export const addNewSalesAMC = async (payload) => {
     throw error;
   }
 };
+
+export const amcAssuredAddData = async (payload, id) => {
+  try {
+    const response = await apiurl.patch(`/extend-amc-form/${id}`, payload);
+
+    return response.data;
+  } catch (error) {
+    console.log("Error in adding data:", error);
+    throw error;
+  }
+};
+
 export const extendedAMC = async (payload, id) => {
   try {
     const response = await apiurl.patch(`/extend-amc/${id}`, payload);

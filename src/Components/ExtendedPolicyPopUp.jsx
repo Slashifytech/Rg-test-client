@@ -148,7 +148,7 @@ const handleFileSelect = async (name, file) => {
             </div>
                 </span>
               </div>
-
+ Amc:", e
               <div className="mt-9 flex justify-center">
                 <button
                   type="submit"

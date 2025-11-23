@@ -29,6 +29,16 @@ const DashboardComponent = () => {
     partsPriceCount: "",
     labourPriceCount: "",
   });
+  const [amcAssuredData, setAmcAssuredData] = useState({
+    location: "",
+    vehicleModel: "",
+    startDate: "",
+    endDate: "",
+    statsData: "",
+    totalAmcAssured: "",
+    totalRevenue: "",
+    totalExpense: "",
+  });
   const [buyBackData, setBuyBackData] = useState({
     location: "",
     vehicleModel: "",
@@ -49,8 +59,10 @@ const DashboardComponent = () => {
     totalRevenue: "",
   });
   const amcPath = "/amc-stats-data";
+  const amcAssuredPath = "/amc-assured-stats"
   const buyBackPath = "/buy-back-stats-data";
   const ewPolicyPath = "/ew-stats";
+
 
   const handleInputChange = (e, dataType) => {
     const { name, value } = e.target;
@@ -62,6 +74,11 @@ const DashboardComponent = () => {
       }));
     } else if (dataType === "buyBack") {
       setBuyBackData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }else if (dataType === "amcAssured") {
+      setAmcAssuredData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
@@ -90,6 +107,28 @@ const DashboardComponent = () => {
         vasPriceCount: res?.totalVasPrice,
         partsPriceCount: res?.totalPartsPrice,
         labourPriceCount: res?.totalLabourPrice,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAmcAssuredData = async () => {
+    try {
+      const res = await getDashboardData(
+        amcAssuredPath,
+        amcAssuredData.location,
+        amcAssuredData.vehicleModel,
+        amcAssuredData.startDate,
+        amcAssuredData.endDate
+      );
+  console.log(res);
+
+      setAmcAssuredData((prev) => ({
+        ...prev,
+        totalAmcAssured: res?.totalamcAssured,
+        totalRevenue: res?.totalAmcAssuredExpense,
+        totalExpense: res?.totalAmcAssuredRevenue,
       }));
     } catch (error) {
       console.log(error);
@@ -140,6 +179,14 @@ const DashboardComponent = () => {
     amcData.location,
     amcData.vehicleModel,
   ]);
+    useEffect(() => {
+    getAmcAssuredData();
+  }, [
+    amcAssuredData.endDate,
+    amcAssuredData.startDate,
+    amcAssuredData.location,
+    amcAssuredData.vehicleModel,
+  ]);
 
   useEffect(() => {
     getBuyBackData();
@@ -158,6 +205,7 @@ const DashboardComponent = () => {
     ewPolicyData.location,
     ewPolicyData.vehicleModel,
   ]);
+
   const amcCardData = [
     {
       countData: amcData?.totalAmc,
@@ -178,6 +226,26 @@ const DashboardComponent = () => {
       vasPriceCount: amcData?.vasPriceCount,
       partsPriceCount: amcData?.partsPriceCount,
       labourPriceCount: amcData?.labourPriceCount,
+    },
+  ];
+
+    
+  const amcAssuredCardData = [
+    {
+      countData: amcAssuredData?.totalAmcAssured,
+      title: "Total AMC Assured",
+      bgImg: graphLine,
+      icon: TwoUser,
+    },
+    {
+      countData: amcAssuredData?.totalRevenue,
+      title: "Total AMC Assured Revenue",
+      icon: icon,
+    },
+    {
+      countData: amcAssuredData?.totalExpense,
+      title: "Total AMC Assured Expense",
+      icon: icon,
     },
   ];
   
@@ -289,6 +357,50 @@ const DashboardComponent = () => {
                 labourPriceCount={item.labourPriceCount}
                 isAmcData={item.isAmcData}
                 
+              />
+            ))}
+          </div>
+
+    <div className="flex flex-row items-center gap-6 sm:ml-[28%] md:ml-[20%] mr-6  ">
+            <CustomSelect
+              options={locationOption}
+              name={"location"}
+              customClass="bg-white w-60 rounded-md h-10 border border-black"
+              value={amcAssuredData.location}
+              onChange={(e) => handleInputChange(e, "amcAssured")}
+              placeholder={"Choose Location"}
+            />
+            <CustomSelect
+              options={modelOption}
+              name={"vehicleModel"}
+              customClass="bg-white w-60 rounded-md h-10 border border-black"
+              value={amcAssuredData.vehicleModel}
+              onChange={(e) => handleInputChange(e, "amcAssured")}
+              placeholder={"Choose Model"}
+            />
+            <CustomInput
+              type={"date"}
+              name={"startDate"}
+              className="bg-white w-full rounded-md h-10 border border-black -mt-6 px-3"
+              value={amcAssuredData.startDate}
+              onChange={(e) => handleInputChange(e, "amcAssured")}
+            />
+            <CustomInput
+              type={"date"}
+              name={"endDate"}
+              className="bg-white w-full rounded-md h-10 border border-black -mt-6 px-3"
+              value={amcAssuredData.endDate}
+              onChange={(e) => handleInputChange(e, "amcAssured")}
+            />
+          </div>
+          <div className="ml-8 sm:ml-[33%] md:ml-[20%] md:w-[70%] gap-9  pb-20 grid grid-cols-3 mt-6">
+            {amcAssuredCardData.map((item, index) => (
+              <Cards
+                key={index}
+                countData={item.countData}
+                titleData={item.title}
+                bgImg={item.bgImg}
+                icon={item.icon}
               />
             ))}
           </div>
