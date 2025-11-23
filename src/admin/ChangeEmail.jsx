@@ -128,7 +128,7 @@ const ChangeEmail = () => {
           <p className="text-body font-normal text-[13px] mt-2">
             {" "}
             Current Email: <span className="font-medium"> {email}</span> <br />
-            Enter a new email address for your SOV account
+            Enter a new email address for your account
           </p>
           {/* Password Input */}
           <div className="mt-5">

@@ -11,6 +11,7 @@ import { CustomTableFive } from "../Components/Table";
 import DataNotFound from "../admin/DataNotFound";
 import InputField from "../Components/Input";
 import { amcAssuredAddData } from "../features/AMCapi";
+import { toast } from "react-toastify";
 
 const AmcProfileView = () => {
   const { amcByIdorStatus } = useSelector((state) => state.amc);
@@ -214,7 +215,7 @@ const AmcProfileView = () => {
                   </span>
                   <span className="font-light mt-4">Total Amount</span>
                   <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
+                    {amcByIdorStatus?.data?.showAmount || "NA"}
                   </span>
                 </span>
               </div>

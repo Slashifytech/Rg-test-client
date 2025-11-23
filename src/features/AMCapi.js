@@ -24,7 +24,7 @@ export const addNewSalesAMC = async (payload) => {
 
 export const amcAssuredAddData = async (payload, id) => {
   try {
-    const response = await apiurl.patch(`/extend-amc-form/${id}`, payload);
+    const response = await apiurl.patch(`/amc-assured-data/${id}`, payload);
 
     return response.data;
   } catch (error) {

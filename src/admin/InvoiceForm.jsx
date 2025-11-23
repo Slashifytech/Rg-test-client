@@ -429,12 +429,12 @@ const handleInput = (e) => {
             mergedData.vehicleDetails?.vehicleModel ||
             "",
   gstAmount:
-            mergedData.vehicleDetails?.total ||
+            mergedData?.showAmount ||
             mergedData.vehicleDetails?.totalPayment ||
             mergedData.ewDetails?.warrantyAmount ||
             "",
 
-          initialGstAmount:  mergedData.vehicleDetails?.total ||
+          initialGstAmount:  mergedData?.showAmount ||
             mergedData.vehicleDetails?.totalPayment ||
             mergedData.ewDetails?.warrantyAmount ||
             "",
