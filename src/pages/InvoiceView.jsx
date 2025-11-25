@@ -16,6 +16,29 @@ const InvoiceView = forwardRef(({ id }, ref) => {
   const [data, setData] = useState();
   const location = useLocation();
   const invoiceId = id ? id : location?.state?.id;
+ let totalPrice = 0;
+  let sgstAmount = 0;
+  let cgstAmount = 0;
+
+  if (data?.extendedPolicy?.additionalPrice) {
+    // CASE 1: Extended Policy
+    totalPrice = Number(data.extendedPolicy.additionalPrice);
+
+    sgstAmount = totalPrice * 0.09; // 9%
+    cgstAmount = totalPrice * 0.09; // 9%
+
+  } else {
+    // CASE 2: Normal AMC GST
+    totalPrice = Number(data?.vehicleDetails?.gstAmount || 0);
+
+    sgstAmount = Number(data?.vehicleDetails?.sgst || 0);
+    cgstAmount = Number(data?.vehicleDetails?.cgst || 0);
+  }
+
+  const afterGstAmount = totalPrice + sgstAmount + cgstAmount;
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -332,20 +355,20 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                        Basic Price after discount
 
                     </td>
-                    <td style={{ padding: "3px" }}>{data?.vehicleDetails?.gstAmount}</td>
+                    <td style={{ padding: "3px" }}>{totalPrice}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
                       CGST@ 9%
                     </td>
-                    <td style={{ padding: "3px" }}>{data?.vehicleDetails?.cgst}</td>
+                    <td style={{ padding: "3px" }}>{cgstAmount}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
                       SGST@ 9%
                       
                     </td>
-                    <td style={{ padding: "3px" }}>{data?.vehicleDetails?.sgst}</td>
+                    <td style={{ padding: "3px" }}>{sgstAmount}</td>
                   </tr>
                
                   
@@ -360,7 +383,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                       Total
                     </td>
                     <td style={{ border: "1px solid #000", padding: "8px" }}>
-                      {data?.vehicleDetails?.totalAmount}
+                      {afterGstAmount}
                     </td>
                   </tr>
                 </tbody>
@@ -368,12 +391,12 @@ const InvoiceView = forwardRef(({ id }, ref) => {
             </p>
           </div>
 
-          <p style={{ marginTop: "20px" }}>
+          {/* <p style={{ marginTop: "20px" }}>
             Amount In Words:{" "}
             <b>
             {data?.vehicleDetails?.totalAmountInWords || "Not Available"}
             </b>
-          </p>
+          </p> */}
           <p>
             Whether tax is payable on reverse charge basis - <b>No</b>
           </p>
