@@ -690,8 +690,8 @@ export function CustomTableFour({
     setIsId(id);
     setIsPopUpOpen(true);
   }, []);
-    const openExtPopup = useCallback((id) => {
-      setIsVinId(id);
+  const openExtPopup = useCallback((id) => {
+    setIsVinId(id);
     setIsOpenExtPopup(true);
   }, []);
   const agentOpenPopUp = useCallback((id) => {
@@ -711,7 +711,6 @@ export function CustomTableFour({
     if (pdfRef.current[id]) {
       pdfRef.current[id].handleDownloadPDF();
     }
-    
   };
 
   return (
@@ -856,18 +855,35 @@ export function CustomTableFour({
                     </Typography>
                   </td>
                 )}
-                 <td className="p-4">
+                <td className="p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
                   >
-                    <span
-                        onClick={() => openExtPopup(row?.data?.vehicleDetails?.vinNumber)}
+                    {row?.data?.extendedPolicy?.extendedPolicyPeriod &&
+                    row?.data?.amcStatus === "approved" ? (
+                      <span className=" text-primary px-6 py-1 ">Added</span>
+                    ) : row?.data?.extendedPolicy?.extendedPolicyPeriod &&
+                      row?.data?.amcStatus === "pending" ? (
+                      <span
+                        onClick={() =>
+                          openExtPopup(row?.data)
+                        }
                         className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
                       >
                         Edit
                       </span>
+                    ) : (
+                      <span
+                        onClick={() =>
+                          openExtPopup(row?.data)
+                        }
+                        className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
+                      >
+                        Add
+                      </span>
+                    )}
                   </Typography>
                 </td>
                 <td className="p-4">
@@ -876,7 +892,6 @@ export function CustomTableFour({
                     color="blue-gray"
                     className="font-normal"
                   >
-                    
                     <span className="flex flex-row items-center gap-3">
                       <Link
                         to={redirectLink}
@@ -885,7 +900,7 @@ export function CustomTableFour({
                       >
                         View
                       </Link>
-                      
+
                       <span
                         onClick={() => handleDownloadClick(row?.data?._id)}
                         className="bg-primary text-white px-6 py-1.5 rounded-md cursor-pointer"
@@ -1098,7 +1113,6 @@ export function CustomTableFour({
         closePopUp={closeExtPopup}
         isPopUpOpen={isOpenExtPopup}
         item={isVinId}
-
       />
       <EwIdPopup
         closePopUp={closeIdPopUp}
@@ -1248,7 +1262,7 @@ export function CustomTestTable({ tableHead = [], tableRows = [] }) {
                   {row?.sno || "NA"}
                 </Typography>
               </td>
-            
+
               <td className="p-4">
                 <Typography
                   variant="small"

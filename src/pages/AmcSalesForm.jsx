@@ -152,13 +152,13 @@ const AmcSalesForm = () => {
       label: "Agreement Start Milage",
       required: true,
     },
-    {
-      name: "MaximumValidPMS",
-      type: "text",
-      placeholder: "Maximum Valid Number of PMS",
-      label: "Maximum Valid Number of PMS",
-      required: true,
-    },
+    // {
+    //   name: "MaximumValidPMS",
+    //   type: "text",
+    //   placeholder: "Maximum Valid Number of PMS",
+    //   label: "Maximum Valid Number of PMS",
+    //   required: true,
+    // },
     {
       name: "total",
       type: "text",
@@ -589,7 +589,7 @@ const AmcSalesForm = () => {
       </span>
 
       <div className="sm:ml-[9.5%] md:ml-[5%]  w-full">
-        <p className="text-[20px] font-head font-semibold mt-5">
+        <p className="text-[20px] font-head font-semibold mt-5 md:ml-0 ml-6">
           Customer Personal Details
         </p>
         <GroupedInput
@@ -620,7 +620,7 @@ const AmcSalesForm = () => {
             });
           }}
         />
-         <div className="mt-4 w-96">
+         <div className="mt-6 w-96 ">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"
@@ -630,6 +630,7 @@ const AmcSalesForm = () => {
                 }
                 name="paymentScreenshot"
                 fileUrl={AMCData.vehicleDetails.paymentScreenshot}
+                customClass="md:mx-0 mx-6"
               />
               {errors.paymentScreenshot && (
                 <p className="text-red-500 mt-1 text-sm">
@@ -641,10 +642,10 @@ const AmcSalesForm = () => {
         
         <div
           onClick={handleSubmit}
-          className="bg-primary text-white mt-16 rounded-md px-6 py-2 cursor-pointer w-28 text-center mb-20"
+          className="bg-primary text-white mt-16 rounded-md px-6 py-2 cursor-pointer w-28 text-center mb-20 md:ml-0 ml-6"
         >
           Submit
-        </div>lists
+        </div>
       </div>
     </>
   );

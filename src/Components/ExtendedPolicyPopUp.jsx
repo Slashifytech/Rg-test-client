@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField, { FileUpload } from "./Input";
 import { extendedAMC } from "../features/AMCapi";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
-import { storage } from "../../Util/fireBase";
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadBytes,
 } from "firebase/storage";
+import { storage } from "../../Util/fireBase";
+
 import { v4 as uuidv4 } from "uuid";
 export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
-  console.log(item)
+
 
   const [formData, setFormData] = useState({
     extendedPolicyPeriod: "",
@@ -76,6 +77,23 @@ const handleFileSelect = async (name, file) => {
     }
   };
 
+  useEffect(() => {
+  if (isPopUpOpen && item?.extendedPolicy) {
+    setFormData({
+      extendedPolicyPeriod: item?.extendedPolicy?.extendedPolicyPeriod || "",
+      additionalPrice: item?.extendedPolicy?.additionalPrice || "",
+      paymentCopyProof: item?.extendedPolicy?.paymentCopyProof || "",
+    });
+  } else if (isPopUpOpen) {
+    // Reset when popup opens with no existing data
+    setFormData({
+      extendedPolicyPeriod: "",
+      additionalPrice: "",
+      paymentCopyProof: "",
+    });
+  }
+}, [isPopUpOpen, item]);
+
 
   // Handle form submit
   const handleSubmit = async (e) => {
@@ -83,14 +101,20 @@ const handleFileSelect = async (name, file) => {
 
     let res;
     try {
-      res = await extendedAMC(formData, item);
+      res = await extendedAMC(formData, item?.vehicleDetails?.vinNumber);
       toast.success(res?.message || "Submitted successfully");
+       setFormData({
+      extendedPolicyPeriod: "",
+      additionalPrice: "",
+      paymentCopyProof: "",
+    });
+
+    closePopUp();
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
       console.log("Error:", error);
     }
 
-    closePopUp();
   };
 
   return (

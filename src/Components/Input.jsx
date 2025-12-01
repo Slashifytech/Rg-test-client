@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { extractFileNames } from "../helper/commonHelperFunc";
 import { ImBin } from "react-icons/im";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
@@ -189,6 +189,7 @@ const GroupedInput = ({
     }
    if (field.type === "multiselect") {
   const selectedValues = stateName[field.name] || [];
+  const wrapperRef = useRef(null);
 
   const handleSelect = (value) => {
     let updated;
@@ -203,18 +204,38 @@ const GroupedInput = ({
     });
   };
 
+  const clearAll = () => {
+    onChange({
+      target: { name: field.name, value: [] },
+    });
+  };
+
+  // Close dropdown on clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
-    <div key={field.name} className="flex flex-col gap-2 mt-4 relative">
+    <div ref={wrapperRef} key={field.name} className="flex flex-col gap-2 mt-4 relative w-full">
       <label className="font-semibold">
         {field.label}{" "}
         <span className="text-red-500">{field.required ? "*" : ""}</span>
       </label>
 
-      <div className="border bg-white rounded-md px-3 py-2 cursor-pointer"
-        onClick={() => setDropdownOpen((prev) => !prev)}>
-        {selectedValues.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
-            {selectedValues.map((val, idx) => {
+      <div
+        className="border bg-white rounded-md px-3 py-2 cursor-pointer flex justify-between items-center"
+        onClick={() => setDropdownOpen((prev) => !prev)}
+      >
+        <div className="flex flex-wrap gap-2">
+          {selectedValues.length > 0 ? (
+            selectedValues.map((val, idx) => {
               const label = field.options.find((opt) => opt.value === val)?.label;
               return (
                 <span
@@ -224,28 +245,42 @@ const GroupedInput = ({
                   {label}
                 </span>
               );
-            })}
-          </div>
-        ) : (
-          <span className="text-gray-500">
-            {field.placeholder || "Select options"}
-          </span>
-        )}
+            })
+          ) : (
+            <span className="text-gray-500">{field.placeholder || "Select options"}</span>
+          )}
+        </div>
+
+        {/* Dropdown icon */}
+        <span className="text-gray-600 text-lg">
+          {dropdownOpen ? "▲" : "▼"}
+        </span>
       </div>
 
+      {/* CLEAR ALL BUTTON */}
+      {selectedValues.length > 0 && (
+        <button
+          onClick={clearAll}
+          className="text-red-500 text-sm underline self-end mt-1"
+        >
+          Clear All ✕
+        </button>
+      )}
+
       {dropdownOpen && (
-        <div className="absolute top-[80px] left-0 z-20 bg-white shadow-md border rounded-md w-full max-h-40 overflow-auto">
+        <div className="absolute top-[90px] left-0 z-20 bg-white shadow-md border rounded-md w-full max-h-40 overflow-auto transition-all duration-200">
           {field.options?.map((option, index) => (
             <div
               key={index}
-              className={`px-3 py-2 cursor-pointer hover:bg-gray-200 ${
+              className={`px-3 py-2 cursor-pointer flex justify-between items-center ${
                 selectedValues.includes(option.value)
                   ? "bg-primary text-white"
-                  : ""
+                  : "hover:bg-gray-100"
               }`}
               onClick={() => handleSelect(option.value)}
             >
               {option.label}
+              {selectedValues.includes(option.value) && <span>✓</span>}
             </div>
           ))}
         </div>
@@ -280,14 +315,14 @@ const GroupedInput = ({
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-lg font-bold">{title}</h3>
-      <div className="flex gap-20 items-start">
+      <div className="md:flex gap-20 items-start">
         {/* Left Column */}
-        <div className="flex flex-col gap-4 w-[30%]">
+        <div className="flex flex-col md:gap-4 md:w-[30%] md:mx-0 mx-6">
           {leftFields?.map((field) => renderField(field))}
         </div>
 
         {/* Right Column */}
-        <div className="flex flex-col gap-4 w-[30%]">
+        <div className="flex flex-col md:gap-4 md:w-[30%] md:mx-0 mx-6">
           {rightFields?.map((field) => renderField(field))}
         </div>
       </div>
@@ -366,7 +401,7 @@ const FileUpload = ({
   };
 
   return (
-    <div className={`flex flex-col gap-2 font-poppins ${customClass}`}>
+    <div className={`flex flex-col gap-2 font-poppins ${customClass} `}>
       <label className="text-[14px] text-black mt-3 font-semibold">
         {label} {imp ? <span className="text-red-500">*</span> : ""}
       </label>

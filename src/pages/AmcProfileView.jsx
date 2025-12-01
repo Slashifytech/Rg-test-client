@@ -9,12 +9,15 @@ import { FaRegAddressCard, FaRegIdCard } from "react-icons/fa6";
 import { fetchamcDataById } from "./../features/amcSlice";
 import { CustomTableFive } from "../Components/Table";
 import DataNotFound from "../admin/DataNotFound";
-import InputField from "../Components/Input";
+import InputField, { SelectInput } from "../Components/Input";
 import { amcAssuredAddData } from "../features/AMCapi";
 import { toast } from "react-toastify";
+import { amcProfileOpt } from "../data";
 
 const AmcProfileView = () => {
   const { amcByIdorStatus } = useSelector((state) => state.amc);
+  const services = amcByIdorStatus?.data?.vehicleDetails?.custUpcomingService;
+
   const dispatch = useDispatch();
   const location = useLocation();
   const [loading, setLoading] = useState();
@@ -58,20 +61,40 @@ const AmcProfileView = () => {
     0
   );
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      let res;
-      try {
-        res = await amcAssuredAddData(formData, amcByIdorStatus?.data?.vehicleDetails?.vinNumber );
-        toast.success(res?.message || "Submitted successfully");
-      } catch (error) {
-        toast.error(error?.message || "Something went wrong");
-        console.log("Error:", error);
-      }
-  
-    };
+    let res;
+    try {
+      res = await amcAssuredAddData(
+        formData,
+        amcByIdorStatus?.data?.vehicleDetails?.vinNumber
+      );
+      toast.success(res?.message || "Submitted successfully");
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong");
+      console.log("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+  const existingData = amcByIdorStatus?.data?.amcAssuredAdditionalData;
+
+  if (existingData) {
+    setFormData({
+      expenses: existingData?.expenses || "",
+      buybackOrSoldToRG: existingData?.buybackOrSoldToRG || "",
+      refundedAmount: existingData?.refundedAmount || "",
+    });
+  } else {
+    setFormData({
+      expenses: "",
+      buybackOrSoldToRG: "",
+      refundedAmount: "",
+    });
+  }
+}, [amcByIdorStatus]);
+
 
   return (
     <>
@@ -239,16 +262,60 @@ const AmcProfileView = () => {
                   </span>
                 </span>
                 <span className="w-1/2 flex flex-col text-[15px]">
-                  <span className="font-light mt-4">Available Credit</span>
+                  <span className="font-light mt-4">
+                    Available Credit ({services?.length})
+                  </span>
                   <span className="font-medium">
-                    {Array.isArray(
-                      amcByIdorStatus?.data?.vehicleDetails?.custUpcomingService
-                    )
-                      ? amcByIdorStatus.data.vehicleDetails.custUpcomingService.join(
-                          ", "
-                        )
-                      : amcByIdorStatus?.data?.vehicleDetails
-                          ?.custUpcomingService || "NA"}
+                    {(() => {
+                      const services =
+                        amcByIdorStatus?.data?.vehicleDetails
+                          ?.custUpcomingService;
+
+                      if (!Array.isArray(services) || services.length === 0)
+                        return "NA";
+
+                      const freeServiceItems = services.filter((item) =>
+                        item.toLowerCase().includes("free service")
+                      );
+
+                      const pmsItems = services.filter((item) =>
+                        item
+                          .toLowerCase()
+                          .includes("preventive maintenance service")
+                      );
+
+                      return (
+                        <div>
+                          {freeServiceItems.length > 0 && (
+                            <div style={{ marginBottom: "10px" }}>
+                              <strong>
+                                Free Service ({freeServiceItems.length})
+                              </strong>
+                              <ul style={{ marginLeft: "20px" }}>
+                                {freeServiceItems.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* PMS Section */}
+                          {pmsItems.length > 0 && (
+                            <div style={{ marginBottom: "10px" }}>
+                              <strong>
+                                Preventive Maintenance Service (PMS) (
+                                {pmsItems.length})
+                              </strong>
+                              <ul style={{ marginLeft: "20px" }}>
+                                {pmsItems.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </span>
                   <span className="font-light mt-4">Expenses</span>
                   <span className="font-medium">
@@ -257,6 +324,10 @@ const AmcProfileView = () => {
                 </span>
               </div>
             </div>
+
+            {
+              amcByIdorStatus?.data?.customerDetails?.amcType === "AMC Assured"   && 
+            
             <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-6">
               <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
                 <span className="flex flex-row gap-4 items-center pb-3">
@@ -279,12 +350,13 @@ const AmcProfileView = () => {
                   </span>
 
                   <span className="font-medium">
-                    <InputField
+                    <SelectInput
                       name="buybackOrSoldToRG"
                       value={formData.buybackOrSoldToRG}
-                      onchange={handleChange}
-                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
-                      placeholder="Buyback/Sold to RG status"
+                      onChange={handleChange}
+                      customClass="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                      placeholder="Select Option"
+                      options={amcProfileOpt}
                     />
                   </span>
                   <span className="font-light mt-2">Refunded Amount</span>
@@ -316,10 +388,8 @@ const AmcProfileView = () => {
                     />
                   </span>
                 </span>
-
-                
               </div>
-                 <div className="">
+              <div className="">
                 <button
                   type="submit"
                   onClick={handleSubmit}
@@ -329,6 +399,7 @@ const AmcProfileView = () => {
                 </button>
               </div>
             </div>
+}
             <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-20">
               <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
                 <span className="flex flex-row gap-4 items-center pb-3">
@@ -351,6 +422,7 @@ const AmcProfileView = () => {
           </div>
         )}
       </div>
+
     </>
   );
 };

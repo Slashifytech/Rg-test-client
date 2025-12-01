@@ -26,38 +26,38 @@ export const upcomingServiceOpt = [
 
   {
     id: 5,
-    value: "1st Paid Maintenance Service",
-    label: "1st Paid Maintenance Service",
+    value: "1st Preventive Maintenance Service(PMS)",
+    label: "1st Preventive Maintenance Service(PMS)",
   },
   {
     id: 6,
-    value: "2nd Paid Maintenance Service",
-    label: "2nd Paid Maintenance Service",
+    value: "2nd Preventive Maintenance Service(PMS)",
+    label: "2nd Preventive Maintenance Service(PMS)",
   },
   {
     id: 7,
-    value: "3rd Paid Maintenance Service",
-    label: "3rd Paid Maintenance Service",
+    value: "3rd Preventive Maintenance Service(PMS)",
+    label: "3rd Preventive Maintenance Service(PMS)",
   },
   {
     id: 8,
-    value: "4th Paid Maintenance Service",
-    label: "4th Paid Maintenance Service",
+    value: "4th Preventive Maintenance Service(PMS)",
+    label: "4th Preventive Maintenance Service(PMS)",
   },
   {
     id: 9,
-    value: "5th Paid Maintenance Service",
-    label: "5th Paid Maintenance Service",
+    value: "5th Preventive Maintenance Service(PMS)",
+    label: "5th Preventive Maintenance Service(PMS)",
   },
   {
     id: 10,
-    value: "6th Paid Maintenance Service",
-    label: "6th Paid Maintenance Service",
+    value: "6th Preventive Maintenance Service(PMS)",
+    label: "6th Preventive Maintenance Service(PMS)",
   },
   {
     id: 11,
-    value: "7th Paid Maintenance Service",
-    label: "7th Paid Maintenance Service",
+    value: "7th Preventive Maintenance Service(PMS)",
+    label: "7th Preventive Maintenance Service(PMS)",
   },
 ];
 export const departmentOpt = [
@@ -98,4 +98,8 @@ export const regTypeOption = [{ id: 1, value: "Private", label: "Private" }];
 export const amcType = [
   { id: 1, value: "AMC", label: "AMC" },
   { id: 2, value: "AMC Assured", label: "AMC Assured" },
+];
+export const amcProfileOpt = [
+  { id: 1, value: "Yes", label: "Yes" },
+  { id: 2, value: "No", label: "No" },
 ];

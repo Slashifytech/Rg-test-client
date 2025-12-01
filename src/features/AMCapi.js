@@ -162,9 +162,7 @@ export const amcCancelByAdmin = async (id) => {
 };
 export const amcExpenseNewExpense = async (payload) => {
   try {
-    const response = await apiurl.post(`/add-expense-amc`, {
-      serviceData: payload,
-    });
+    const response = await apiurl.post(`/add-expense-amc`, payload);
 
     return response.data;
   } catch (error) {

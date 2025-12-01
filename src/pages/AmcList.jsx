@@ -146,68 +146,115 @@ const AdminAmcList = () => {
     }
   };
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    if (file && file.type === "text/csv") {
-      Papa.parse(file, {
-        complete: async (result) => {
-          let parsedData = result.data;
-        
-          if (parsedData.length === 0) {
-            toast.error("CSV file is empty.");
-            event.target.value = "";
-            return;
-          }
-          parsedData = parsedData.filter(entry => entry.issueType === "INT");
-
-          if (parsedData.length === 0) {
-            toast.error("No valid INT issueType entries found.");
-            event.target.value = "";
-            return;
-          }
   
-        const groupedData = parsedData.reduce((acc, entry) => {
-          const { serviceVinNumber } = entry;
+const handleFileUpload = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
 
-          if (!serviceVinNumber) {
-            return acc;
-          }
-
-          if (!acc[serviceVinNumber]) {
-            acc[serviceVinNumber] = {
-              serviceVinNumber,
-              expenses: [],
-            };
-          }
-
-          acc[serviceVinNumber].expenses.push(entry);
-          return acc;
-        }, {});
-
-        // Convert grouped data to an array
-        const groupedArray = Object.values(groupedData);
-
-        console.log("Grouped CSV Data:", groupedArray);
-
-        // Send all data in one API call
-        try {
-          await amcExpenseNewExpense(groupedArray);
-          toast.success("All expenses uploaded successfully!");
-          event.target.value = "";
-        } catch (error) {
-          event.target.value = "";
-          console.error(error);
-          toast.error(error?.response?.data?.message || "Error uploading expenses.");
-        }
-      },
-      header: true,
-    });
-  } else {
-    toast.error("Please upload a valid CSV file.");
-    event.target.value = "";
+  // Validate CSV
+  if (file.type !== "text/csv") {
+    toast.error("Upload a valid CSV file.");
+    return;
   }
+
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: async ({ data }) => {
+
+      // STEP 1: Filter out empty VIN
+      let filteredData = data.filter(row => row["VIN"]?.trim() !== "");
+
+      // STEP 2: Allowed Service Types
+      const allowedTypes = [
+        "1st Free Service", "2nd Free Service", "3rd Free Service",
+        "4th Free Service", "5th Free Service",
+        "Preventive Maintenance-Paid Service(PMS)"
+      ];
+
+      filteredData = filteredData.filter(row =>
+        allowedTypes.includes(row["Service Type"])
+      );
+
+      // STEP 3: Only PAID Services
+      filteredData = filteredData.filter(row => row["Issue Type"] === "PAID");
+
+      // STEP 4: Validate Price Match
+      filteredData = filteredData.filter(row =>
+        Number(row["Total Amount"]) === Number(row["Dealer Contribution"])
+      );
+
+      if (filteredData.length === 0) {
+        toast.error("No valid entries found in CSV.");
+        event.target.value = "";
+        return;
+      }
+
+      // STEP 5: Extract & Format
+      const formatted = filteredData.map(row => {
+        let partsPrice = 0,
+          labourPrice = 0,
+          vasPrice = 0;
+
+        const total = Number(row["Total Amount"]) || 0;
+        const partType = row["Part/Labour"];
+        const code = row["Part/Labour Code"] || "";
+
+        if (partType === "P") {
+          partsPrice += total;
+        } else if (partType === "L") {
+          code.startsWith("3M") ? (vasPrice += total) : (labourPrice += total);
+        }
+
+        return {
+          serviceVinNumber: row["VIN"],
+          serviceType: row["Service Type"],
+          serviceDate: row["Delivery/ Closed Date"],
+          partsPrice: String(partsPrice),
+          labourPrice: String(labourPrice),
+          vasPrice: String(vasPrice),
+          serviceTotalAmount: String(partsPrice + labourPrice + vasPrice)
+        };
+      });
+
+      // STEP 6: Group by VIN (Correct Payload)
+      const grouped = Object.values(
+        formatted.reduce((acc, curr) => {
+          if (!acc[curr.serviceVinNumber]) {
+            acc[curr.serviceVinNumber] = [];
+          }
+          acc[curr.serviceVinNumber].push(curr);
+          return acc;
+        }, {})
+      ).map(vinGroup => ({
+        serviceVinNumber: vinGroup[0].serviceVinNumber,
+        expenses: vinGroup
+      }));
+
+      // STEP 7: Send in chunks
+      const chunkSize = 50;
+      let successCount = 0, failedCount = 0;
+
+      for (let i = 0; i < grouped.length; i += chunkSize) {
+        const chunk = grouped.slice(i, i + chunkSize);
+
+        try {
+          await amcExpenseNewExpense(chunk);
+          successCount++;
+        } catch (err) {
+          console.error("Chunk Upload Failed:", err);
+          failedCount++;
+        }
+      }
+
+      if (successCount > 0) toast.success(`Uploaded successfully in ${successCount} batches ✔`);
+      if (failedCount > 0) toast.error(`${failedCount} batches failed`);
+
+      event.target.value = "";
+    },
+  });
 };
+
 
   const handleDownload = async () => {
     const path = "/amc-download"

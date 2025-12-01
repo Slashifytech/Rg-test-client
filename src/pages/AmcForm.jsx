@@ -144,13 +144,13 @@ const AMCForm = () => {
       label: "Agreement Start Milage",
       required: true,
     },
-    {
-      name: "MaximumValidPMS",
-      type: "text",
-      placeholder: "Maximum Valid Number of PMS",
-      label: "Maximum Valid Number of PMS",
-      required: true,
-    },
+    // {
+    //   name: "MaximumValidPMS",
+    //   type: "text",
+    //   placeholder: "Maximum Valid Number of PMS",
+    //   label: "Maximum Valid Number of PMS",
+    //   required: true,
+    // },
     {
       name: "total",
       type: "text",
@@ -576,7 +576,7 @@ const handleFileSelect = async (name, file) => {
           }}
         />
 
-           <div className="mt-[-80px] w-96">
+           <div className="mt-[-30px] w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"
