@@ -11,6 +11,7 @@ import { fetchamcLists } from "../../features/amcSlice";
 import { updateAMCStatus } from "../../features/AMCapi";
 import InvoicePopUp from "../InvoicePopUp";
 import { setEmptyInvoiceData } from "../../features/InvoiceSlice";
+import { ExtendedPolicyReadDataPopup } from "./EtendedPolicyReadDataPopup";
 
 const AmcApproval = () => {
   const dispatch = useDispatch();
@@ -107,16 +108,21 @@ const ApprovalCard = ({ item, index }) => {
   const dispatch = useDispatch();
   const [agentData, setAgentData] = useState();
   const [isReasonPopUp, setIsReasonPopUp] = useState(false);
+    const [isOpenExtPopup, setIsOpenExtPopup] = useState(false);
+  
   const [isOpen, setIsOpen] = useState(false);
   const openReasonPopUp = useCallback(() => setIsReasonPopUp(true));
   const closeReasonPopUp = useCallback(() => setIsReasonPopUp(false));
+    const closeExtPopup = useCallback(() => setIsOpenExtPopup(false), []);
   const openPopUp = useCallback(() => setIsOpen(true));
   const closePopUp = useCallback(() => setIsOpen(false));
   const getAgentData = async () => {
     const data = await fetchUserById(item?.createdBy);
     setAgentData(data);
   };
-
+ const openExtPopup = useCallback(() => {
+    setIsOpenExtPopup(true);
+  }, []);
   useEffect(() => {
     getAgentData();
   }, []);
@@ -160,8 +166,13 @@ const ApprovalCard = ({ item, index }) => {
             {" "}
             View AMC{" "}
           </Link>
-        </li>
 
+          {
+      item?.extendedPolicy?.extendedPolicyPeriod  &&
+        <span className="cursor-pointer underline" onClick={openExtPopup}>View Extended Data</span>
+          }
+        </li>
+         
         <li className="md:w-[9%] w-[13%] text-center flex flex-col gap-2">
           {item?.isCancelReq === "reqCancel" ? (
             <Link
@@ -203,6 +214,12 @@ const ApprovalCard = ({ item, index }) => {
         closePopUp={closePopUp}
         docType="AMC"
         id={item._id}
+      />
+      <ExtendedPolicyReadDataPopup
+      
+        closePopUp={closeExtPopup}
+        isPopUpOpen={isOpenExtPopup}
+        item={item}
       />
     </>
   );
