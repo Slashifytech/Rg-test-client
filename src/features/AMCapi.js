@@ -67,7 +67,7 @@ export const updateAMC = async (payload, id) => {
 
 export const getAMCbyId = async (id, status) => {
   try {
-    const response = await apiurl.get(`/amcById`, {
+    const response = await apiurlOpen.get(`/amcById`, {
       params: {
         id: id,
         status: status,

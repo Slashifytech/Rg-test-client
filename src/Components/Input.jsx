@@ -13,9 +13,12 @@ const InputField = ({
   autocomplete,
   max,
   disabled,
+  label,
+  
 }) => {
   return (
     <>
+    
       <input
         type={type}
         className={className}
@@ -176,122 +179,131 @@ const GroupedInput = ({
                 {option.label}
               </option>
             ))}
-           
           </select>
           {field.customText && (
-              <span className="font-medium text-[13px] text-black">{field.customText}</span>
-            )}
+            <span className="font-medium text-[13px] text-black">
+              {field.customText}
+            </span>
+          )}
           {errors[field.name] && (
             <span className="text-red-500 text-sm">{errors[field.name]}</span>
           )}
         </div>
       );
     }
-   if (field.type === "multiselect") {
-  const selectedValues = stateName[field.name] || [];
-  const wrapperRef = useRef(null);
+    if (field.type === "multiselect") {
+      const selectedValues = stateName[field.name] || [];
+      const wrapperRef = useRef(null);
 
-  const handleSelect = (value) => {
-    let updated;
-    if (selectedValues.includes(value)) {
-      updated = selectedValues.filter((item) => item !== value);
-    } else {
-      updated = [...selectedValues, value];
-    }
+      const handleSelect = (value) => {
+        let updated;
+        if (selectedValues.includes(value)) {
+          updated = selectedValues.filter((item) => item !== value);
+        } else {
+          updated = [...selectedValues, value];
+        }
 
-    onChange({
-      target: { name: field.name, value: updated },
-    });
-  };
+        onChange({
+          target: { name: field.name, value: updated },
+        });
+      };
 
-  const clearAll = () => {
-    onChange({
-      target: { name: field.name, value: [] },
-    });
-  };
+      const clearAll = () => {
+        onChange({
+          target: { name: field.name, value: [] },
+        });
+      };
 
-  // Close dropdown on clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
+      // Close dropdown on clicking outside
+      useEffect(() => {
+        const handleClickOutside = (e) => {
+          if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+            setDropdownOpen(false);
+          }
+        };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+      }, []);
 
-  return (
-    <div ref={wrapperRef} key={field.name} className="flex flex-col gap-2 mt-4 relative w-full">
-      <label className="font-semibold">
-        {field.label}{" "}
-        <span className="text-red-500">{field.required ? "*" : ""}</span>
-      </label>
+      return (
+        <div
+          ref={wrapperRef}
+          key={field.name}
+          className="flex flex-col gap-2 mt-4 relative w-full"
+        >
+          <label className="font-semibold">
+            {field.label}{" "}
+            <span className="text-red-500">{field.required ? "*" : ""}</span>
+          </label>
 
-      <div
-        className="border bg-white rounded-md px-3 py-2 cursor-pointer flex justify-between items-center"
-        onClick={() => setDropdownOpen((prev) => !prev)}
-      >
-        <div className="flex flex-wrap gap-2">
-          {selectedValues.length > 0 ? (
-            selectedValues.map((val, idx) => {
-              const label = field.options.find((opt) => opt.value === val)?.label;
-              return (
-                <span
-                  key={idx}
-                  className="bg-primary text-white rounded-md px-2 text-sm"
-                >
-                  {label}
+          <div
+            className="border bg-white rounded-md px-3 py-2 cursor-pointer flex justify-between items-center"
+            onClick={() => setDropdownOpen((prev) => !prev)}
+          >
+            <div className="flex flex-wrap gap-2">
+              {selectedValues.length > 0 ? (
+                selectedValues.map((val, idx) => {
+                  const label = field.options.find(
+                    (opt) => opt.value === val
+                  )?.label;
+                  return (
+                    <span
+                      key={idx}
+                      className="bg-primary text-white rounded-md px-2 text-sm"
+                    >
+                      {label}
+                    </span>
+                  );
+                })
+              ) : (
+                <span className="text-gray-500">
+                  {field.placeholder || "Select options"}
                 </span>
-              );
-            })
-          ) : (
-            <span className="text-gray-500">{field.placeholder || "Select options"}</span>
+              )}
+            </div>
+
+            {/* Dropdown icon */}
+            <span className="text-gray-600 text-lg">
+              {dropdownOpen ? "▲" : "▼"}
+            </span>
+          </div>
+
+          {/* CLEAR ALL BUTTON */}
+          {selectedValues.length > 0 && (
+            <button
+              onClick={clearAll}
+              className="text-red-500 text-sm underline self-end mt-1"
+            >
+              Clear All ✕
+            </button>
+          )}
+
+          {dropdownOpen && (
+            <div className="absolute top-[90px] left-0 z-20 bg-white shadow-md border rounded-md w-full max-h-40 overflow-auto transition-all duration-200">
+              {field.options?.map((option, index) => (
+                <div
+                  key={index}
+                  className={`px-3 py-2 cursor-pointer flex justify-between items-center ${
+                    selectedValues.includes(option.value)
+                      ? "bg-primary text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                  onClick={() => handleSelect(option.value)}
+                >
+                  {option.label}
+                  {selectedValues.includes(option.value) && <span>✓</span>}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {errors[field.name] && (
+            <span className="text-red-500 text-sm">{errors[field.name]}</span>
           )}
         </div>
-
-        {/* Dropdown icon */}
-        <span className="text-gray-600 text-lg">
-          {dropdownOpen ? "▲" : "▼"}
-        </span>
-      </div>
-
-      {/* CLEAR ALL BUTTON */}
-      {selectedValues.length > 0 && (
-        <button
-          onClick={clearAll}
-          className="text-red-500 text-sm underline self-end mt-1"
-        >
-          Clear All ✕
-        </button>
-      )}
-
-      {dropdownOpen && (
-        <div className="absolute top-[90px] left-0 z-20 bg-white shadow-md border rounded-md w-full max-h-40 overflow-auto transition-all duration-200">
-          {field.options?.map((option, index) => (
-            <div
-              key={index}
-              className={`px-3 py-2 cursor-pointer flex justify-between items-center ${
-                selectedValues.includes(option.value)
-                  ? "bg-primary text-white"
-                  : "hover:bg-gray-100"
-              }`}
-              onClick={() => handleSelect(option.value)}
-            >
-              {option.label}
-              {selectedValues.includes(option.value) && <span>✓</span>}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {errors[field.name] && (
-        <span className="text-red-500 text-sm">{errors[field.name]}</span>
-      )}
-    </div>
-  );
-}
+      );
+    }
 
     // Default: Render input field
     return (
@@ -522,6 +534,115 @@ const PasswordField = ({
     </>
   );
 };
+
+export function MultiSelectInput({
+  label = "",
+  name = "",
+  options = [],
+  value = [],
+  onChange,
+  errors,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const handleSelect = (selected) => {
+    let updated;
+    if (value.includes(selected)) {
+      updated = value.filter((item) => item !== selected);
+    } else {
+      updated = [...value, selected];
+    }
+
+    onChange({
+      target: { name, value: updated },
+    });
+  };
+
+  const clearAll = () => {
+    onChange({
+      target: { name, value: [] },
+    });
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="w-full">
+      <label className="font-semibold">
+        {label} <span className="text-red-500">*</span>
+      </label>
+
+      {/* Input Box */}
+      <div
+        className="border bg-white rounded-md px-3 py-2 cursor-pointer flex justify-between items-center mt-1"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="flex flex-wrap gap-2 w-[80%]">
+          {value.length > 0 ? (
+            value.map((val, idx) => {
+              const label = options.find((opt) => opt.value === val)?.label;
+              return (
+                <span
+                  key={idx}
+                  className="bg-primary text-white rounded-md px-2 text-sm"
+                >
+                  {label}
+                </span>
+              );
+            })
+          ) : (
+            <span className="text-gray-500">Select Options...</span>
+          )}
+        </div>
+
+        <span className="text-gray-600 text-lg">{isOpen ? "▲" : "▼"}</span>
+      </div>
+
+      {/* Clear All */}
+      {value.length > 0 && (
+        <button
+          onClick={clearAll}
+          className="text-red-500 text-sm underline self-end mt-1"
+        >
+          Clear All ✕
+        </button>
+      )}
+
+      {/* Dropdown List */}
+      {isOpen && (
+        <div className="absolute z-[999] bg-white shadow-md border rounded-md w-[45%] max-h-40 overflow-auto transition-all duration-200 mt-1">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className={`px-3 py-2 cursor-pointer flex justify-between items-center ${
+                value.includes(option.value)
+                  ? "bg-primary text-white"
+                  : "hover:bg-gray-100"
+              }`}
+              onClick={() => handleSelect(option.value)}
+            >
+              {option.label}
+              {value.includes(option.value) && "✓"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {errors && <span className="text-red-500 text-sm">{errors}</span>}
+    </div>
+  );
+}
+
 export {
   SelectInput,
   CustomSelect,

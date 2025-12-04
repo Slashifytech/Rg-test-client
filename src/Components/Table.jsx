@@ -862,23 +862,16 @@ export function CustomTableFour({
                     className="font-normal"
                   >
                     {row?.data?.extendedPolicy?.extendedPolicyPeriod &&
-                    row?.data?.amcStatus === "approved" ? (
-                      <span className=" text-primary px-6 py-1 ">Added</span>
-                    ) : row?.data?.extendedPolicy?.extendedPolicyPeriod &&
-                      row?.data?.amcStatus === "pending" ? (
+                    row?.data?.amcStatus === "pending" ? (
                       <span
-                        onClick={() =>
-                          openExtPopup(row?.data)
-                        }
+                        onClick={() => openExtPopup(row?.data)}
                         className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
                       >
                         Edit
                       </span>
                     ) : (
                       <span
-                        onClick={() =>
-                          openExtPopup(row?.data)
-                        }
+                        onClick={() => openExtPopup(row?.data)}
                         className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
                       >
                         Add

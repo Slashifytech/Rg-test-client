@@ -180,7 +180,7 @@ data?.customerDetails?.amcType !== "AMC Assured" &&
             Fuel Type: {data?.vehicleDetails?.fuelType || "NA"}
           </p></>}
           <p>
-            Agreement Period: {data?.vehicleDetails?.agreementPeriod || "NA"}
+            Agreement Period: {data?.extendedPolicy?.extendedPolicyPeriod ?? data?.vehicleDetails?.agreementPeriod}
           </p>
           <p>
             Agreement Start date:{" "}
@@ -188,14 +188,18 @@ data?.customerDetails?.amcType !== "AMC Assured" &&
           </p>
           <p>
             Agreement Valid Date:
-            {formatDate(data?.vehicleDetails?.agreementValidDate)}
+           {formatDate(
+  data?.extendedPolicy?.validDate ?? data?.vehicleDetails?.agreementValidDate
+)}
+
           </p>
           <p>
             Agreement Start Milage :{" "}
             {data?.vehicleDetails?.agreementStartMilage}
           </p>
           <p>
-            Agreement Valid Milage: {data?.vehicleDetails?.agreementValidMilage}{" "}
+            Agreement Valid Milage: {data?.extendedPolicy?.validMileage ?? data?.vehicleDetails?.agreementValidMilage}
+{" "}
             kms/Running of the vehicle, whichever of the two occurs earlier.
           </p>
           {
