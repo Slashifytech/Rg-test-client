@@ -515,10 +515,10 @@ const handleFileSelect = async (name, file) => {
       console.log("Final Payload:", payload);
       let res;
       res = id ? await updateAMC(payload, id) : await addNewAMC(AMCData);
-      toast.success(res?.message || "Buyback Added successfully");
+      toast.success(res?.message || "Added successfully");
       navigate(-1);
     } catch (error) {
-      toast.error(error?.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
       console.log("Error:", error);
     }
   };
@@ -575,8 +575,8 @@ const handleFileSelect = async (name, file) => {
             });
           }}
         />
-
-           <div className="mt-[-30px] w-96">
+  
+           <div className="mt-[6px] w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"

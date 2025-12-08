@@ -257,6 +257,7 @@ const handleFileUpload = async (event) => {
 
 
   const handleDownload = async () => {
+    
     const path = "/amc-download"
     await downloadCsvData(path);
   };

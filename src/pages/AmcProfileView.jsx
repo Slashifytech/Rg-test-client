@@ -46,6 +46,7 @@ const AmcProfileView = () => {
   const TABLE_HEAD = [
     "S.No.",
     "Vin Number",
+    "Service Package",
     "Service Date",
     "Parts Price",
     "Labour Price",
@@ -78,23 +79,22 @@ const AmcProfileView = () => {
   };
 
   useEffect(() => {
-  const existingData = amcByIdorStatus?.data?.amcAssuredAdditionalData;
+    const existingData = amcByIdorStatus?.data?.amcAssuredAdditionalData;
 
-  if (existingData) {
-    setFormData({
-      expenses: existingData?.expenses || "",
-      buybackOrSoldToRG: existingData?.buybackOrSoldToRG || "",
-      refundedAmount: existingData?.refundedAmount || "",
-    });
-  } else {
-    setFormData({
-      expenses: "",
-      buybackOrSoldToRG: "",
-      refundedAmount: "",
-    });
-  }
-}, [amcByIdorStatus]);
-
+    if (existingData) {
+      setFormData({
+        expenses: existingData?.expenses || "",
+        buybackOrSoldToRG: existingData?.buybackOrSoldToRG || "",
+        refundedAmount: existingData?.refundedAmount || "",
+      });
+    } else {
+      setFormData({
+        expenses: "",
+        buybackOrSoldToRG: "",
+        refundedAmount: "",
+      });
+    }
+  }, [amcByIdorStatus]);
 
   return (
     <>
@@ -105,7 +105,7 @@ const AmcProfileView = () => {
         </span>
       </div>
 
-      <div className="md:ml-[19%] sm:ml-[26.5%] mt-20">
+      <div className="md:ml-[19%] sm:ml-[26.5%] mmaximum t-20">
         {loading && (
           <div className="mt-16 flex justify-center md:ml-32 sm:ml-32">
             <Loader />
@@ -201,14 +201,14 @@ const AmcProfileView = () => {
                   </span>
                   <span className="font-light mt-4">Agreement Valid Date</span>
                   <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails
+                    {  amcByIdorStatus?.data?.extendedPolicy?.validDate  || amcByIdorStatus?.data?.vehicleDetails
                       ?.agreementValidDate || "NA"}
                   </span>
                   <span className="font-light mt-4">
                     Agreement Valid Milage
                   </span>
                   <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails
+                    { amcByIdorStatus?.data?.extendedPolicy?.validMileage  || amcByIdorStatus?.data?.vehicleDetails
                       ?.agreementValidMilage || "NA"}
                   </span>
                   <span className="font-light mt-4">
@@ -325,81 +325,76 @@ const AmcProfileView = () => {
               </div>
             </div>
 
-            {
-              amcByIdorStatus?.data?.customerDetails?.amcType === "AMC Assured"   && 
-            
-            <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-6">
-              <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
-                <span className="flex flex-row gap-4 items-center pb-3">
-                  <span className="text-[24px]">
-                    <FaRegAddressCard />
+            {amcByIdorStatus?.data?.customerDetails?.amcType ===
+              "AMC Assured" && (
+              <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-6">
+                <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
+                  <span className="flex flex-row gap-4 items-center pb-3">
+                    <span className="text-[24px]">
+                      <FaRegAddressCard />
+                    </span>
+                    <span className="font-semibold text-[22px]">
+                      AMC Assured
+                    </span>
                   </span>
-                  <span className="font-semibold text-[22px]">AMC Assured</span>
-                </span>
+                </div>
+                <div className="flex flex-row w-full justify-between mt-6">
+                  <span className="w-1/2 flex flex-col text-[15px]">
+                    <span className="font-light mt-4">VIN Number</span>
+                    <span className="font-medium">
+                      {" "}
+                      {amcByIdorStatus?.data?.vehicleDetails?.vinNumber || "NA"}
+                    </span>
+
+                    <span className="font-light mt-4">
+                      Buyback/Sold to RG status
+                    </span>
+
+                    <span className="font-medium">
+                      <SelectInput
+                        name="buybackOrSoldToRG"
+                        value={formData.buybackOrSoldToRG}
+                        onChange={handleChange}
+                        customClass="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                        placeholder="Select Option"
+                        options={amcProfileOpt}
+                      />
+                    </span>
+                    <span className="font-light mt-2">Refunded Amount</span>
+
+                    <span className="font-medium">
+                      <InputField
+                        name="refundedAmount"
+                        value={formData.refundedAmount}
+                        onchange={handleChange}
+                        className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
+                        placeholder="Refunded Amount"
+                      />
+                    </span>
+                  </span>
+                  <span className="w-1/2 flex flex-col text-[15px]">
+                    <span className="font-light mt-4">Total Amount</span>
+                    <span className="font-medium">
+                      {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
+                    </span>
+                    <span className="font-light mt-4">Expenses</span>
+
+                    <span className="font-medium">
+                      {totalExpense|| "NA"}
+                    </span>
+                  </span>
+                </div>
+                <div className="">
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="px-8 py-2 cursor-pointer rounded-lg text-white bg-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
-              <div className="flex flex-row w-full justify-between mt-6">
-                <span className="w-1/2 flex flex-col text-[15px]">
-                  <span className="font-light mt-4">VIN Number</span>
-                  <span className="font-medium">
-                    {" "}
-                    {amcByIdorStatus?.data?.vehicleDetails?.vinNumber || "NA"}
-                  </span>
-
-                  <span className="font-light mt-4">
-                    Buyback/Sold to RG status
-                  </span>
-
-                  <span className="font-medium">
-                    <SelectInput
-                      name="buybackOrSoldToRG"
-                      value={formData.buybackOrSoldToRG}
-                      onChange={handleChange}
-                      customClass="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
-                      placeholder="Select Option"
-                      options={amcProfileOpt}
-                    />
-                  </span>
-                  <span className="font-light mt-2">Refunded Amount</span>
-
-                  <span className="font-medium">
-                    <InputField
-                      name="refundedAmount"
-                      value={formData.refundedAmount}
-                      onchange={handleChange}
-                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
-                      placeholder="Refunded Amount"
-                    />
-                  </span>
-                </span>
-                <span className="w-1/2 flex flex-col text-[15px]">
-                  <span className="font-light mt-4">Total Amount</span>
-                  <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
-                  </span>
-                  <span className="font-light mt-4">Expenses</span>
-
-                  <span className="font-medium">
-                    <InputField
-                      name="expenses"
-                      value={formData.expenses}
-                      onchange={handleChange}
-                      className="w-96 h-12 px-3  mb-5 bg-[#f1f1f1] rounded-md"
-                      placeholder="Expenses"
-                    />
-                  </span>
-                </span>
-              </div>
-              <div className="">
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="px-8 py-2 cursor-pointer rounded-lg text-white bg-primary"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-}
+            )}
             <div className="bg-white rounded-md px-6 py-4 font-poppins  mb-20">
               <div className="flex flex-row text-sidebar items-center justify-between border-b border-greyish">
                 <span className="flex flex-row gap-4 items-center pb-3">
@@ -422,7 +417,6 @@ const AmcProfileView = () => {
           </div>
         )}
       </div>
-
     </>
   );
 };

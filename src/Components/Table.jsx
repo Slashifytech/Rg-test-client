@@ -1162,6 +1162,15 @@ export function CustomTableFive({ tableHead = [], tableRows = [] }) {
                     {row.data?.serviceVinNumber}
                   </Typography>
                 </td>
+                 <td className="p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal"
+                  >
+                    {row.data?.serviceType}
+                  </Typography>
+                </td>
                 <td className="p-4">
                   <Typography
                     variant="small"

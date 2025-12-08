@@ -13,6 +13,8 @@ import { storage } from "../../Util/fireBase";
 
 import { v4 as uuidv4 } from "uuid";
 import { upcomingServiceOpt } from "../data";
+import { fetchamcLists } from "../features/amcSlice";
+import { useDispatch } from "react-redux";
 export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
   const [formData, setFormData] = useState({
     extendedPolicyPeriod: "",
@@ -22,28 +24,29 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
     paymentCopyProof: "",
     upcomingPackage: [],
   });
-
+  const dispatch = useDispatch();
   // Handle input updates
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  setFormData((prev) => {
-    let updatedData = { ...prev, [name]: value };
+    setFormData((prev) => {
+      let updatedData = { ...prev, [name]: value };
 
-    // Auto update Valid Date when extendedPolicyPeriod changes
-    if (name === "extendedPolicyPeriod" && value) {
-      const baseDate = new Date(item?.vehicleDetails?.agreementStartDate);
-      
-      if (!isNaN(baseDate)) {
-        const newDate = new Date(baseDate.setFullYear(baseDate.getFullYear() + Number(value)));
-        updatedData.validDate = newDate.toISOString().split("T")[0]; // format YYYY-MM-DD
+      // Auto update Valid Date when extendedPolicyPeriod changes
+      if (name === "extendedPolicyPeriod" && value) {
+        const baseDate = new Date(item?.vehicleDetails?.agreementStartDate);
+
+        if (!isNaN(baseDate)) {
+          const newDate = new Date(
+            baseDate.setFullYear(baseDate.getFullYear() + Number(value))
+          );
+          updatedData.validDate = newDate.toISOString().split("T")[0]; // format YYYY-MM-DD
+        }
       }
-    }
 
-    return updatedData;
-  });
-};
-
+      return updatedData;
+    });
+  };
 
   const handleFileSelect = async (name, file) => {
     // console.log("Selected file:", file);
@@ -105,7 +108,10 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
           item?.extendedPolicy?.validMileage ||
           item?.vehicleDetails?.agreementValidMilage ||
           "",
-        // upcomingPackage: item?.vehicleDetails?.custUpcomingService || [],
+        upcomingPackage:
+          item?.extendedPolicy?.upcomingPackage ||
+          item?.vehicleDetails?.custUpcomingService ||
+          [],
       });
     } else if (isPopUpOpen) {
       // Reset when popup opens with no existing data
@@ -118,6 +124,10 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
       });
     }
   }, [isPopUpOpen, item]);
+  useEffect(() => {
+    console.log("Existing Data:", item?.vehicleDetails?.custUpcomingService);
+    console.log("Form Value Before Set:", formData.upcomingPackage);
+  }, [item]);
 
   // Handle form submit
   const handleSubmit = async (e) => {
@@ -132,7 +142,15 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
         additionalPrice: "",
         paymentCopyProof: "",
       });
-
+      dispatch(
+        fetchamcLists({
+          page: 1,
+          perPage: 10,
+          searchTerm: null,
+          userId: null,
+          status: false,
+        })
+      );
       closePopUp();
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
@@ -143,27 +161,30 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
   return (
     <>
       {isPopUpOpen && (
-         <div className="fixed inset-0 flex items-center justify-center popup-backdrop z-50 sm:px-52 px-6">
-  <div className="bg-white pb-9 rounded-lg md:w-full w-full relative p-9 app-open-animation 
-       max-h-[90vh] overflow-y-auto">
-
-              <span
-                className="cursor-pointer text-[25px] absolute right-3 top-2"
-                onClick={closePopUp}
-              >
-                <RxCross2 />
-              </span>
+        <div className="fixed inset-0 flex items-center justify-center popup-backdrop z-50 sm:px-52 px-6">
+          <div
+            className="bg-white pb-9 rounded-lg md:w-full w-full relative p-9 app-open-animation 
+       max-h-[90vh] overflow-y-auto"
+          >
+            <span
+              className="cursor-pointer text-[25px] absolute right-3 top-2"
+              onClick={closePopUp}
+            >
+              <RxCross2 />
+            </span>
             <p className="text-center font-DMsans text-black font-semibold text-[20px]">
-              Extend Policy
+              Extended Policy
             </p>
 
-              <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-5">
-
                 {/* Titles + Inputs */}
-                
+
                 <div>
-                  <label className="font-semibold">Extended Policy Period</label>
+                  <label className="font-semibold">
+                    Extended Policy Period
+                  </label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     name="extendedPolicyPeriod"
                     value={formData.extendedPolicyPeriod}
@@ -174,7 +195,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Additional Price</label>
+                  <label className="font-semibold">Additional Price</label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     name="additionalPrice"
                     value={formData.additionalPrice}
@@ -185,7 +207,10 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Current Agreement Period</label>
+                  <label className="font-semibold">
+                    Current Agreement Period
+                  </label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     value={item.vehicleDetails.agreementPeriod || ""}
                     disabled
@@ -194,7 +219,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Start Date</label>
+                  <label className="font-semibold">Start Date</label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     value={item.vehicleDetails.agreementStartDate || ""}
                     disabled
@@ -203,7 +229,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Start Mileage</label>
+                  <label className="font-semibold">Start Mileage</label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     value={item.vehicleDetails.agreementStartMilage}
                     disabled
@@ -212,7 +239,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Valid Date</label>
+                  <label className="font-semibold">Valid Date</label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     name="validDate"
                     value={formData.validDate}
@@ -222,7 +250,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                 </div>
 
                 <div>
-                  <label className="font-semibold">Valid Mileage</label>
+                  <label className="font-semibold">Valid Mileage</label>{" "}
+                  <span className="text-red-500">*</span>
                   <InputField
                     name="validMileage"
                     value={formData.validMileage}
@@ -230,15 +259,22 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                     className="w-full h-12 px-3 mt-1 bg-[#f1f1f1] rounded-md"
                   />
                 </div>
-  <div>
-                  <label className="font-semibold">Previously Customer Upcoming Services</label>
-                   <div className="w-full h-12 px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
-  {item?.vehicleDetails?.custUpcomingService?.length > 0
-    ? item.vehicleDetails.custUpcomingService.join(", ")
-    : "No data"}
-</div>
-
-
+                <div>
+                  <label className="font-semibold">
+                    Previously Customer Upcoming Services
+                  </label>{" "}
+                  <span className="text-red-500">*</span>
+                  <div className="w-full h-12 px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
+                    {[
+                      ...(item?.extendedPolicy?.upcomingPackage || []),
+                      ...(item?.vehicleDetails?.custUpcomingService || []),
+                    ].length > 0
+                      ? [
+                          ...(item?.extendedPolicy?.upcomingPackage || []),
+                          ...(item?.vehicleDetails?.custUpcomingService || []),
+                        ].join(", ")
+                      : "No data"}
+                  </div>
                 </div>
                 {/* MULTI SELECT */}
                 <MultiSelectInput
@@ -246,12 +282,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                   name="upcomingPackage"
                   value={formData.upcomingPackage}
                   onChange={handleChange}
-                  options={upcomingServiceOpt.filter(
-                    (opt) =>
-                      !item?.vehicleDetails?.custUpcomingService?.includes(
-                        opt.value
-                      )
-                  )}
+                  options={upcomingServiceOpt}
                 />
               </div>
 
@@ -262,6 +293,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                   fileUrl={formData.paymentCopyProof}
                   onFileSelect={(f) => handleFileSelect("paymentCopyProof", f)}
                   deleteFile={() => deleteFile(formData.paymentCopyProof)}
+                  imp={true}
                 />
               </div>
 

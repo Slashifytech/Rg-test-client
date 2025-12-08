@@ -181,6 +181,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               {/* Titles + Inputs */}
               <div>
                 <label className="font-semibold">Verify Vin Number</label>
+                <span className="text-red-500">*</span>
 
                 <InputField
                   name="vinNumber"
@@ -204,7 +205,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Extended Policy Period</label>
+                <label className="font-semibold">Extended Policy Period</label> <span className="text-red-500">*</span>
                 <InputField
                   name="extendedPolicyPeriod"
                   value={formData.extendedPolicyPeriod}
@@ -215,7 +216,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Additional Price</label>
+                <label className="font-semibold">Additional Price</label> <span className="text-red-500">*</span>
                 <InputField
                   name="additionalPrice"
                   value={formData.additionalPrice}
@@ -228,7 +229,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               <div>
                 <label className="font-semibold">
                   Current Agreement Period
-                </label>
+                </label> <span className="text-red-500">*</span>
                 <InputField
                   value={item?.vehicleDetails?.agreementPeriod || ""}
                   disabled
@@ -237,7 +238,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Start Date</label>
+                <label className="font-semibold">Start Date</label> <span className="text-red-500">*</span>
                 <InputField
                   value={item?.vehicleDetails?.agreementStartDate || ""}
                   disabled
@@ -246,7 +247,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Start Mileage</label>
+                <label className="font-semibold">Start Mileage</label> <span className="text-red-500">*</span>
                 <InputField
                   value={item?.vehicleDetails?.agreementStartMilage}
                   disabled
@@ -255,7 +256,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Valid Date</label>
+                <label className="font-semibold">Valid Date</label> <span className="text-red-500">*</span>
                 <InputField
                   name="validDate"
                   value={formData.validDate}
@@ -265,7 +266,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               </div>
 
               <div>
-                <label className="font-semibold">Valid Mileage</label>
+                <label className="font-semibold">Valid Mileage</label> <span className="text-red-500">*</span>
                 <InputField
                   name="validMileage"
                   value={formData.validMileage}
@@ -276,7 +277,7 @@ const [loadingVin, setLoadingVin] = useState(false);
               <div>
                 <label className="font-semibold">
                   Previously Customer Upcoming Services
-                </label>
+                </label> <span className="text-red-500">*</span>
                 <div className="w-full h-12 px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
                   {item?.vehicleDetails?.custUpcomingService?.length > 0
                     ? item?.vehicleDetails?.custUpcomingService.join(", ")
@@ -303,6 +304,7 @@ const [loadingVin, setLoadingVin] = useState(false);
                 label="Payment Copy Proof"
                 name="paymentCopyProof"
                 fileUrl={formData.paymentCopyProof}
+                imp={true}
                 onFileSelect={(f) => handleFileSelect("paymentCopyProof", f)}
                 deleteFile={() => deleteFile(formData.paymentCopyProof)}
               />

@@ -1,9 +1,6 @@
-
 import { RxCross2 } from "react-icons/rx";
 
 export const ExtendedPolicyReadDataPopup = ({ isPopUpOpen, closePopUp, item }) => {
-
-
   return (
     <>
       {isPopUpOpen && (
@@ -15,37 +12,72 @@ export const ExtendedPolicyReadDataPopup = ({ isPopUpOpen, closePopUp, item }) =
             >
               <RxCross2 />
             </span>
+
             <p className="text-center font-DMsans text-black font-semibold text-[20px]">
               Extended Policy
             </p>
 
-              <div className="flex justify-center items-center font-DMsans gap-5 mt-5">
-                <span>
-                  <label className="font-semibold">
-                    Extended policy period
-                  </label>{" "} <br />
-                 {  item?.extendedPolicy?.extendedPolicyPeriod}
-                  <label className="font-semibold"> <br />
-                    Additional price for the extension
-                  </label>{" "}
-                  <br />
-              {   item?.extendedPolicy?.additionalPrice} <br />
-             {item?.extendedPolicy?.paymentCopyProof ? (
-  <a
-    href={item.extendedPolicy.paymentCopyProof}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-blue-600 underline cursor-pointer"
-  >
-    View Payment Proof
-  </a>
-) : (
-  <span className="text-gray-500">No file available</span>
-)}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 font-DMsans">
 
-                </span>
+              {/* Column 1 */}
+              <div>
+                <label className="font-semibold">Extended policy period</label>
+                <div>{item?.extendedPolicy?.extendedPolicyPeriod || "No data"}</div>
+
+                <label className="font-semibold mt-3 block">
+                  Additional price for extension
+                </label>
+                <div>{item?.extendedPolicy?.additionalPrice || "No data"}</div>
+
+                <label className="font-semibold mt-3 block">Valid Date</label>
+                <div>{item?.extendedPolicy?.validDate || "No data"}</div>
+
+                <label className="font-semibold mt-3 block">Valid Mileage</label>
+                <div>{item?.extendedPolicy?.validMileage || "No data"}</div>
               </div>
-          
+
+              {/* Column 2 */}
+              <div>
+                <label className="font-semibold">Upcoming Services</label>
+                <div >
+                  {[
+                    ...(item?.extendedPolicy?.upcomingPackage || []),
+                    ...(item?.vehicleDetails?.custUpcomingService || []),
+                  ].length > 0
+                    ? [
+                        ...(item?.extendedPolicy?.upcomingPackage || []),
+                        ...(item?.vehicleDetails?.custUpcomingService || []),
+                      ].join(", ")
+                    : "No data"}
+                </div>
+
+                <label className="font-semibold mt-3 block">Start Date</label>
+                <div>
+                  {item?.vehicleDetails?.agreementStartDate || ""}
+               </div>
+
+                <label className="font-semibold mt-3 block">Start Mileage</label>
+                <div>
+                  {item?.vehicleDetails?.agreementStartMilage || ""}
+                
+                </div>
+
+                <label className="font-semibold mt-3 block">Payment Proof</label>
+                {item?.extendedPolicy?.paymentCopyProof ? (
+                  <a
+                    href={item.extendedPolicy.paymentCopyProof}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline cursor-pointer block mt-1"
+                  >
+                    View Payment Proof
+                  </a>
+                ) : (
+                  <span className="text-gray-500 block mt-1">No file available</span>
+                )}
+              </div>
+
+            </div>
           </div>
         </div>
       )}

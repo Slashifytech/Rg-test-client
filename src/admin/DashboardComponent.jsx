@@ -129,8 +129,8 @@ const DashboardComponent = () => {
       setAmcAssuredData((prev) => ({
         ...prev,
         totalAmcAssured: res?.totalamcAssured,
-        totalRevenue: res?.totalAmcAssuredExpense,
-        totalExpense: res?.totalAmcAssuredRevenue,
+        totalRevenue: res?.totalAmcAssuredRevenue,
+        totalExpense: res?.totalAmcAssuredExpense,
       }));
     } catch (error) {
       console.log(error);
