@@ -271,6 +271,8 @@ const AmcSalesForm = () => {
       placeholder: "Payment Received Date for Package",
       label: "Payment Received Date for Package",
       // required: true,
+        limitDate: true
+
     },
     {
       name: "custUpcomingService",
@@ -448,10 +450,14 @@ const AmcSalesForm = () => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       console.log("File available at:", downloadURL);
 
-      setAMCData((prevData) => ({
-        ...prevData,
+     setAMCData((prevData) => ({
+      ...prevData,
+      vehicleDetails: {
+        ...prevData.vehicleDetails,
         [name]: downloadURL,
-      }));
+      },
+    }));
+
 
       toast.success("File uploaded successfully!");
     } catch (error) {
@@ -469,10 +475,13 @@ const AmcSalesForm = () => {
       // toast.success("File deleted successfully!");
 
     if (uploadType === "paymentScreenshot") {
-        setAMCData((prevData) => ({
-          ...prevData,
-          paymentScreenshot: "",
-        }));
+       setAMCData((prevData) => ({
+    ...prevData,
+    vehicleDetails: {
+      ...prevData.vehicleDetails,
+      [name]: "",
+    },
+  }));
       } 
       await deleteObject(storageRef);
     } catch (error) {
@@ -561,6 +570,7 @@ const AmcSalesForm = () => {
         },
         createdBy: "",
       });
+      navigate("/submitted-amc-form")
     } catch (error) {
       toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
       console.log("Error:", error);

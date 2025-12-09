@@ -158,6 +158,7 @@ const GroupedInput = ({
   rightFields,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+const today = new Date().toISOString().split("T")[0];
 
   const renderField = (field) => {
     if (field.type === "select") {
@@ -305,6 +306,29 @@ const GroupedInput = ({
       );
     }
 
+    if (field.limitDate) {
+  return (
+    <div key={field.name} className="flex flex-col gap-2 mt-4">
+      <label className="font-semibold">
+        {field.label}{" "}
+        <span className="text-red-500">{field.required ? "*" : ""}</span>
+      </label>
+
+      <input
+        type="date"
+        name={field.name}
+        max={today}    // disable future dates
+        value={stateName[field.name] || ""}
+        onChange={onChange}
+        className="w-full h-10 bg-white rounded-md px-3 outline-none border border-gray-300"
+      />
+
+      {errors[field.name] && (
+        <span className="text-red-500 text-sm">{errors[field.name]}</span>
+      )}
+    </div>
+  );
+}
     // Default: Render input field
     return (
       <>

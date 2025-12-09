@@ -177,8 +177,10 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           )}
           <p>
             Agreement Period:{" "}
-            {data?.extendedPolicy?.extendedPolicyPeriod ??
-              data?.vehicleDetails?.agreementPeriod}
+            {data?.amcStatus === "approved" &&
+            data?.extendedPolicy?.extendedPolicyPeriod
+              ? data?.extendedPolicy?.extendedPolicyPeriod
+              : data?.vehicleDetails?.agreementPeriod}
           </p>
           <p>
             Agreement Start date:{" "}
@@ -187,8 +189,9 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           <p>
             Agreement Valid Date:
             {formatDate(
-              data?.extendedPolicy?.validDate ??
-                data?.vehicleDetails?.agreementValidDate
+              data?.amcStatus === "approved" && data?.extendedPolicy?.validDate
+                ? data?.extendedPolicy?.validDate
+                : data?.vehicleDetails?.agreementValidDate
             )}
           </p>
           <p>
@@ -197,16 +200,18 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           </p>
           <p>
             Agreement Valid Milage:{" "}
-            {data?.extendedPolicy?.validMileage ??
-              data?.vehicleDetails?.agreementValidMilage}{" "}
+            {data?.amcStatus === "approved" &&
+            data?.extendedPolicy?.validMileage
+              ? data?.extendedPolicy?.validMileage
+              : data?.vehicleDetails?.agreementValidMilage}{" "}
             kms/Running of the vehicle, whichever of the two occurs earlier.
           </p>
-          {data?.customerDetails?.amcType !== "AMC Assured" && (
+          {/* {data?.customerDetails?.amcType !== "AMC Assured" && (
             <p>
               Maximum Valid Number of PMS:{" "}
               {data?.vehicleDetails?.MaximumValidPMS}
             </p>
-          )}
+          )} */}
           <p>Location of the Dealer: {data?.vehicleDetails?.dealerLocation}</p>
         </div>
 

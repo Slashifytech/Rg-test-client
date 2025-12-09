@@ -187,6 +187,8 @@ const AMCForm = () => {
       placeholder: "Payment Received Date for Package",
       label: "Payment Received Date for Package",
       // required: true,
+        limitDate: true
+
     },
     {
       name: "bookingId",

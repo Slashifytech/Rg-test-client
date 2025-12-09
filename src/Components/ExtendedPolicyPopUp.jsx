@@ -129,6 +129,14 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
     console.log("Form Value Before Set:", formData.upcomingPackage);
   }, [item]);
 
+  const existingServices = [
+  ...(item?.extendedPolicy?.upcomingPackage || []),
+  ...(item?.vehicleDetails?.custUpcomingService || []),
+];
+const filteredOptions = upcomingServiceOpt.filter(
+  (opt) => !existingServices?.includes(opt.value)
+);
+
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -264,7 +272,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                     Previously Customer Upcoming Services
                   </label>{" "}
                   <span className="text-red-500">*</span>
-                  <div className="w-full h-12 px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
+                  <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
                     {[
                       ...(item?.extendedPolicy?.upcomingPackage || []),
                       ...(item?.vehicleDetails?.custUpcomingService || []),
@@ -282,7 +290,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                   name="upcomingPackage"
                   value={formData.upcomingPackage}
                   onChange={handleChange}
-                  options={upcomingServiceOpt}
+                  options={filteredOptions}
                 />
               </div>
 

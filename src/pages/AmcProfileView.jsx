@@ -201,15 +201,25 @@ const AmcProfileView = () => {
                   </span>
                   <span className="font-light mt-4">Agreement Valid Date</span>
                   <span className="font-medium">
-                    {  amcByIdorStatus?.data?.extendedPolicy?.validDate  || amcByIdorStatus?.data?.vehicleDetails
-                      ?.agreementValidDate || "NA"}
+                    {
+  amcByIdorStatus?.data?.amcStatus === "approved" &&
+  amcByIdorStatus?.data?.extendedPolicy?.validDate
+    ? amcByIdorStatus?.data?.extendedPolicy?.validDate
+    : amcByIdorStatus?.data?.vehicleDetails?.agreementValidDate || "NA"
+}
+
                   </span>
                   <span className="font-light mt-4">
                     Agreement Valid Milage
                   </span>
                   <span className="font-medium">
-                    { amcByIdorStatus?.data?.extendedPolicy?.validMileage  || amcByIdorStatus?.data?.vehicleDetails
-                      ?.agreementValidMilage || "NA"}
+                   {
+  amcByIdorStatus?.data?.amcStatus === "approved" &&
+  amcByIdorStatus?.data?.extendedPolicy?.validMileage
+    ? amcByIdorStatus?.data?.extendedPolicy?.validMileage
+    : amcByIdorStatus?.data?.vehicleDetails?.agreementValidMilage || "NA"
+}
+
                   </span>
                   <span className="font-light mt-4">
                     Location of the Dealer
@@ -254,12 +264,15 @@ const AmcProfileView = () => {
               </div>
               <div className="flex flex-row w-full justify-between mt-6">
                 <span className="w-1/2 flex flex-col text-[15px]">
-                  <span className="font-light mt-4">Issue Type</span>
-                  <span className="font-medium">INT</span>
+                 
                   <span className="font-light mt-4">Revenue</span>
                   <span className="font-medium">
                     {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
                   </span>
+                   <span className="font-light mt-4">Expenses</span>
+                  <span className="font-medium">
+                    {totalExpense || "NA"}
+                  </span>{" "}
                 </span>
                 <span className="w-1/2 flex flex-col text-[15px]">
                   <span className="font-light mt-4">
@@ -317,10 +330,7 @@ const AmcProfileView = () => {
                       );
                     })()}
                   </span>
-                  <span className="font-light mt-4">Expenses</span>
-                  <span className="font-medium">
-                    {totalExpense || "NA"}
-                  </span>{" "}
+                 
                 </span>
               </div>
             </div>

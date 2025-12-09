@@ -39,6 +39,7 @@ import AdminEwLists from "./pages/EwList";
 import EwPdf from "./pages/EwPdf";
 import AmcSalesForm from "./pages/AmcSalesForm";
 import { ExtendedPolicyOpenForm } from "./pages/ExtendPolicyOpenForm";
+import SubmitPage from "./Components/AdminComponents/SubmitPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,12 @@ const router = createBrowserRouter([
     path: "/sales/new-amc",
     element: (
         <AmcSalesForm/>
+    ),
+  },
+  {
+    path: "/submitted-amc-form",
+    element: (
+        <SubmitPage/>
     ),
   },
      {

@@ -37,6 +37,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
 
   const afterGstAmount = totalPrice + sgstAmount + cgstAmount;
 
+const formattedAmount = afterGstAmount.toFixed(2);
 
 
 
@@ -383,7 +384,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                       Total
                     </td>
                     <td style={{ border: "1px solid #000", padding: "8px" }}>
-                      {afterGstAmount}
+                      {formattedAmount}
                     </td>
                   </tr>
                 </tbody>

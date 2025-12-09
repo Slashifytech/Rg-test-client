@@ -42,11 +42,10 @@ export const ExtendedPolicyReadDataPopup = ({ isPopUpOpen, closePopUp, item }) =
                 <div >
                   {[
                     ...(item?.extendedPolicy?.upcomingPackage || []),
-                    ...(item?.vehicleDetails?.custUpcomingService || []),
+                    
                   ].length > 0
                     ? [
                         ...(item?.extendedPolicy?.upcomingPackage || []),
-                        ...(item?.vehicleDetails?.custUpcomingService || []),
                       ].join(", ")
                     : "No data"}
                 </div>
