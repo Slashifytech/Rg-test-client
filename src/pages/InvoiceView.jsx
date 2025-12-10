@@ -384,7 +384,7 @@ const formattedAmount = afterGstAmount.toFixed(2);
                       Total
                     </td>
                     <td style={{ border: "1px solid #000", padding: "8px" }}>
-                      {formattedAmount}
+                      {data.extendedPolicy?.additionalPrice ? data.extendedPolicy?.additionalPrice : formattedAmount}
                     </td>
                   </tr>
                 </tbody>
