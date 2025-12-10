@@ -71,29 +71,7 @@ const AMCForm = () => {
       label: "Customer Name",
       required: true,
     },
-    {
-      name: "contact",
-      type: "number",
-      placeholder: "Contact",
-      label: "Contact",
-      required: true,
-    },
-    {
-      name: "pan",
-      type: "text",
-      placeholder: "Pan Number",
-      label: "Pan Number",
-    },
-    {
-      name: "zipCode",
-      type: "number",
-      placeholder: "Zip Code",
-      label: "Zip Code",
-    },
-  ];
-  const leftFields = [
-    { name: "address", type: "text", placeholder: "Address", label: "Address" },
-    {
+      {
       name: "email",
       type: "email",
       placeholder: "Email",
@@ -101,18 +79,43 @@ const AMCForm = () => {
       required: true,
     },
     {
+      name: "contact",
+      type: "number",
+      placeholder: "Contact",
+      label: "Contact",
+      required: true,
+    },
+        { name: "address", type: "text", placeholder: "Address", label: "Address" },
+
+    
+   
+  ];
+  const leftFields = [
+    {
       name: "customerGst",
       type: "text",
       placeholder: "Customer Gst",
       label: "Customer Gst",
     },
-   
     {
       name: "stateCode",
       type: "text",
       placeholder: "State Code",
       label: "State Code",
     },
+   {
+      name: "zipCode",
+      type: "number",
+      placeholder: "Zip Code",
+      label: "Zip Code",
+    },
+    {
+      name: "pan",
+      type: "text",
+      placeholder: "Pan Number",
+      label: "Pan Number",
+    },
+   
     {
       name: "amcType",
       type: "select",
@@ -123,83 +126,7 @@ const AMCForm = () => {
     },
   ];
   const rightVehicleFields = [
-    {
-      name: "vinNumber",
-      type: "text",
-      placeholder: "Vin Number",
-      label: "Vin Number",
-      required: true,
-    },
-    {
-      name: "agreementStartDate",
-      type: "date",
-      placeholder: "Agreement Start Date",
-      label: "Agreement Start Date",
-      required: true,
-    },
-    {
-      name: "agreementStartMilage",
-      type: "text",
-      placeholder: "Agreement Start Milage",
-      label: "Agreement Start Milage",
-      required: true,
-    },
-    // {
-    //   name: "MaximumValidPMS",
-    //   type: "text",
-    //   placeholder: "Maximum Valid Number of PMS",
-    //   label: "Maximum Valid Number of PMS",
-    //   required: true,
-    // },
-    {
-      name: "total",
-      type: "text",
-      placeholder: "Total Amount",
-      label: "Total Amount",
-      required: true,
-    },
-
-    {
-      name: "rmName",
-      type: "text",
-      placeholder: "Relationship Manager / Service Advisor Name",
-      label: "Name of Relationship Manager / Service Advisor",
-      required: true,
-    },
-    {
-      name: "rmEmail",
-      type: "email",
-      placeholder: " Relationship Manager/ Service Advisor Email Id",
-      label: "Email Id of Relationship Manager/ Service Advisor ",
-      required: true,
-    },
-    {
-      name: "department",
-      type: "select",
-      placeholder: "Department",
-      label: "Department",
-      options: departmentOpt,
-      // required: true,
-    },
      {
-      name: "paymentReceivedDateForPackage",
-      type: "date",
-      placeholder: "Payment Received Date for Package",
-      label: "Payment Received Date for Package",
-      // required: true,
-        limitDate: true
-
-    },
-    {
-      name: "bookingId",
-      type: "text",
-      placeholder: "Bookinng Id",
-      label: "Booking Id",
-    },
-  ];
-
-  const leftVehicleFields = [
-    {
       name: "model",
       type: "select",
       placeholder: "Model",
@@ -216,17 +143,32 @@ const AMCForm = () => {
       required: true,
     },
     {
-      name: "agreementPeriod",
+      name: "vinNumber",
       type: "text",
-      placeholder: "Agreement Period",
-      label: "Agreement Period",
+      placeholder: "Vin Number",
+      label: "Vin Number",
       required: true,
     },
     {
+      name: "agreementStartDate",
+      type: "date",
+      placeholder: "Agreement Start Date",
+      label: "Agreement Start Date",
+      required: true,
+    },
+     {
       name: "agreementValidDate",
       type: "date",
       placeholder: "Agreement Valid Date",
       label: "Agreement Valid Date",
+      required: true,
+    },
+
+    {
+      name: "agreementStartMilage",
+      type: "text",
+      placeholder: "Agreement Start Milage",
+      label: "Agreement Start Milage",
       required: true,
     },
     {
@@ -236,7 +178,14 @@ const AMCForm = () => {
       label: "Agreement Valid Milage",
       required: true,
     },
-    {
+    // {
+    //   name: "MaximumValidPMS",
+    //   type: "text",
+    //   placeholder: "Maximum Valid Number of PMS",
+    //   label: "Maximum Valid Number of PMS",
+    //   required: true,
+    // },
+     {
       name: "dealerLocation",
       type: "select",
       options: locationOption,
@@ -244,21 +193,21 @@ const AMCForm = () => {
       label: "Location of the Dealer",
       required: true,
     },
-
     {
-      name: "rmEmployeeId",
+      name: "total",
       type: "text",
-      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
-      label: "Employee Id of Relationship Manager/ Service Advisor",
+      placeholder: "Total Amount",
+      label: "Total Amount",
       required: true,
     },
 
-    {
-      name: "gmEmail",
-      type: "email",
-      placeholder: "General Manager Email Id",
-      label: "General Manager Email",
-    },
+   
+  
+    
+  ];
+
+  const leftVehicleFields = [
+   
    
     {
       name: "custUpcomingService",
@@ -268,6 +217,62 @@ const AMCForm = () => {
       options: upcomingServiceOpt,
       // required: true,
     },
+   
+    
+   
+
+    {
+      name: "rmEmployeeId",
+      type: "text",
+      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
+      label: "Employee Id of Relationship Manager/ Service Advisor",
+      required: true,
+    },
+ {
+      name: "rmName",
+      type: "text",
+      placeholder: "Relationship Manager / Service Advisor Name",
+      label: "Name of Relationship Manager / Service Advisor",
+      required: true,
+    },
+    {
+      name: "rmEmail",
+      type: "email",
+      placeholder: " Relationship Manager/ Service Advisor Email Id",
+      label: "Email Id of Relationship Manager/ Service Advisor ",
+      required: true,
+    },
+    {
+      name: "gmEmail",
+      type: "email",
+      placeholder: "General Manager Email Id",
+      label: "General Manager Email",
+    },
+      {
+      name: "department",
+      type: "select",
+      placeholder: "Department",
+      label: "Department",
+      options: departmentOpt,
+      // required: true,
+    },
+
+     {
+      name: "paymentReceivedDateForPackage",
+      type: "date",
+      placeholder: "Payment Received Date for Package",
+      label: "Payment Received Date for Package",
+      // required: true,
+        limitDate: true
+
+    },
+    {
+      name: "bookingId",
+      type: "text",
+      placeholder: "Bookinng Id",
+      label: "Booking Id",
+    },
+   
   ];
   const [errors, setErrors] = useState({});
   const id = location?.state?.docId;
@@ -578,7 +583,7 @@ const handleFileSelect = async (name, file) => {
           }}
         />
   
-           <div className="mt-[6px] w-96">
+           <div className="mt-[-80px] w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"

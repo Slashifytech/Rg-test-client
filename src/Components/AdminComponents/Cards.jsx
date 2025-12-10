@@ -11,7 +11,7 @@ const Cards = ({
   labourPriceCount,
   partsPriceCount,
   vasPriceCount,
-  serviceTypeCount
+  serviceTypeAmount
 }) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -23,13 +23,13 @@ const Cards = ({
   "3rd Free Service",
   "4th Free Service",
   "5th Free Service",
-  "1st Preventive Maintenance Service(PMS)",
-  "2nd Preventive Maintenance Service(PMS)",
-  "3rd Preventive Maintenance Service(PMS)",
-  "4th Preventive Maintenance Service(PMS)",
-  "5th Preventive Maintenance Service(PMS)",
-  "6th Preventive Maintenance Service(PMS)",
-  "7th Preventive Maintenance Service(PMS)"
+  "1st Preventive Maintenance Service (PMS)",
+  "2nd Preventive Maintenance Service (PMS)",
+  "3rd Preventive Maintenance Service (PMS)",
+  "4th Preventive Maintenance Service (PMS)",
+  "5th Preventive Maintenance Service (PMS)",
+  "6th Preventive Maintenance Service (PMS)",
+  "7th Preventive Maintenance Service (PMS)"
 ];
 
    return (
@@ -72,13 +72,13 @@ const Cards = ({
          {isOpen && (
   <div className="absolute top-full left-0 mt-1 border p-2 rounded bg-white max-h-60 overflow-y-auto w-[350px] z-50 shadow-lg">
     {serviceTypeOrder.map((key) =>
-      serviceTypeCount[key] ? (
+      serviceTypeAmount[key] ? (
         <div
           key={key}
           className="flex justify-between py-1 px-1 border-b last:border-b-0"
         >
           <span>{key}</span>
-          <span>{serviceTypeCount[key]}</span>
+          <span>{serviceTypeAmount[key]}</span>
         </div>
       ) : null
     )}

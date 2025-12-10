@@ -28,7 +28,7 @@ const DashboardComponent = () => {
     vasPriceCount: "",
     partsPriceCount: "",
     labourPriceCount: "",
-    serviceTypeCount: ""
+    serviceTypeAmount: ""
   });
   const [amcAssuredData, setAmcAssuredData] = useState({
     location: "",
@@ -108,7 +108,7 @@ const DashboardComponent = () => {
         vasPriceCount: res?.totalVasPrice,
         partsPriceCount: res?.totalPartsPrice,
         labourPriceCount: res?.totalLabourPrice,
-        serviceTypeCount: res?.serviceTypeCount
+        serviceTypeAmount: res?.serviceTypeAmount
       }));
     } catch (error) {
       console.log(error);
@@ -228,7 +228,7 @@ const DashboardComponent = () => {
       vasPriceCount: amcData?.vasPriceCount,
       partsPriceCount: amcData?.partsPriceCount,
       labourPriceCount: amcData?.labourPriceCount,
-      serviceTypeCount: amcData?.serviceTypeCount
+      serviceTypeAmount: amcData?.serviceTypeAmount
     },
   ];
 
@@ -359,7 +359,7 @@ const DashboardComponent = () => {
                 partsPriceCount={item.partsPriceCount}
                 labourPriceCount={item.labourPriceCount}
                 isAmcData={item.isAmcData}
-                serviceTypeCount={item.serviceTypeCount}
+                serviceTypeAmount={item.serviceTypeAmount}
                 
               />
             ))}
