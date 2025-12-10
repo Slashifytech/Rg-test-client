@@ -16,7 +16,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
   const [data, setData] = useState();
   const location = useLocation();
   const invoiceId = id ? id : location?.state?.id;
-  let totalPrice = 0;
+ let totalPrice = 0;
   let sgstAmount = 0;
   let cgstAmount = 0;
 
@@ -26,6 +26,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
 
     sgstAmount = totalPrice * 0.09; // 9%
     cgstAmount = totalPrice * 0.09; // 9%
+
   } else {
     // CASE 2: Normal AMC GST
     totalPrice = Number(data?.vehicleDetails?.gstAmount || 0);
@@ -36,7 +37,9 @@ const InvoiceView = forwardRef(({ id }, ref) => {
 
   const afterGstAmount = totalPrice + sgstAmount + cgstAmount;
 
-  const formattedAmount = afterGstAmount.toFixed(2);
+const formattedAmount = afterGstAmount.toFixed(2);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,66 +102,61 @@ const InvoiceView = forwardRef(({ id }, ref) => {
         >
           <div className="text-center">
             <h2 style={{ margin: "0", fontSize: "18px", fontWeight: "bold" }}>
-              {data?.invoiceId?.includes("EW")
-                ? "360 CAR PROTECT INDIA LLP"
-                : "RAAM4WHEELERS LLP"}
+             {data?.invoiceId?.includes("EW") ? "360 CAR PROTECT INDIA LLP"  :  "RAAM4WHEELERS LLP"}
             </h2>
             <p
-              style={{
-                textAlign: "center",
-                fontSize: "12px",
-                lineHeight: "1.5",
-                margin: "3px 0",
-              }}
-            >
-              {data?.invoiceId?.includes("EW") ? (
-                <>
-                  <span>
-                    -4-138, 138/A Flat No.501, Royal Elegance, <br />
-                    Himayathnagar, Barkatpura, Hyderabad, Hyderabad, Telangana,
-                    500027
-                    <br />
-                  </span>
-                  <span>
-                    Ph: 7799935258, Email Id: ew@360carprotect.in
-                    <br />
-                    GSTIN: 36AADFZ5034G1Z5, PAN: AADFZ5034G
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span>
-                    8-2-120/86/10,10A,11B,11C and 11D,
-                    <br />
-                    Opp: Hotel Park Hyatt,
-                    <br />
-                    Road Number 2, Banjara Hills Hyderabad, PIN-500033
-                    <br />
-                  </span>
-                  <span>
-                    Ph: 7799935258, Email Id: hyderabad.crmhead@mgdealer.co.in
-                    <br />
-                    Website:{" "}
-                    <a
-                      href="https://www.mghyderabad.co.in"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      www.mghyderabad.co.in
-                    </a>
-                    <br />
-                    GSTIN: 36AAYFR9176L1ZY, CIN NO: AAN-7654, PAN: AAYFR9176L
-                  </span>
-                </>
-              )}
-            </p>
+  style={{
+    textAlign: "center",
+    fontSize: "12px",
+    lineHeight: "1.5",
+    margin: "3px 0",
+  }}
+>
+  {data?.invoiceId?.includes("EW") ? (
+    <>
+    <span>
+      -4-138, 138/A Flat No.501, Royal Elegance, <br />
+      Himayathnagar, Barkatpura, Hyderabad, Hyderabad, Telangana, 500027
+      <br />
+    </span>
+    <span>
+    Ph: 7799935258, Email Id: ew@360carprotect.in
+  
+    <br />
+    GSTIN: 36AADFZ5034G1Z5, PAN: AADFZ5034G
+  </span>
+  </>
+  ) : (
+    <>
+    <span>
+      8-2-120/86/10,10A,11B,11C and 11D,
+      <br />
+      Opp: Hotel Park Hyatt,
+      <br />
+      Road Number 2, Banjara Hills Hyderabad, PIN-500033
+      <br />
+    </span>
+    <span>
+    Ph: 7799935258, Email Id: hyderabad.crmhead@mgdealer.co.in
+    <br />
+    Website: <a href="https://www.mghyderabad.co.in" target="_blank" rel="noopener noreferrer">
+      www.mghyderabad.co.in
+    </a>
+    <br />
+    GSTIN: 36AAYFR9176L1ZY, CIN NO: AAN-7654, PAN: AAYFR9176L
+  </span>
+    </>
+  )}
+  
+
+</p>
+
           </div>
-          {!data?.invoiceId?.includes("EW") && (
-            <div className="flex flex-col items-center">
-              <img src={mgBlack} alt="MG Logo" style={{ height: "80px" }} />
-              <p className="font-medium ">Morris Garages</p>
-            </div>
-          )}
+          {!data?.invoiceId?.includes("EW") &&
+          <div className="flex flex-col items-center">
+            <img src={mgBlack} alt="MG Logo" style={{ height: "80px" }} />
+            <p className="font-medium ">Morris Garages</p>
+          </div>}
         </div>
 
         {/* Invoice Details Section */}
@@ -218,36 +216,20 @@ const InvoiceView = forwardRef(({ id }, ref) => {
           {/* Shipped To */}
           <div style={{ width: "30%" }}>
             <h4 style={{ margin: "0", fontSize: "14px" }}>Shipped To:</h4>
-            <p style={{ margin: "5px 0", lineHeight: "1.5" }}>
+           <p style={{ margin: "5px 0", lineHeight: "1.5" }}>
               Name: {data?.shippingDetails?.customerName || "Not Available"}
               <br />
-              Address:{" "}
-              {data?.shippingDetails?.address ||
-                "Not Available" ||
-                "Not Available"}
+              Address: {data?.shippingDetails?.address || "Not Available" || "Not Available"}
               <br />
-              Pin:{" "}
-              {data?.shippingDetails?.zipCode ||
-                "Not Available" ||
-                "Not Available"}
+              Pin: {data?.shippingDetails?.zipCode || "Not Available" || "Not Available"}
               <br />
-              Mobile:{" "}
-              {data?.shippingDetails?.contact ||
-                "Not Available" ||
-                "Not Available"}
+              Mobile: {data?.shippingDetails?.contact || "Not Available" || "Not Available"}
               <br />
-              PAN No:{" "}
-              {data?.shippingDetails?.pan || "Not Available" || "Not Available"}
+              PAN No: {data?.shippingDetails?.pan || "Not Available" || "Not Available"}
               <br />
-              State Code:{" "}
-              {data?.shippingDetails?.stateCode ||
-                "Not Available" ||
-                "Not Available"}
+              State Code: {data?.shippingDetails?.stateCode || "Not Available" || "Not Available"}
               <br />
-              GSTIN:{" "}
-              {data?.shippingDetails?.customerGst ||
-                "Not Available" ||
-                "Not Available"}
+              GSTIN: {data?.shippingDetails?.customerGst || "Not Available" || "Not Available"}
             </p>
           </div>
 
@@ -273,14 +255,8 @@ const InvoiceView = forwardRef(({ id }, ref) => {
           <p style={{ margin: "0" }}>
             <span className="flex flex-row items-center justify-between">
               <span className="flex flex-col">
-                <span>
-                  Hypothecated To:{" "}
-                  {data?.vehicleDetails?.hypothecated || "Not Available"}{" "}
-                </span>
-                <span>
-                  Branch Name:{" "}
-                  {data?.vehicleDetails?.branchName || "Not Available"}
-                </span>
+                <span>Hypothecated To: {data?.vehicleDetails?.hypothecated || "Not Available"} </span>
+                <span>Branch Name: {data?.vehicleDetails?.branchName || "Not Available"}</span>
               </span>
               {/* <span className="flex flex-col">
                 <span>Order No: SS04117599</span>
@@ -321,21 +297,16 @@ const InvoiceView = forwardRef(({ id }, ref) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr >
               <td style={{ padding: "5px" }}>1</td>
               <td style={{ padding: "5px" }}>
-                <span> {data?.vehicleDetails?.model || "Not Available"}</span>{" "}
-                <br />
+                <span> {data?.vehicleDetails?.model || "Not Available"}</span> <br />
               </td>
               {/* <td style={{ padding: "5px" }}>87038030</td> */}
               <td style={{ padding: "5px" }}>1</td>
               <td style={{ padding: "5px" }}>Basic Price</td>
-              <td style={{ padding: "5px" }}>
-                {data?.vehicleDetails?.gstAmount || "Not Available"}
-              </td>
-              <td style={{ padding: "5px" }}>
-                {data?.vehicleDetails?.gstAmount || "Not Available"}
-              </td>
+              <td style={{ padding: "5px" }}>{data?.vehicleDetails?.gstAmount || "Not Available"}</td>
+              <td style={{ padding: "5px" }}>{data?.vehicleDetails?.gstAmount || "Not Available"}</td>
             </tr>
           </tbody>
         </table>
@@ -380,13 +351,12 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                 }}
               >
                 <tbody>
-                  <tr>
+                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
-                      Basic Price after discount
+                       Basic Price after discount
+
                     </td>
-                    <td style={{ padding: "3px" }}>{(data.amcStatus === "approved" &&
-                      data.extendedPolicy?.additionalPrice)
-                        ? data.extendedPolicy?.additionalPrice : totalPrice}</td>
+                    <td style={{ padding: "3px" }}>{totalPrice}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
@@ -397,10 +367,12 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
                       SGST@ 9%
+                      
                     </td>
                     <td style={{ padding: "3px" }}>{sgstAmount}</td>
                   </tr>
-
+               
+                  
                   <tr>
                     <td
                       style={{
@@ -412,12 +384,7 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                       Total
                     </td>
                     <td style={{ border: "1px solid #000", padding: "8px" }}>
-                     {
-  data.amcStatus === "approved" && data.extendedPolicy?.additionalPrice
-    ? (Number(data.extendedPolicy.additionalPrice) * 1.18).toFixed(2)
-    : formattedAmount
-}
-
+                      {formattedAmount}
                     </td>
                   </tr>
                 </tbody>
@@ -434,22 +401,20 @@ const InvoiceView = forwardRef(({ id }, ref) => {
           <p>
             Whether tax is payable on reverse charge basis - <b>No</b>
           </p>
+          
 
           <div className="flex justify-end">
-            {data?.invoiceId?.includes("EW") ? (
-              <img src={stampEw} alt="ewstamp" className="w-[10%]" />
-            ) : (
-              <img src={rgstamp} alt="rgstamp" className="w-[10%]" />
-            )}
-          </div>
+  {data?.invoiceId?.includes("EW") ? (
+    <img src={stampEw} alt="ewstamp" className="w-[10%]" />
+  ) : (
+    <img src={rgstamp} alt="rgstamp" className="w-[10%]" />
+  )  }
+</div>
+
 
           <p style={{ textAlign: "right" }}>
-            For{" "}
-            {data?.invoiceId?.includes("EW") ? (
-              <b>360 CAR PROTECT INDIA LLP</b>
-            ) : (
-              <b>RAAM4WHEELERS LLP</b>
-            )}
+          
+            For   {data?.invoiceId?.includes("EW") ?<b>360 CAR PROTECT INDIA LLP</b>  : <b>RAAM4WHEELERS LLP</b> }
           </p>
         </div>
       </div>
