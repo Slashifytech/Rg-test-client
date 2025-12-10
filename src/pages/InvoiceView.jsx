@@ -384,7 +384,9 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
                       Basic Price after discount
                     </td>
-                    <td style={{ padding: "3px" }}>{totalPrice}</td>
+                    <td style={{ padding: "3px" }}>{(data.amcStatus === "approved" &&
+                      data.extendedPolicy?.additionalPrice)
+                        ? data.extendedPolicy?.additionalPrice : totalPrice}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: "3px", fontWeight: "bold" }}>
@@ -410,10 +412,12 @@ const InvoiceView = forwardRef(({ id }, ref) => {
                       Total
                     </td>
                     <td style={{ border: "1px solid #000", padding: "8px" }}>
-                      {(data.amcStatus === "approved" &&
-                      data.extendedPolicy?.additionalPrice)
-                        ? data.extendedPolicy?.additionalPrice
-                        : formattedAmount}
+                     {
+  data.amcStatus === "approved" && data.extendedPolicy?.additionalPrice
+    ? (Number(data.extendedPolicy.additionalPrice) * 1.18).toFixed(2)
+    : formattedAmount
+}
+
                     </td>
                   </tr>
                 </tbody>
