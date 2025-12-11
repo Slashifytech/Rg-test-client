@@ -72,217 +72,216 @@ const AmcSalesForm = () => {
   });
 
   const rightFields = [
+     {
+       name: "customerName",
+       type: "text",
+       placeholder: "Customer Name",
+       label: "Customer Name",
+       required: true,
+     },
+       {
+       name: "email",
+       type: "email",
+       placeholder: "Email",
+       label: "Email",
+       required: true,
+     },
+     {
+       name: "contact",
+       type: "number",
+       placeholder: "Contact",
+       label: "Contact",
+       required: true,
+     },
+         { name: "address", type: "text", placeholder: "Address", label: "Address" },
+ 
+     
+    
+   ];
+   const leftFields = [
+     {
+       name: "customerGst",
+       type: "text",
+       placeholder: "Customer Gst",
+       label: "Customer Gst",
+     },
+     {
+       name: "stateCode",
+       type: "text",
+       placeholder: "State Code",
+       label: "State Code",
+     },
     {
-      name: "customerName",
-      type: "text",
-      placeholder: "Customer Name",
-      label: "Customer Name",
-      required: true,
-    },
-    {
-      name: "contact",
-      type: "number",
-      placeholder: "Contact",
-      label: "Contact",
-      required: true,
-    },
-    {
-      name: "pan",
-      type: "text",
-      placeholder: "Pan Number",
-      label: "Pan Number",
-    },
-    {
-      name: "zipCode",
-      type: "number",
-      placeholder: "Zip Code",
-      label: "Zip Code",
-    },
-  ];
-  const leftFields = [
-    { name: "address", type: "text", placeholder: "Address", label: "Address" },
-    {
-      name: "email",
-      type: "email",
-      placeholder: "Email",
-      label: "Email",
-      required: true,
-    },
-    {
-      name: "customerGst",
-      type: "text",
-      placeholder: "Customer Gst",
-      label: "Customer Gst",
-    },
-
-    {
-      name: "stateCode",
-      type: "text",
-      placeholder: "State Code",
-      label: "State Code",
-    },
-    {
-      name: "amcType",
-      type: "select",
-      options: amcType,
-      placeholder: "Select Amc Type",
-      label: "Amc Type",
-      required: true,
-    },
-  ];
-  const rightVehicleFields = [
-    {
-      name: "vinNumber",
-      type: "text",
-      placeholder: "Vin Number",
-      label: "Vin Number",
-      required: true,
-    },
-    {
-      name: "agreementStartDate",
-      type: "date",
-      placeholder: "Agreement Start Date",
-      label: "Agreement Start Date",
-      required: true,
-    },
-    {
-      name: "agreementStartMilage",
-      type: "text",
-      placeholder: "Agreement Start Milage",
-      label: "Agreement Start Milage",
-      required: true,
-    },
-    // {
-    //   name: "MaximumValidPMS",
-    //   type: "text",
-    //   placeholder: "Maximum Valid Number of PMS",
-    //   label: "Maximum Valid Number of PMS",
-    //   required: true,
-    // },
-    {
-      name: "total",
-      type: "text",
-      placeholder: "Total Amount",
-      label: "Total Amount",
-      required: true,
-    },
-
-    {
-      name: "rmName",
-      type: "text",
-      placeholder: "Relationship Manager / Service Advisor Name",
-      label: "Name of Relationship Manager / Service Advisor",
-      required: true,
-    },
-    {
-      name: "rmEmail",
-      type: "email",
-      placeholder: " Relationship Manager/ Service Advisor Email Id",
-      label: "Email Id of Relationship Manager/ Service Advisor ",
-      required: true,
-    },
-    {
-      name: "salesTeamEmail",
-      type: "email",
-      placeholder: " Enter Sales Team Email Id",
-      label: "Sales Team Email Id",
-      required: true,
-    },
-    {
-      name: "department",
-      type: "select",
-      placeholder: "Department",
-      label: "Department",
-      options: departmentOpt,
-      // required: true,
-    },
-    {
-      name: "bookingId",
-      type: "text",
-      placeholder: "Bookinng Id",
-      label: "Booking Id",
-    },
-  ];
-
-  const leftVehicleFields = [
-    {
-      name: "model",
-      type: "select",
-      placeholder: "Model",
-      label: "Model",
-      options: modelOption,
-      required: true,
-    },
-    {
-      name: "fuelType",
-      type: "select",
-      placeholder: "Fuel Type",
-      label: "Fuel Type",
-      options: fuelType,
-      required: true,
-    },
-    {
-      name: "agreementPeriod",
-      type: "text",
-      placeholder: "Agreement Period",
-      label: "Agreement Period",
-      required: true,
-    },
-    {
-      name: "agreementValidDate",
-      type: "date",
-      placeholder: "Agreement Valid Date",
-      label: "Agreement Valid Date",
-      required: true,
-    },
-    {
-      name: "agreementValidMilage",
-      type: "text",
-      placeholder: "Agreement Valid Milage",
-      label: "Agreement Valid Milage",
-      required: true,
-    },
-    {
-      name: "dealerLocation",
-      type: "select",
-      options: locationOption,
-      placeholder: "Location of the Dealer",
-      label: "Location of the Dealer",
-      required: true,
-    },
-
-    {
-      name: "rmEmployeeId",
-      type: "text",
-      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
-      label: "Employee Id of Relationship Manager/ Service Advisor",
-      required: true,
-    },
-
-    {
-      name: "gmEmail",
-      type: "email",
-      placeholder: "General Manager Email Id",
-      label: "General Manager Email",
-    },
-    {
-      name: "paymentReceivedDateForPackage",
-      type: "date",
-      placeholder: "Payment Received Date for Package",
-      label: "Payment Received Date for Package",
-      // required: true,
-        limitDate: true
-
-    },
-    {
-      name: "custUpcomingService",
-      type: "multiselect",
-      placeholder: "Customer Upcoming Service",
-      label: "Customer Upcoming Service",
-      options: upcomingServiceOpt,
-      // required: true,
-    },
-  ];
+       name: "zipCode",
+       type: "number",
+       placeholder: "Zip Code",
+       label: "Zip Code",
+     },
+     {
+       name: "pan",
+       type: "text",
+       placeholder: "Pan Number",
+       label: "Pan Number",
+     },
+    
+     {
+       name: "amcType",
+       type: "select",
+       options: amcType,
+       placeholder: "Select Amc Type",
+       label: "Amc Type",
+       required: true,
+     },
+   ];
+   const rightVehicleFields = [
+      {
+       name: "model",
+       type: "select",
+       placeholder: "Model",
+       label: "Model",
+       options: modelOption,
+       required: true,
+     },
+     {
+       name: "fuelType",
+       type: "select",
+       placeholder: "Fuel Type",
+       label: "Fuel Type",
+       options: fuelType,
+       required: true,
+     },
+     {
+       name: "vinNumber",
+       type: "text",
+       placeholder: "Vin Number",
+       label: "Vin Number",
+       required: true,
+     },
+     {
+       name: "agreementStartDate",
+       type: "date",
+       placeholder: "Agreement Start Date",
+       label: "Agreement Start Date",
+       required: true,
+     },
+      {
+       name: "agreementValidDate",
+       type: "date",
+       placeholder: "Agreement Valid Date",
+       label: "Agreement Valid Date",
+       required: true,
+     },
+ 
+     {
+       name: "agreementStartMilage",
+       type: "text",
+       placeholder: "Agreement Start Milage",
+       label: "Agreement Start Milage",
+       required: true,
+     },
+     {
+       name: "agreementValidMilage",
+       type: "text",
+       placeholder: "Agreement Valid Milage",
+       label: "Agreement Valid Milage",
+       required: true,
+     },
+     // {
+     //   name: "MaximumValidPMS",
+     //   type: "text",
+     //   placeholder: "Maximum Valid Number of PMS",
+     //   label: "Maximum Valid Number of PMS",
+     //   required: true,
+     // },
+      {
+       name: "dealerLocation",
+       type: "select",
+       options: locationOption,
+       placeholder: "Location of the Dealer",
+       label: "Location of the Dealer",
+       required: true,
+     },
+     {
+       name: "total",
+       type: "text",
+       placeholder: "Total Amount",
+       label: "Total Amount",
+       required: true,
+     },
+ 
+    
+   
+     
+   ];
+ 
+   const leftVehicleFields = [
+    
+    
+     {
+       name: "custUpcomingService",
+       type: "multiselect",
+       placeholder: "Customer Upcoming Service",
+       label: "Customer Upcoming Service",
+       options: upcomingServiceOpt,
+       // required: true,
+     },
+    
+     
+    
+ 
+     {
+       name: "rmEmployeeId",
+       type: "text",
+       placeholder: "Employee Id of Relationship Manager/ Service Advisor",
+       label: "Employee Id of Relationship Manager/ Service Advisor",
+       required: true,
+     },
+  {
+       name: "rmName",
+       type: "text",
+       placeholder: "Relationship Manager / Service Advisor Name",
+       label: "Name of Relationship Manager / Service Advisor",
+       required: true,
+     },
+     {
+       name: "rmEmail",
+       type: "email",
+       placeholder: " Relationship Manager/ Service Advisor Email Id",
+       label: "Email Id of Relationship Manager/ Service Advisor ",
+       required: true,
+     },
+     {
+       name: "gmEmail",
+       type: "email",
+       placeholder: "General Manager Email Id",
+       label: "General Manager Email",
+     },
+       {
+       name: "department",
+       type: "select",
+       placeholder: "Department",
+       label: "Department",
+       options: departmentOpt,
+       // required: true,
+     },
+ 
+      {
+       name: "paymentReceivedDateForPackage",
+       type: "date",
+       placeholder: "Payment Received Date for Package",
+       label: "Payment Received Date for Package",
+       // required: true,
+         limitDate: true
+ 
+     },
+     {
+       name: "bookingId",
+       type: "text",
+       placeholder: "Bookinng Id",
+       label: "Booking Id",
+     },
+    
+   ];
   const [errors, setErrors] = useState({});
   const id = location?.state?.docId;
 
