@@ -193,6 +193,13 @@ const AmcSalesForm = () => {
      //   label: "Maximum Valid Number of PMS",
      //   required: true,
      // },
+     {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
+      required: true,
+    },
       {
        name: "dealerLocation",
        type: "select",
