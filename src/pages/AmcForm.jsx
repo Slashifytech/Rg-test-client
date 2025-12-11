@@ -194,6 +194,13 @@ const AMCForm = () => {
       required: true,
     },
     {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
+      required: true,
+    },
+    {
       name: "total",
       type: "text",
       placeholder: "Total Amount",
@@ -583,7 +590,7 @@ const handleFileSelect = async (name, file) => {
           }}
         />
   
-           <div className="mt-[-80px] w-96">
+           <div className="mt-[-30px] w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"
