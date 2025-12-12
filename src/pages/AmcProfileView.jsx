@@ -267,7 +267,7 @@ const AmcProfileView = () => {
                  
                   <span className="font-light mt-4">Revenue</span>
                   <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails?.total || "NA"}
+                    {amcByIdorStatus?.data?.showAmount || "NA"}
                   </span>
                    <span className="font-light mt-4">Expenses</span>
                   <span className="font-medium">
@@ -278,58 +278,66 @@ const AmcProfileView = () => {
                   <span className="font-light mt-4">
                     Available Credit ({services?.length})
                   </span>
-                  <span className="font-medium">
-                    {(() => {
-                      const services =
-                        amcByIdorStatus?.data?.vehicleDetails
-                          ?.custUpcomingService;
+               <span className="font-medium">
+  {(() => {
+    const isApproved =
+      amcByIdorStatus?.data?.amcStatus?.toLowerCase() === "approved";
 
-                      if (!Array.isArray(services) || services.length === 0)
-                        return "NA";
+    // Base upcoming services (from vehicleDetails)
+    let services =
+      amcByIdorStatus?.data?.vehicleDetails?.custUpcomingService || [];
 
-                      const freeServiceItems = services.filter((item) =>
-                        item.toLowerCase().includes("free service")
-                      );
+    // Add extendedPolicy upcomingPackage only if approved
+    if (isApproved) {
+      const extra =
+        amcByIdorStatus?.data?.extendedPolicy?.upcomingPackage || [];
+      services = [...services, ...extra];
+    }
 
-                      const pmsItems = services.filter((item) =>
-                        item
-                          .toLowerCase()
-                          .includes("preventive maintenance service")
-                      );
+    if (!Array.isArray(services) || services.length === 0) return "NA";
 
-                      return (
-                        <div>
-                          {freeServiceItems.length > 0 && (
-                            <div style={{ marginBottom: "10px" }}>
-                              <strong>
-                                Free Service ({freeServiceItems.length})
-                              </strong>
-                              <ul style={{ marginLeft: "20px" }}>
-                                {freeServiceItems.map((item, i) => (
-                                  <li key={i}>{item}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+    // Normalize for matching
+    const freeServiceItems = services.filter((item) =>
+      item.toLowerCase().replace(/\s+/g, "").includes("freeservice")
+    );
 
-                          {/* PMS Section */}
-                          {pmsItems.length > 0 && (
-                            <div style={{ marginBottom: "10px" }}>
-                              <strong>
-                                Preventive Maintenance Service (PMS) (
-                                {pmsItems.length})
-                              </strong>
-                              <ul style={{ marginLeft: "20px" }}>
-                                {pmsItems.map((item, i) => (
-                                  <li key={i}>{item}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })()}
-                  </span>
+    const pmsItems = services.filter((item) =>
+      item
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .includes("preventivemaintenanceservice(pms)")
+    );
+
+    return (
+      <div>
+        {/* FREE SERVICES */}
+        {freeServiceItems.length > 0 && (
+          <div style={{ marginBottom: "10px" }}>
+            <strong>Free Service ({freeServiceItems.length})</strong>
+            <ul style={{ marginLeft: "20px" }}>
+              {freeServiceItems.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* PMS SERVICES */}
+        {pmsItems.length > 0 && (
+          <div style={{ marginBottom: "10px" }}>
+            <strong>Preventive Maintenance Service (PMS) ({pmsItems.length})</strong>
+            <ul style={{ marginLeft: "20px" }}>
+              {pmsItems.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  })()}
+</span>
+
                  
                 </span>
               </div>
