@@ -492,12 +492,35 @@ const handleFileSelect = async (name, file) => {
       dispatch(fetchamcDataById({ id, option: null }));
     }
   }, [id]);
-  useEffect(() => {
-    setAMCData((prev) => ({
-      ...prev,
-      ...amcByIdorStatus?.data,
-    }));
-  }, [amcByIdorStatus?.data]);
+ useEffect(() => {
+  if (!amcByIdorStatus?.data) return;
+
+  const vehicle = amcByIdorStatus?.data?.vehicleDetails || {};
+  const extended = amcByIdorStatus?.data?.extendedPolicy || {};
+  const amcStatus = amcByIdorStatus?.data?.amcStatus;
+
+  // Start with vehicle service data
+  let combinedUpcoming = [...(vehicle.custUpcomingService || [])];
+
+  // If approved, also include extendedPolicy.upcomingPackage
+  if (amcStatus === "approved" && Array.isArray(extended.upcomingPackage)) {
+    combinedUpcoming = [
+      ...combinedUpcoming,
+      ...extended.upcomingPackage,
+    ];
+  }
+
+  setAMCData((prev) => ({
+    ...prev,
+    ...amcByIdorStatus.data,
+    vehicleDetails: {
+      ...prev.vehicleDetails,
+      ...vehicle,
+      custUpcomingService: combinedUpcoming,
+    },
+  }));
+}, [amcByIdorStatus?.data]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
