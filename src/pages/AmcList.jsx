@@ -248,7 +248,7 @@ const handleFileUpload = async (event) => {
       }
 
       if (successCount > 0) toast.success(`Uploaded successfully in ${successCount} batches ✔`);
-      if (failedCount > 0) toast.error(`${failedCount} batches failed`);
+      if (failedCount > 0) toast.error(`No new unique service AMC data entries to update`);
 
       event.target.value = "";
     },

@@ -133,7 +133,7 @@ const AmcSalesForm = () => {
        required: true,
      },
    ];
-   const rightVehicleFields = [
+   const leftVehicleFields = [
       {
        name: "model",
        type: "select",
@@ -157,6 +157,13 @@ const AmcSalesForm = () => {
        label: "Vin Number",
        required: true,
      },
+      {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
+      required: true,
+    },
      {
        name: "agreementStartDate",
        type: "date",
@@ -193,14 +200,7 @@ const AmcSalesForm = () => {
      //   label: "Maximum Valid Number of PMS",
      //   required: true,
      // },
-      {
-       name: "dealerLocation",
-       type: "select",
-       options: locationOption,
-       placeholder: "Location of the Dealer",
-       label: "Location of the Dealer",
-       required: true,
-     },
+     
      {
        name: "total",
        type: "text",
@@ -214,7 +214,7 @@ const AmcSalesForm = () => {
      
    ];
  
-   const leftVehicleFields = [
+   const rightVehicleFields = [
     
     
      {
@@ -256,6 +256,12 @@ const AmcSalesForm = () => {
        placeholder: "General Manager Email Id",
        label: "General Manager Email",
      },
+      {
+       name: "salesTeamEmail",
+       type: "email",
+       placeholder: "Sales Team Email",
+       label: "Sales Team Email",
+     },
        {
        name: "department",
        type: "select",
@@ -280,7 +286,14 @@ const AmcSalesForm = () => {
        placeholder: "Bookinng Id",
        label: "Booking Id",
      },
-    
+     {
+       name: "dealerLocation",
+       type: "select",
+       options: locationOption,
+       placeholder: "Location of the Dealer",
+       label: "Location of the Dealer",
+       required: true,
+     },
    ];
   const [errors, setErrors] = useState({});
   const id = location?.state?.docId;
@@ -629,7 +642,7 @@ const AmcSalesForm = () => {
             });
           }}
         />
-         <div className="mt-6 w-96 ">
+         <div className=" md:mt-[-80px] mt-6 w-96 ">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"

@@ -125,7 +125,7 @@ const AMCForm = () => {
       required: true,
     },
   ];
-  const rightVehicleFields = [
+  const leftVehicleFields = [
      {
       name: "model",
       type: "select",
@@ -147,6 +147,13 @@ const AMCForm = () => {
       type: "text",
       placeholder: "Vin Number",
       label: "Vin Number",
+      required: true,
+    },
+        {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
       required: true,
     },
     {
@@ -185,14 +192,7 @@ const AMCForm = () => {
     //   label: "Maximum Valid Number of PMS",
     //   required: true,
     // },
-     {
-      name: "dealerLocation",
-      type: "select",
-      options: locationOption,
-      placeholder: "Location of the Dealer",
-      label: "Location of the Dealer",
-      required: true,
-    },
+  
     {
       name: "total",
       type: "text",
@@ -206,7 +206,7 @@ const AMCForm = () => {
     
   ];
 
-  const leftVehicleFields = [
+  const rightVehicleFields = [
    
    
     {
@@ -272,6 +272,14 @@ const AMCForm = () => {
       placeholder: "Bookinng Id",
       label: "Booking Id",
     },
+     {
+       name: "dealerLocation",
+       type: "select",
+       options: locationOption,
+       placeholder: "Location of the Dealer",
+       label: "Location of the Dealer",
+       required: true,
+     },
    
   ];
   const [errors, setErrors] = useState({});
@@ -583,7 +591,7 @@ const handleFileSelect = async (name, file) => {
           }}
         />
   
-           <div className="mt-[-80px] w-96">
+           <div className="mt-6 w-96">
               <FileUpload
                 imp={true}
                 label="Payment/Ledger Screensort"
