@@ -196,8 +196,10 @@ const AmcProfileView = () => {
                   </span>
                   <span className="font-light mt-4">Agreement Period</span>
                   <span className="font-medium">
-                    {amcByIdorStatus?.data?.vehicleDetails?.agreementPeriod ||
-                      "NA"}
+                    { amcByIdorStatus?.data?.amcStatus === "approved" &&
+  amcByIdorStatus?.data?.extendedPolicy?.extendedPolicyPeriod
+    ? amcByIdorStatus?.data?.extendedPolicy?.extendedPolicyPeriod
+    : amcByIdorStatus?.data?.vehicleDetails?.agreementPeriod || "NA"}
                   </span>
                   <span className="font-light mt-4">Agreement Valid Date</span>
                   <span className="font-medium">
@@ -280,34 +282,36 @@ const AmcProfileView = () => {
                   </span>
                <span className="font-medium">
   {(() => {
-    const isApproved =
-      amcByIdorStatus?.data?.amcStatus?.toLowerCase() === "approved";
+    const vehicle = amcByIdorStatus?.data?.vehicleDetails;
+    const ext = amcByIdorStatus?.data?.extendedPolicy;
 
-    // Base upcoming services (from vehicleDetails)
-    let services =
-      amcByIdorStatus?.data?.vehicleDetails?.custUpcomingService || [];
+    if (!vehicle) return "NA";
 
-    // Add extendedPolicy upcomingPackage only if approved
-    if (isApproved) {
-      const extra =
-        amcByIdorStatus?.data?.extendedPolicy?.upcomingPackage || [];
-      services = [...services, ...extra];
+    // Base data
+    let services = Array.isArray(vehicle?.custUpcomingService)
+      ? [...vehicle.custUpcomingService]
+      : [];
+
+    // Include extended policy services only if AMC is approved
+    if (
+      amcByIdorStatus?.data?.amcStatus === "approved" &&
+      Array.isArray(ext?.upcomingPackage)
+    ) {
+      services = [...services, ...ext.upcomingPackage];
     }
 
-    if (!Array.isArray(services) || services.length === 0) return "NA";
+    if (services.length === 0) return "NA";
 
-    // Normalize for matching
+    // Separate free services
     const freeServiceItems = services.filter((item) =>
-      item.toLowerCase().replace(/\s+/g, "").includes("freeservice")
+      item.toLowerCase().includes("free service")
     );
 
+    // Separate PMS
     const pmsItems = services.filter((item) =>
-      item
-        .toLowerCase()
-        .replace(/\s+/g, "")
-        .includes("preventivemaintenanceservice(pms)")
+      item.toLowerCase().includes("preventive maintenance service")
     );
-
+   {console.log(ext)}
     return (
       <div>
         {/* FREE SERVICES */}
@@ -322,7 +326,7 @@ const AmcProfileView = () => {
           </div>
         )}
 
-        {/* PMS SERVICES */}
+        {/* PMS */}
         {pmsItems.length > 0 && (
           <div style={{ marginBottom: "10px" }}>
             <strong>Preventive Maintenance Service (PMS) ({pmsItems.length})</strong>
