@@ -71,7 +71,7 @@ const AmcSalesForm = () => {
     createdBy: _id,
   });
 
-  const rightFields = [
+  const leftFields = [
      {
        name: "customerName",
        type: "text",
@@ -95,10 +95,17 @@ const AmcSalesForm = () => {
      },
          { name: "address", type: "text", placeholder: "Address", label: "Address" },
  
-     
+       {
+      name: "amcType",
+      type: "select",
+      options: amcType,
+      placeholder: "Select Amc Type",
+      label: "Amc Type",
+      required: true,
+    },
     
    ];
-   const leftFields = [
+   const rightFields = [
      {
        name: "customerGst",
        type: "text",
@@ -124,14 +131,7 @@ const AmcSalesForm = () => {
        label: "Pan Number",
      },
     
-     {
-       name: "amcType",
-       type: "select",
-       options: amcType,
-       placeholder: "Select Amc Type",
-       label: "Amc Type",
-       required: true,
-     },
+
    ];
    const leftVehicleFields = [
       {
@@ -157,13 +157,7 @@ const AmcSalesForm = () => {
        label: "Vin Number",
        required: true,
      },
-      {
-      name: "agreementPeriod",
-      type: "text",
-      placeholder: "Agreement Period",
-      label: "Agreement Period",
-      required: true,
-    },
+     
      {
        name: "agreementStartDate",
        type: "date",
@@ -171,6 +165,13 @@ const AmcSalesForm = () => {
        label: "Agreement Start Date",
        required: true,
      },
+            {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
+      required: true,
+    },
       {
        name: "agreementValidDate",
        type: "date",
@@ -186,6 +187,8 @@ const AmcSalesForm = () => {
        label: "Agreement Start Milage",
        required: true,
      },
+
+     
      {
        name: "agreementValidMilage",
        type: "text",
@@ -463,10 +466,11 @@ const AmcSalesForm = () => {
       console.log("File available at:", downloadURL);
 
      setAMCData((prevData) => ({
-      ...prevData,
-      vehicleDetails: {
-        ...prevData.vehicleDetails,
-        [name]: downloadURL,
+             ...prevData,
+  vehicleDetails: {
+    ...prevData.vehicleDetails,
+    paymentScreenshot: downloadURL,
+  
       },
     }));
 
@@ -488,10 +492,11 @@ const AmcSalesForm = () => {
 
     if (uploadType === "paymentScreenshot") {
        setAMCData((prevData) => ({
-    ...prevData,
-    vehicleDetails: {
-      ...prevData.vehicleDetails,
-      [name]: "",
+           ...prevData,
+  vehicleDetails: {
+    ...prevData.vehicleDetails,
+    paymentScreenshot: "",
+  
     },
   }));
       } 

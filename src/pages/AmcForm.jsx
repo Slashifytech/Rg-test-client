@@ -63,7 +63,7 @@ const AMCForm = () => {
     createdBy: _id,
   });
 
-  const rightFields = [
+  const leftFields = [
     {
       name: "customerName",
       type: "text",
@@ -87,10 +87,17 @@ const AMCForm = () => {
     },
         { name: "address", type: "text", placeholder: "Address", label: "Address" },
 
-    
+      {
+      name: "amcType",
+      type: "select",
+      options: amcType,
+      placeholder: "Select Amc Type",
+      label: "Amc Type",
+      required: true,
+    },
    
   ];
-  const leftFields = [
+  const rightFields = [
     {
       name: "customerGst",
       type: "text",
@@ -116,14 +123,7 @@ const AMCForm = () => {
       label: "Pan Number",
     },
    
-    {
-      name: "amcType",
-      type: "select",
-      options: amcType,
-      placeholder: "Select Amc Type",
-      label: "Amc Type",
-      required: true,
-    },
+  
   ];
   const leftVehicleFields = [
      {
@@ -149,18 +149,19 @@ const AMCForm = () => {
       label: "Vin Number",
       required: true,
     },
-        {
-      name: "agreementPeriod",
-      type: "text",
-      placeholder: "Agreement Period",
-      label: "Agreement Period",
-      required: true,
-    },
+ 
     {
       name: "agreementStartDate",
       type: "date",
       placeholder: "Agreement Start Date",
       label: "Agreement Start Date",
+      required: true,
+    },
+           {
+      name: "agreementPeriod",
+      type: "text",
+      placeholder: "Agreement Period",
+      label: "Agreement Period",
       required: true,
     },
      {
@@ -449,10 +450,13 @@ const handleFileSelect = async (name, file) => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       console.log("File available at:", downloadURL);
 
-      setAMCData((prevData) => ({
-        ...prevData,
-        [name]: downloadURL,
-      }));
+    setAMCData((prevData) => ({
+  ...prevData,
+  vehicleDetails: {
+    ...prevData.vehicleDetails,
+    paymentScreenshot: downloadURL,
+  },
+}));
 
       toast.success("File uploaded successfully!");
     } catch (error) {
@@ -471,8 +475,11 @@ const handleFileSelect = async (name, file) => {
 
     if (uploadType === "paymentScreenshot") {
         setAMCData((prevData) => ({
-          ...prevData,
-          paymentScreenshot: "",
+           ...prevData,
+  vehicleDetails: {
+    ...prevData.vehicleDetails,
+    paymentScreenshot: "",
+  }
         }));
       } 
       await deleteObject(storageRef);
