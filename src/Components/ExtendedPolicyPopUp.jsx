@@ -63,7 +63,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
 
       setFormData((prevData) => ({
         ...prevData,
-        [name]: downloadURL,
+          paymentCopyProof: downloadURL,
       }));
 
       toast.success("File uploaded successfully!");
@@ -81,12 +81,12 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
     try {
       // toast.success("File deleted successfully!");
 
-      if (uploadType === "paymentCopyProof") {
+    
         setFormData((prevData) => ({
           ...prevData,
           paymentCopyProof: "",
         }));
-      }
+      
       await deleteObject(storageRef);
     } catch (error) {
       console.error("Error deleting file:", error);
@@ -157,6 +157,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
         validMileage: formData.validMileage,
         paymentCopyProof: formData.paymentCopyProof,
         upcomingPackage: formData.upcomingPackage,
+        edit: true
       };
 
       const res = await extendedAMC(payload, item?.vehicleDetails?.vinNumber);

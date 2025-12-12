@@ -8,7 +8,14 @@ import { addNewAMC, updateAMC } from "../features/AMCapi";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchamcDataById } from "../features/amcSlice";
 import { createdDate, formatDate } from "../helper/commonHelperFunc";
-import { amcType, departmentOpt, fuelType, locationOption, modelOption, upcomingServiceOpt } from "../data";
+import {
+  amcType,
+  departmentOpt,
+  fuelType,
+  locationOption,
+  modelOption,
+  upcomingServiceOpt,
+} from "../data";
 import Header from "../Components/Header";
 import {
   deleteObject,
@@ -71,7 +78,7 @@ const AMCForm = () => {
       label: "Customer Name",
       required: true,
     },
-      {
+    {
       name: "email",
       type: "email",
       placeholder: "Email",
@@ -85,9 +92,9 @@ const AMCForm = () => {
       label: "Contact",
       required: true,
     },
-        { name: "address", type: "text", placeholder: "Address", label: "Address" },
+    { name: "address", type: "text", placeholder: "Address", label: "Address" },
 
-      {
+    {
       name: "amcType",
       type: "select",
       options: amcType,
@@ -95,7 +102,6 @@ const AMCForm = () => {
       label: "Amc Type",
       required: true,
     },
-   
   ];
   const rightFields = [
     {
@@ -110,7 +116,7 @@ const AMCForm = () => {
       placeholder: "State Code",
       label: "State Code",
     },
-   {
+    {
       name: "zipCode",
       type: "number",
       placeholder: "Zip Code",
@@ -122,11 +128,9 @@ const AMCForm = () => {
       placeholder: "Pan Number",
       label: "Pan Number",
     },
-   
-  
   ];
   const leftVehicleFields = [
-     {
+    {
       name: "model",
       type: "select",
       placeholder: "Model",
@@ -149,7 +153,7 @@ const AMCForm = () => {
       label: "Vin Number",
       required: true,
     },
- 
+
     {
       name: "agreementStartDate",
       type: "date",
@@ -157,14 +161,14 @@ const AMCForm = () => {
       label: "Agreement Start Date",
       required: true,
     },
-           {
+    {
       name: "agreementPeriod",
       type: "text",
       placeholder: "Agreement Period",
       label: "Agreement Period",
       required: true,
     },
-     {
+    {
       name: "agreementValidDate",
       type: "date",
       placeholder: "Agreement Valid Date",
@@ -193,7 +197,7 @@ const AMCForm = () => {
     //   label: "Maximum Valid Number of PMS",
     //   required: true,
     // },
-  
+
     {
       name: "total",
       type: "text",
@@ -201,15 +205,9 @@ const AMCForm = () => {
       label: "Total Amount",
       required: true,
     },
-
-   
-  
-    
   ];
 
   const rightVehicleFields = [
-   
-   
     {
       name: "custUpcomingService",
       type: "multiselect",
@@ -218,9 +216,6 @@ const AMCForm = () => {
       options: upcomingServiceOpt,
       // required: true,
     },
-   
-    
-   
 
     {
       name: "rmEmployeeId",
@@ -229,7 +224,7 @@ const AMCForm = () => {
       label: "Employee Id of Relationship Manager/ Service Advisor",
       required: true,
     },
- {
+    {
       name: "rmName",
       type: "text",
       placeholder: "Relationship Manager / Service Advisor Name",
@@ -249,7 +244,7 @@ const AMCForm = () => {
       placeholder: "General Manager Email Id",
       label: "General Manager Email",
     },
-      {
+    {
       name: "department",
       type: "select",
       placeholder: "Department",
@@ -258,14 +253,13 @@ const AMCForm = () => {
       // required: true,
     },
 
-     {
+    {
       name: "paymentReceivedDateForPackage",
       type: "date",
       placeholder: "Payment Received Date for Package",
       label: "Payment Received Date for Package",
       // required: true,
-        limitDate: true
-
+      limitDate: true,
     },
     {
       name: "bookingId",
@@ -273,15 +267,14 @@ const AMCForm = () => {
       placeholder: "Bookinng Id",
       label: "Booking Id",
     },
-     {
-       name: "dealerLocation",
-       type: "select",
-       options: locationOption,
-       placeholder: "Location of the Dealer",
-       label: "Location of the Dealer",
-       required: true,
-     },
-   
+    {
+      name: "dealerLocation",
+      type: "select",
+      options: locationOption,
+      placeholder: "Location of the Dealer",
+      label: "Location of the Dealer",
+      required: true,
+    },
   ];
   const [errors, setErrors] = useState({});
   const id = location?.state?.docId;
@@ -436,8 +429,7 @@ const AMCForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
-const handleFileSelect = async (name, file) => {
+  const handleFileSelect = async (name, file) => {
     // console.log("Selected file:", file);
     if (!file) return;
 
@@ -450,13 +442,13 @@ const handleFileSelect = async (name, file) => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       console.log("File available at:", downloadURL);
 
-    setAMCData((prevData) => ({
-  ...prevData,
-  vehicleDetails: {
-    ...prevData.vehicleDetails,
-    paymentScreenshot: downloadURL,
-  },
-}));
+      setAMCData((prevData) => ({
+        ...prevData,
+        vehicleDetails: {
+          ...prevData.vehicleDetails,
+          paymentScreenshot: downloadURL,
+        },
+      }));
 
       toast.success("File uploaded successfully!");
     } catch (error) {
@@ -473,15 +465,14 @@ const handleFileSelect = async (name, file) => {
     try {
       // toast.success("File deleted successfully!");
 
-    if (uploadType === "paymentScreenshot") {
-        setAMCData((prevData) => ({
-           ...prevData,
-  vehicleDetails: {
-    ...prevData.vehicleDetails,
-    paymentScreenshot: "",
-  }
-        }));
-      } 
+      setAMCData((prevData) => ({
+        ...prevData,
+        vehicleDetails: {
+          ...prevData.vehicleDetails,
+          paymentScreenshot: "",
+        },
+      }));
+
       await deleteObject(storageRef);
     } catch (error) {
       console.error("Error deleting file:", error);
@@ -489,45 +480,36 @@ const handleFileSelect = async (name, file) => {
     }
   };
 
-
-
-
-
-
   useEffect(() => {
     if (id) {
       dispatch(fetchamcDataById({ id, option: null }));
     }
   }, [id]);
- useEffect(() => {
-  if (!amcByIdorStatus?.data) return;
+  useEffect(() => {
+    if (!amcByIdorStatus?.data) return;
 
-  const vehicle = amcByIdorStatus?.data?.vehicleDetails || {};
-  const extended = amcByIdorStatus?.data?.extendedPolicy || {};
-  const amcStatus = amcByIdorStatus?.data?.amcStatus;
+    const vehicle = amcByIdorStatus?.data?.vehicleDetails || {};
+    const extended = amcByIdorStatus?.data?.extendedPolicy || {};
+    const amcStatus = amcByIdorStatus?.data?.amcStatus;
 
-  // Start with vehicle service data
-  let combinedUpcoming = [...(vehicle.custUpcomingService || [])];
+    // Start with vehicle service data
+    let combinedUpcoming = [...(vehicle.custUpcomingService || [])];
 
-  // If approved, also include extendedPolicy.upcomingPackage
-  if (amcStatus === "approved" && Array.isArray(extended.upcomingPackage)) {
-    combinedUpcoming = [
-      ...combinedUpcoming,
-      ...extended.upcomingPackage,
-    ];
-  }
+    // If approved, also include extendedPolicy.upcomingPackage
+    if (amcStatus === "approved" && Array.isArray(extended.upcomingPackage)) {
+      combinedUpcoming = [...combinedUpcoming, ...extended.upcomingPackage];
+    }
 
-  setAMCData((prev) => ({
-    ...prev,
-    ...amcByIdorStatus.data,
-    vehicleDetails: {
-      ...prev.vehicleDetails,
-      ...vehicle,
-      custUpcomingService: combinedUpcoming,
-    },
-  }));
-}, [amcByIdorStatus?.data]);
-
+    setAMCData((prev) => ({
+      ...prev,
+      ...amcByIdorStatus.data,
+      vehicleDetails: {
+        ...prev.vehicleDetails,
+        ...vehicle,
+        custUpcomingService: combinedUpcoming,
+      },
+    }));
+  }, [amcByIdorStatus?.data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -540,30 +522,30 @@ const handleFileSelect = async (name, file) => {
     }
     try {
       const previousAgreementPeriod =
-    amcByIdorStatus?.data?.vehicleDetails?.agreementPeriod
-      || 0;
-    
-      const currentAgreementPeriod = AMCData?.vehicleDetails?.agreementPeriod || 0;
+        amcByIdorStatus?.data?.vehicleDetails?.agreementPeriod || 0;
 
+      const currentAgreementPeriod =
+        AMCData?.vehicleDetails?.agreementPeriod || 0;
 
-   
       const clonedAmcData = JSON.parse(JSON.stringify(AMCData)); // Deep clone
       delete clonedAmcData.amcCredit; // Remove amcCredit
-      
+
       const payload = { ...clonedAmcData };
-      
+
       if (previousAgreementPeriod !== currentAgreementPeriod) {
         payload.amcCredit = currentAgreementPeriod;
       }
-      ;
-      
       console.log("Final Payload:", payload);
       let res;
       res = id ? await updateAMC(payload, id) : await addNewAMC(AMCData);
       toast.success(res?.message || "Added successfully");
       navigate(-1);
     } catch (error) {
-      toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong"
+      );
       console.log("Error:", error);
     }
   };
@@ -620,24 +602,27 @@ const handleFileSelect = async (name, file) => {
             });
           }}
         />
-  
-           <div className="mt-6 w-96">
-              <FileUpload
-                imp={true}
-                label="Payment/Ledger Screensort"
-                onFileSelect={(file) => handleFileSelect("paymentScreenshot", file)}
-                deleteFile={() =>
-                  deleteFile(AMCData.vehicleDetails.paymentScreenshot, "paymentScreenshot")
-                }
-                name="paymentScreenshot"
-                fileUrl={AMCData.vehicleDetails.paymentScreenshot}
-              />
-              {errors.paymentScreenshot && (
-                <p className="text-red-500 mt-1 text-sm">
-                  {errors.paymentScreenshot}
-                </p>
-              )}
-            </div>
+
+        <div className="mt-6 w-96">
+          <FileUpload
+            imp={true}
+            label="Payment/Ledger Screensort"
+            onFileSelect={(file) => handleFileSelect("paymentScreenshot", file)}
+            deleteFile={() =>
+              deleteFile(
+                AMCData.vehicleDetails.paymentScreenshot,
+                "paymentScreenshot"
+              )
+            }
+            name="paymentScreenshot"
+            fileUrl={AMCData.vehicleDetails.paymentScreenshot}
+          />
+          {errors.paymentScreenshot && (
+            <p className="text-red-500 mt-1 text-sm">
+              {errors.paymentScreenshot}
+            </p>
+          )}
+        </div>
         <div
           onClick={handleSubmit}
           className="bg-primary text-white mt-16 rounded-md px-6 py-2 cursor-pointer w-28 text-center mb-20"

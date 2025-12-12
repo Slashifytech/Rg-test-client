@@ -84,12 +84,12 @@ const [loadingVin, setLoadingVin] = useState(false);
     try {
       // toast.success("File deleted successfully!");
 
-      if (uploadType === "paymentCopyProof") {
+   
         setFormData((prevData) => ({
           ...prevData,
           paymentCopyProof: "",
         }));
-      }
+      
       await deleteObject(storageRef);
     } catch (error) {
       console.error("Error deleting file:", error);
