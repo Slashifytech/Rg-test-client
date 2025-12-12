@@ -382,7 +382,7 @@ const handleInput = (e) => {
       dispatch(fetchInvoiceById({ invoiceId }));
     }
     if (id) {
-      dispatch(fetchamcDataById({ id, option: null }));
+      dispatch(fetchamcDataById({ id, option: null, newExtend:true }));
       dispatch(fetchbuyBackDataById({ id, option: null }));
       dispatch(fetchEwById({ id, option: null }));
     }

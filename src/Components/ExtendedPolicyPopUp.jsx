@@ -97,19 +97,27 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
   useEffect(() => {
     if (isPopUpOpen && item) {
       setFormData({
-        extendedPolicyPeriod: item?.extendedPolicy?.extendedPolicyPeriod || "",
-        additionalPrice: item?.extendedPolicy?.additionalPrice || "",
-        paymentCopyProof: item?.extendedPolicy?.paymentCopyProof || "",
+        extendedPolicyPeriod:
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]
+            ?.extendedPolicyPeriod || "",
+        additionalPrice:
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]
+            ?.additionalPrice || "",
+        paymentCopyProof:
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]
+            ?.paymentCopyProof || "",
         validDate:
-          item?.extendedPolicy?.validDate ||
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]?.validDate ||
           item?.vehicleDetails?.agreementValidDate ||
           "",
         validMileage:
-          item?.extendedPolicy?.validMileage ||
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]
+            ?.validMileage ||
           item?.vehicleDetails?.agreementValidMilage ||
           "",
         upcomingPackage:
-          item?.extendedPolicy?.upcomingPackage ||
+          item?.extendedPolicy?.[item?.extendedPolicy.length - 1]
+            ?.upcomingPackage ||
           item?.vehicleDetails?.custUpcomingService ||
           [],
       });
@@ -130,26 +138,42 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
   }, [item]);
 
   const existingServices = [
-  ...(item?.extendedPolicy?.upcomingPackage || []),
-  ...(item?.vehicleDetails?.custUpcomingService || []),
-];
-const filteredOptions = upcomingServiceOpt.filter(
-  (opt) => !existingServices?.includes(opt.value)
-);
+    ...(item?.extendedPolicy?.upcomingPackage || []),
+    ...(item?.vehicleDetails?.custUpcomingService || []),
+  ];
+  const filteredOptions = upcomingServiceOpt.filter(
+    (opt) => !existingServices?.includes(opt.value)
+  );
 
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let res;
     try {
-      res = await extendedAMC(formData, item?.vehicleDetails?.vinNumber);
+      const payload = {
+        extendedPolicyPeriod: formData.extendedPolicyPeriod,
+        additionalPrice: formData.additionalPrice,
+        validDate: formData.validDate,
+        validMileage: formData.validMileage,
+        paymentCopyProof: formData.paymentCopyProof,
+        upcomingPackage: formData.upcomingPackage,
+      };
+
+      const res = await extendedAMC(payload, item?.vehicleDetails?.vinNumber);
+
       toast.success(res?.message || "Submitted successfully");
+
+      // Reset form
       setFormData({
         extendedPolicyPeriod: "",
         additionalPrice: "",
+        validDate: "",
+        validMileage: "",
         paymentCopyProof: "",
+        upcomingPackage: [],
       });
+
+      // Refresh AMC List
       dispatch(
         fetchamcLists({
           page: 1,
@@ -159,6 +183,7 @@ const filteredOptions = upcomingServiceOpt.filter(
           status: false,
         })
       );
+
       closePopUp();
     } catch (error) {
       toast.error(error?.message || "Something went wrong");

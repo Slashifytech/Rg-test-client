@@ -177,7 +177,7 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           )}
           <p>
             Agreement Period:{" "}
-            {data?.amcStatus === "approved" &&
+            {
             data?.extendedPolicy?.extendedPolicyPeriod
               ? data?.extendedPolicy?.extendedPolicyPeriod
               : data?.vehicleDetails?.agreementPeriod}
@@ -189,7 +189,7 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           <p>
             Agreement Valid Date:
             {formatDate(
-              data?.amcStatus === "approved" && data?.extendedPolicy?.validDate
+               data?.extendedPolicy?.validDate
                 ? data?.extendedPolicy?.validDate
                 : data?.vehicleDetails?.agreementValidDate
             )}
@@ -200,7 +200,7 @@ const ViewAmc = forwardRef(({ id }, ref) => {
           </p>
           <p>
             Agreement Valid Milage:{" "}
-            {data?.amcStatus === "approved" &&
+            {
             data?.extendedPolicy?.validMileage
               ? data?.extendedPolicy?.validMileage
               : data?.vehicleDetails?.agreementValidMilage}{" "}

@@ -861,8 +861,8 @@ export function CustomTableFour({
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {row?.data?.extendedPolicy?.extendedPolicyPeriod &&
-                    row?.data?.amcStatus === "pending" ? (
+                    {row?.data?.extendedPolicy?.[row?.data?.extendedPolicy.length - 1]?.extendedStatus === "pending" 
+                     ? (
                       <span
                         onClick={() => openExtPopup(row?.data)}
                         className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"

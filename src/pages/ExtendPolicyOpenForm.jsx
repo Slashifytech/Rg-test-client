@@ -66,7 +66,7 @@ const [loadingVin, setLoadingVin] = useState(false);
 
       setFormData((prevData) => ({
         ...prevData,
-        [name]: downloadURL,
+        paymentCopyProof: downloadURL,
       }));
 
       toast.success("File uploaded successfully!");
@@ -278,7 +278,7 @@ const [loadingVin, setLoadingVin] = useState(false);
                 <label className="font-semibold">
                   Previously Customer Upcoming Services
                 </label> <span className="text-red-500">*</span>
-                <div className="w-full h-12 px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
+                <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
                   {item?.vehicleDetails?.custUpcomingService?.length > 0
                     ? item?.vehicleDetails?.custUpcomingService.join(", ")
                     : "No data"}
@@ -299,14 +299,14 @@ const [loadingVin, setLoadingVin] = useState(false);
               />
             </div>
 
-            <div>
+            <div className="mt-6">
               <FileUpload
                 label="Payment Copy Proof"
                 name="paymentCopyProof"
                 fileUrl={formData.paymentCopyProof}
                 imp={true}
                 onFileSelect={(f) => handleFileSelect("paymentCopyProof", f)}
-                deleteFile={() => deleteFile(formData.paymentCopyProof)}
+                deleteFile={() => deleteFile(formData.paymentCopyProof, "paymentCopyProof")}
               />
             </div>
 

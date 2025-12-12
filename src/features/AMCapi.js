@@ -65,12 +65,13 @@ export const updateAMC = async (payload, id) => {
   }
 };
 
-export const getAMCbyId = async (id, status) => {
+export const getAMCbyId = async (id, status, newExtend) => {
   try {
     const response = await apiurlOpen.get(`/amcById`, {
       params: {
         id: id,
         status: status,
+        newExtend: newExtend
       },
     });
 

@@ -96,6 +96,27 @@ const AmcProfileView = () => {
     }
   }, [amcByIdorStatus]);
 
+  // Compute combined services at the top of your component/render
+  const vehicle = amcByIdorStatus?.data?.vehicleDetails;
+  const ext = amcByIdorStatus?.data?.extendedPolicy;
+
+  let combinedServices = Array.isArray(vehicle?.custUpcomingService)
+    ? [...vehicle.custUpcomingService]
+    : [];
+
+  if (Array.isArray(ext?.upcomingPackage)) {
+    combinedServices = [...combinedServices, ...ext.upcomingPackage];
+  }
+
+  // Separate Free & PMS for display
+  const freeServiceItems = combinedServices.filter((item) =>
+    item.toLowerCase().includes("free service")
+  );
+
+  const pmsItems = combinedServices.filter((item) =>
+    item.toLowerCase().includes("preventive maintenance service")
+  );
+
   return (
     <>
       <Header customLink="/agent/shortlist" />
@@ -196,32 +217,27 @@ const AmcProfileView = () => {
                   </span>
                   <span className="font-light mt-4">Agreement Period</span>
                   <span className="font-medium">
-                    { amcByIdorStatus?.data?.amcStatus === "approved" &&
-  amcByIdorStatus?.data?.extendedPolicy?.extendedPolicyPeriod
-    ? amcByIdorStatus?.data?.extendedPolicy?.extendedPolicyPeriod
-    : amcByIdorStatus?.data?.vehicleDetails?.agreementPeriod || "NA"}
+                    {amcByIdorStatus?.data?.extendedPolicy?.extendedPolicyPeriod
+                      ? amcByIdorStatus?.data?.extendedPolicy
+                          ?.extendedPolicyPeriod
+                      : amcByIdorStatus?.data?.vehicleDetails
+                          ?.agreementPeriod || "NA"}
                   </span>
                   <span className="font-light mt-4">Agreement Valid Date</span>
                   <span className="font-medium">
-                    {
-  amcByIdorStatus?.data?.amcStatus === "approved" &&
-  amcByIdorStatus?.data?.extendedPolicy?.validDate
-    ? amcByIdorStatus?.data?.extendedPolicy?.validDate
-    : amcByIdorStatus?.data?.vehicleDetails?.agreementValidDate || "NA"
-}
-
+                    {amcByIdorStatus?.data?.extendedPolicy?.validDate
+                      ? amcByIdorStatus?.data?.extendedPolicy?.validDate
+                      : amcByIdorStatus?.data?.vehicleDetails
+                          ?.agreementValidDate || "NA"}
                   </span>
                   <span className="font-light mt-4">
                     Agreement Valid Milage
                   </span>
                   <span className="font-medium">
-                   {
-  amcByIdorStatus?.data?.amcStatus === "approved" &&
-  amcByIdorStatus?.data?.extendedPolicy?.validMileage
-    ? amcByIdorStatus?.data?.extendedPolicy?.validMileage
-    : amcByIdorStatus?.data?.vehicleDetails?.agreementValidMilage || "NA"
-}
-
+                    {amcByIdorStatus?.data?.extendedPolicy?.validMileage
+                      ? amcByIdorStatus?.data?.extendedPolicy?.validMileage
+                      : amcByIdorStatus?.data?.vehicleDetails
+                          ?.agreementValidMilage || "NA"}
                   </span>
                   <span className="font-light mt-4">
                     Location of the Dealer
@@ -266,83 +282,60 @@ const AmcProfileView = () => {
               </div>
               <div className="flex flex-row w-full justify-between mt-6">
                 <span className="w-1/2 flex flex-col text-[15px]">
-                 
                   <span className="font-light mt-4">Revenue</span>
                   <span className="font-medium">
                     {amcByIdorStatus?.data?.showAmount || "NA"}
                   </span>
-                   <span className="font-light mt-4">Expenses</span>
+                  <span className="font-light mt-4">Expenses</span>
                   <span className="font-medium">
                     {totalExpense || "NA"}
                   </span>{" "}
                 </span>
                 <span className="w-1/2 flex flex-col text-[15px]">
                   <span className="font-light mt-4">
-                    Available Credit ({services?.length})
+                    Available Credit ({combinedServices.length})
                   </span>
-               <span className="font-medium">
-  {(() => {
-    const vehicle = amcByIdorStatus?.data?.vehicleDetails;
-    const ext = amcByIdorStatus?.data?.extendedPolicy;
+                  <span className="font-medium">
+                    <div>
+                      {/* FREE SERVICES */}
+                      {freeServiceItems.length > 0 && (
+                        <div style={{ marginBottom: "10px" }}>
+                          <strong>
+                            Free Service ({freeServiceItems.length})
+                          </strong>
+                          <ul style={{ marginLeft: "20px" }}>
+                            {freeServiceItems.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-    if (!vehicle) return "NA";
-
-    // Base data
-    let services = Array.isArray(vehicle?.custUpcomingService)
-      ? [...vehicle.custUpcomingService]
-      : [];
-
-    // Include extended policy services only if AMC is approved
-    if (
-      amcByIdorStatus?.data?.amcStatus === "approved" &&
-      Array.isArray(ext?.upcomingPackage)
-    ) {
-      services = [...services, ...ext.upcomingPackage];
-    }
-
-    if (services.length === 0) return "NA";
-
-    // Separate free services
-    const freeServiceItems = services.filter((item) =>
-      item.toLowerCase().includes("free service")
-    );
-
-    // Separate PMS
-    const pmsItems = services.filter((item) =>
-      item.toLowerCase().includes("preventive maintenance service")
-    );
-   {console.log(ext)}
-    return (
-      <div>
-        {/* FREE SERVICES */}
-        {freeServiceItems.length > 0 && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Free Service ({freeServiceItems.length})</strong>
-            <ul style={{ marginLeft: "20px" }}>
-              {freeServiceItems.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* PMS */}
-        {pmsItems.length > 0 && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Preventive Maintenance Service (PMS) ({pmsItems.length})</strong>
-            <ul style={{ marginLeft: "20px" }}>
-              {pmsItems.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    );
-  })()}
-</span>
-
-                 
+                      {/* PMS */}
+                      {pmsItems.length > 0 && (
+                        <div style={{ marginBottom: "10px" }}>
+                          <strong>
+                            Preventive Maintenance Service (PMS) (
+                            {pmsItems.length})
+                          </strong>
+                          <ul style={{ marginLeft: "20px" }}>
+                            {pmsItems.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </span>
+                  <span className="font-light mt-4">
+                    Total Credit (
+                    {amcByIdorStatus?.data?.totalCredit?.length || 0})
+                  </span>
+                  <span className="font-medium">
+                    {Array.isArray(amcByIdorStatus?.data?.totalCredit)
+                      ? amcByIdorStatus.data.totalCredit.join(", ")
+                      : amcByIdorStatus?.data?.totalCredit || "NA"}
+                  </span>{" "}
                 </span>
               </div>
             </div>
@@ -401,9 +394,7 @@ const AmcProfileView = () => {
                     </span>
                     <span className="font-light mt-4">Expenses</span>
 
-                    <span className="font-medium">
-                      {totalExpense|| "NA"}
-                    </span>
+                    <span className="font-medium">{totalExpense || "NA"}</span>
                   </span>
                 </div>
                 <div className="">

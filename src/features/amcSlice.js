@@ -3,9 +3,9 @@ import { getAllAmcList, getAMCbyId } from "./AMCapi";
 
 export const fetchamcDataById = createAsyncThunk(
   "teams/fetchamcDataById",
-  async ({id, status }, { rejectWithValue }) => {
+  async ({id, status, newExtend }, { rejectWithValue }) => {
     try {
-      const data = await getAMCbyId(id, status);
+      const data = await getAMCbyId(id, status, newExtend);
       return data;
     } catch (error) {
       console.log(error);
