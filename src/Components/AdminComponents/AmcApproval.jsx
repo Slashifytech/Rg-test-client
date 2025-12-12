@@ -167,10 +167,14 @@ const ApprovalCard = ({ item, index }) => {
             View AMC{" "}
           </Link>
 
-          {
-      item?.extendedPolicy?.extendedPolicyPeriod  &&
-        <span className="cursor-pointer underline" onClick={openExtPopup}>View Extended Data</span>
-          }
+     {
+  item?.extendedPolicy?.at(-1)?.extendedStatus === "pending" && (
+    <span className="cursor-pointer underline" onClick={openExtPopup}>
+      View Extended Data
+    </span>
+  )
+}
+
         </li>
          
         <li className="md:w-[9%] w-[13%] text-center flex flex-col gap-2">

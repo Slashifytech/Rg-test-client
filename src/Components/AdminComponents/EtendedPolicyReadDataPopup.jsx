@@ -61,19 +61,21 @@ export const ExtendedPolicyReadDataPopup = ({ isPopUpOpen, closePopUp, item }) =
                 
                 </div>
 
-                <label className="font-semibold mt-3 block">Payment Proof</label>
-                {item?.extendedPolicy?.paymentCopyProof ? (
-                  <a
-                    href={item.extendedPolicy.paymentCopyProof}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline cursor-pointer block mt-1"
-                  >
-                    View Payment Proof
-                  </a>
-                ) : (
-                  <span className="text-gray-500 block mt-1">No file available</span>
-                )}
+             <label className="font-semibold mt-3 block">Payment Proof</label>
+
+{item?.extendedPolicy?.at(-1)?.paymentCopyProof ? (
+  <a
+    href={item.extendedPolicy.at(-1).paymentCopyProof}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-blue-600 underline cursor-pointer block mt-1"
+  >
+    View Payment Proof
+  </a>
+) : (
+  <span className="text-gray-500 block mt-1">No file available</span>
+)}
+
               </div>
 
             </div>
