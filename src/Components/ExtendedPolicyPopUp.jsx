@@ -133,8 +133,8 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
     }
   }, [isPopUpOpen, item]);
   useEffect(() => {
-    console.log("Existing Data:", item?.vehicleDetails?.custUpcomingService);
-    console.log("Form Value Before Set:", formData.upcomingPackage);
+    // console.log("Existing Data:", item?.vehicleDetails?.custUpcomingService);
+    // console.log("Form Value Before Set:", formData.upcomingPackage);
   }, [item]);
 
   const existingServices = [
@@ -144,6 +144,15 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
   const filteredOptions = upcomingServiceOpt.filter(
     (opt) => !existingServices?.includes(opt.value)
   );
+
+  const latestExtendedPolicy =
+  item?.extendedPolicy
+    ?.slice() // avoid mutating original array
+    ?.sort(
+      (a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)
+    )[0];
+
+const latestStatus = latestExtendedPolicy?.extendedStatus;
 
   // Handle form submit
   const handleSubmit = async (e) => {
@@ -157,7 +166,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
         validMileage: formData.validMileage,
         paymentCopyProof: formData.paymentCopyProof,
         upcomingPackage: formData.upcomingPackage,
-        edit: true
+        edit: latestStatus === "pending" ? true : false
       };
 
       const res = await extendedAMC(payload, item?.vehicleDetails?.vinNumber);
@@ -191,7 +200,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
       console.log("Error:", error);
     }
   };
-
+// console.log(latestStatus)
   return (
     <>
       {isPopUpOpen && (

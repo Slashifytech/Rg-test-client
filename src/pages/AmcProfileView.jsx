@@ -290,6 +290,15 @@ const AmcProfileView = () => {
                   <span className="font-medium">
                     {totalExpense || "NA"}
                   </span>{" "}
+                  <span className="font-light mt-4">
+                    Total Credit (
+                    {amcByIdorStatus?.data?.totalCredit?.length || 0})
+                  </span>
+                  <span className="font-medium">
+                    {Array.isArray(amcByIdorStatus?.data?.totalCredit)
+                      ? amcByIdorStatus.data.totalCredit.join(", ")
+                      : amcByIdorStatus?.data?.totalCredit || "NA"}
+                  </span>{" "}
                 </span>
                 <span className="w-1/2 flex flex-col text-[15px]">
                   <span className="font-light mt-4">
@@ -327,15 +336,7 @@ const AmcProfileView = () => {
                       )}
                     </div>
                   </span>
-                  <span className="font-light mt-4">
-                    Total Credit (
-                    {amcByIdorStatus?.data?.totalCredit?.length || 0})
-                  </span>
-                  <span className="font-medium">
-                    {Array.isArray(amcByIdorStatus?.data?.totalCredit)
-                      ? amcByIdorStatus.data.totalCredit.join(", ")
-                      : amcByIdorStatus?.data?.totalCredit || "NA"}
-                  </span>{" "}
+                  
                 </span>
               </div>
             </div>
