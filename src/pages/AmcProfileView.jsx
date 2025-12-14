@@ -114,7 +114,7 @@ const AmcProfileView = () => {
   );
 
   const pmsItems = combinedServices.filter((item) =>
-    item.toLowerCase().includes("preventive maintenance service")
+    item.toLowerCase().includes("preventive maintenance-paid service")
   );
 
   return (
