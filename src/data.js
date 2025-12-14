@@ -26,38 +26,38 @@ export const upcomingServiceOpt = [
 
   {
     id: 5,
-    value: "1st Preventive Maintenance Service(PMS)",
-    label: "1st Preventive Maintenance Service(PMS)",
+    value: "1st Preventive Maintenance-Paid Service(PMS)",
+    label: "1st Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 6,
-    value: "2nd Preventive Maintenance Service(PMS)",
-    label: "2nd Preventive Maintenance Service(PMS)",
+    value: "2nd Preventive Maintenance-Paid Service(PMS)",
+    label: "2nd Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 7,
-    value: "3rd Preventive Maintenance Service(PMS)",
-    label: "3rd Preventive Maintenance Service(PMS)",
+    value: "3rd Preventive Maintenance-Paid Service(PMS)",
+    label: "3rd Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 8,
-    value: "4th Preventive Maintenance Service(PMS)",
-    label: "4th Preventive Maintenance Service(PMS)",
+    value: "4th Preventive Maintenance-Paid Service(PMS)",
+    label: "4th Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 9,
-    value: "5th Preventive Maintenance Service(PMS)",
-    label: "5th Preventive Maintenance Service(PMS)",
+    value: "5th Preventive Maintenance-Paid Service(PMS)",
+    label: "5th Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 10,
-    value: "6th Preventive Maintenance Service(PMS)",
-    label: "6th Preventive Maintenance Service(PMS)",
+    value: "6th Preventive Maintenance-Paid Service(PMS)",
+    label: "6th Preventive Maintenance-Paid Service(PMS)",
   },
   {
     id: 11,
-    value: "7th Preventive Maintenance Service(PMS)",
-    label: "7th Preventive Maintenance Service(PMS)",
+    value: "7th Preventive Maintenance-Paid Service(PMS)",
+    label: "7th Preventive Maintenance-Paid Service(PMS)",
   },
 ];
 export const departmentOpt = [
