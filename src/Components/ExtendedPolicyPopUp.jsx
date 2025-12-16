@@ -154,52 +154,105 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
 
 const latestStatus = latestExtendedPolicy?.extendedStatus;
 
+const validateForm = () => {
+  const {
+    extendedPolicyPeriod,
+    additionalPrice,
+    validDate,
+    validMileage,
+    paymentCopyProof,
+    upcomingPackage,
+  } = formData;
+
+  if (!extendedPolicyPeriod) {
+    toast.error("Extended Policy Period is required");
+    return false;
+  }
+
+  if (!additionalPrice) {
+    toast.error("Additional Price is required");
+    return false;
+  }
+
+  if (!validDate) {
+    toast.error("Valid Date is required");
+    return false;
+  }
+
+  if (!validMileage) {
+    toast.error("Valid Mileage is required");
+    return false;
+  }
+
+  if (!paymentCopyProof) {
+    toast.error("Payment Copy Proof is required");
+    return false;
+  }
+
+  if (!Array.isArray(upcomingPackage) || upcomingPackage.length === 0) {
+    toast.error("Please select at least one Upcoming Package");
+    return false;
+  }
+
+  return true;
+};
   // Handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const payload = {
-        extendedPolicyPeriod: formData.extendedPolicyPeriod,
-        additionalPrice: formData.additionalPrice,
-        validDate: formData.validDate,
-        validMileage: formData.validMileage,
-        paymentCopyProof: formData.paymentCopyProof,
-        upcomingPackage: formData.upcomingPackage,
-        edit: latestStatus === "pending" ? true : false
-      };
 
-      const res = await extendedAMC(payload, item?.vehicleDetails?.vinNumber);
+  if (!validateForm()) return;
 
-      toast.success(res?.message || "Submitted successfully");
+  try {
+    const payload = {
+      extendedPolicyPeriod: formData.extendedPolicyPeriod,
+      additionalPrice: formData.additionalPrice,
+      validDate: formData.validDate,
+      validMileage: formData.validMileage,
+      paymentCopyProof: formData.paymentCopyProof,
+      upcomingPackage: formData.upcomingPackage,
+      edit: latestStatus === "pending",
+    };
 
-      // Reset form
-      setFormData({
-        extendedPolicyPeriod: "",
-        additionalPrice: "",
-        validDate: "",
-        validMileage: "",
-        paymentCopyProof: "",
-        upcomingPackage: [],
-      });
+    const res = await extendedAMC(
+      payload,
+      item?.vehicleDetails?.vinNumber
+    );
 
-      // Refresh AMC List
-      dispatch(
-        fetchamcLists({
-          page: 1,
-          perPage: 10,
-          searchTerm: null,
-          userId: null,
-          status: false,
-        })
-      );
+    toast.success(res?.message || "Submitted successfully");
 
-      closePopUp();
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong");
-      console.log("Error:", error);
-    }
-  };
+    // Reset form
+    setFormData({
+      extendedPolicyPeriod: "",
+      additionalPrice: "",
+      validDate: "",
+      validMileage: "",
+      paymentCopyProof: "",
+      upcomingPackage: [],
+    });
+
+    // Refresh AMC list
+    dispatch(
+      fetchamcLists({
+        page: 1,
+        perPage: 10,
+        searchTerm: null,
+        userId: null,
+        status: false,
+      })
+    );
+
+    closePopUp();
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong"
+    );
+    console.log("Error:", error);
+  }
+};
+
 // console.log(latestStatus)
   return (
     <>

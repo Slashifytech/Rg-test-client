@@ -97,32 +97,82 @@ const [loadingVin, setLoadingVin] = useState(false);
     }
   };
 
-  // Handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validateFinalSubmit = () => {
+  if (!vinVerified) {
+    toast.error("Please verify VIN number first");
+    return false;
+  }
 
-    // Add openForm before submit
-    const finalData = {
-      ...formData,
-      openForm: true,
-    };
+  if (!formData.extendedPolicyPeriod) {
+    toast.error("Extended Policy Period is required");
+    return false;
+  }
 
-    try {
-      const res = await extendedAMCOpen(finalData, formData.vinNumber);
-      toast.success(res?.message || "Submitted successfully");
-      setFormData({
-        extendedPolicyPeriod: "",
-        additionalPrice: "",
-        paymentCopyProof: "",
-        vinNumber: "",
-        validDate: "",
-        validMileage: "",
-      });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong");
-      console.log("Error:", error);
-    }
+  if (!formData.additionalPrice) {
+    toast.error("Additional Price is required");
+    return false;
+  }
+
+  if (!formData.validDate) {
+    toast.error("Valid Date is required");
+    return false;
+  }
+
+  if (!formData.validMileage) {
+    toast.error("Valid Mileage is required");
+    return false;
+  }
+
+  if (!formData.paymentCopyProof) {
+    toast.error("Payment Copy Proof is required");
+    return false;
+  }
+
+  if (
+    !Array.isArray(formData.upcomingPackage) ||
+    formData.upcomingPackage.length === 0
+  ) {
+    toast.error("Please select at least one Upcoming Package");
+    return false;
+  }
+
+  return true;
+};
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!validateFinalSubmit()) return;
+
+  const finalData = {
+    ...formData,
+    openForm: true,
   };
+
+  try {
+    const res = await extendedAMCOpen(finalData, formData.vinNumber);
+
+    toast.success(res?.message || "Submitted successfully");
+
+    setFormData({
+      extendedPolicyPeriod: "",
+      additionalPrice: "",
+      paymentCopyProof: "",
+      vinNumber: "",
+      validDate: "",
+      validMileage: "",
+      upcomingPackage: [],
+    });
+
+    setVinVerified(false);
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong"
+    );
+  }
+};
 
   const submitVinVerify = async () => {
   if (!formData.vinNumber) {

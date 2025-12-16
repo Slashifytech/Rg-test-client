@@ -101,7 +101,7 @@ const InvoiceForm = () => {
       name: "contact",
       type: "number",
       placeholder: "Contact Number",
-      label: "Conatct Number",
+      label: "Contact Number",
       required: true,
     },
     {

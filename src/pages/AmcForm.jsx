@@ -214,7 +214,7 @@ const AMCForm = () => {
       placeholder: "Customer Upcoming Service",
       label: "Customer Upcoming Service",
       options: upcomingServiceOpt,
-      // required: true,
+      required: true,
     },
 
     {
@@ -260,6 +260,7 @@ const AMCForm = () => {
       label: "Payment Received Date for Package",
       // required: true,
       limitDate: true,
+       required: true,
     },
     {
       name: "bookingId",

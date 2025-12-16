@@ -722,7 +722,7 @@ export function CustomTableFour({
               {tableHead.map((head) => (
                 <th
                   key={head}
-                  className="border-b border-blue-gray-100 bg-input p-4"
+                  className="border-b border-blue-gray-100 bg-input p-4  "
                 >
                   <Typography
                     variant="small"
@@ -855,6 +855,7 @@ export function CustomTableFour({
                     </Typography>
                   </td>
                 )}
+                {!row?.data?.isDisabled &&
                 <td className="p-4">
                   <Typography
                     variant="small"
@@ -879,6 +880,7 @@ export function CustomTableFour({
                     )}
                   </Typography>
                 </td>
+}
                 <td className="p-4">
                   <Typography
                     variant="small"
@@ -915,6 +917,8 @@ export function CustomTableFour({
                         ? "bg-[#09985C]"
                         : row?.status === "rejected" || row?.status === true
                         ? "bg-[#D33131]"
+                         : row?.status === "terminated" || row?.status === true
+                        ? "bg-[#D33131]"
                         : "bg-primary"
                     }`}
                   >
@@ -926,6 +930,8 @@ export function CustomTableFour({
                       ? "Approved"
                       : row?.status === true
                       ? "Cancelled"
+                       : row?.status === "terminated"
+                      ? "Terminated"
                       : row?.status}
                   </Typography>
                 </td>

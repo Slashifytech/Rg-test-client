@@ -41,9 +41,9 @@ const CancelledAmc = () => {
     "Email",
     "VIN No.",
     "AMC Issue date",
+    "View Profile",
     "View/Download",
     "Status",
-    "Action",
   
   ];
 
@@ -95,7 +95,7 @@ useEffect(() => {
           </div>
         ) : (
           <>
-            <div className="md:ml-[19.5%] sm:ml-[36%] mt-6 mr-6  ">
+            <div className="md:ml-[19.5%] sm:ml-[36%] mt-6 pr-6">
               <CustomTableFour
                 tableHead={TABLE_HEAD}
                 tableRows={TABLE_ROWS}
