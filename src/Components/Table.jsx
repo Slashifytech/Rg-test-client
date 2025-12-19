@@ -126,8 +126,9 @@ export function CustomTableOne({
                   className="font-normal"
                 >
                   <Link
-                    to="/invoice"
-                    state={{ id: row?.data?._id }}
+                    to={`/invoice/${row?.data?._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary text-white px-6 py-1 rounded-md cursor-pointer"
                   >
                     View
@@ -293,8 +294,9 @@ export function CustomTableTwo({
                   className="font-normal"
                 >
                   <Link
-                    to="/invoice"
-                    state={{ id: row?.data?.invoiceDbId }}
+                    to={`/invoice/${row?.data?.invoiceDbId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary text-white px-6 py-1 rounded-md cursor-pointer"
                   >
                     View
@@ -855,32 +857,33 @@ export function CustomTableFour({
                     </Typography>
                   </td>
                 )}
-                {!row?.data?.isDisabled &&
-                <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {row?.data?.extendedPolicy?.[row?.data?.extendedPolicy.length - 1]?.extendedStatus === "pending" 
-                     ? (
-                      <span
-                        onClick={() => openExtPopup(row?.data)}
-                        className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
-                      >
-                        Edit
-                      </span>
-                    ) : (
-                      <span
-                        onClick={() => openExtPopup(row?.data)}
-                        className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
-                      >
-                        Add
-                      </span>
-                    )}
-                  </Typography>
-                </td>
-}
+                {!row?.data?.isDisabled && (
+                  <td className="p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {row?.data?.extendedPolicy?.[
+                        row?.data?.extendedPolicy.length - 1
+                      ]?.extendedStatus === "pending" ? (
+                        <span
+                          onClick={() => openExtPopup(row?.data)}
+                          className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
+                        >
+                          Edit
+                        </span>
+                      ) : (
+                        <span
+                          onClick={() => openExtPopup(row?.data)}
+                          className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
+                        >
+                          Add
+                        </span>
+                      )}
+                    </Typography>
+                  </td>
+                )}
                 <td className="p-4">
                   <Typography
                     variant="small"
@@ -889,8 +892,9 @@ export function CustomTableFour({
                   >
                     <span className="flex flex-row items-center gap-3">
                       <Link
-                        to={redirectLink}
-                        state={{ id: row?.data?._id }}
+                        to={`${redirectLink}/${row?.data?._id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="border border-primary text-primary px-6 py-1 rounded-md cursor-pointer"
                       >
                         View
@@ -917,7 +921,7 @@ export function CustomTableFour({
                         ? "bg-[#09985C]"
                         : row?.status === "rejected" || row?.status === true
                         ? "bg-[#D33131]"
-                         : row?.status === "terminated" || row?.status === true
+                        : row?.status === "terminated" || row?.status === true
                         ? "bg-[#D33131]"
                         : "bg-primary"
                     }`}
@@ -930,7 +934,7 @@ export function CustomTableFour({
                       ? "Approved"
                       : row?.status === true
                       ? "Cancelled"
-                       : row?.status === "terminated"
+                      : row?.status === "terminated"
                       ? "Terminated"
                       : row?.status}
                   </Typography>
@@ -1168,7 +1172,7 @@ export function CustomTableFive({ tableHead = [], tableRows = [] }) {
                     {row.data?.serviceVinNumber}
                   </Typography>
                 </td>
-                 <td className="p-4">
+                <td className="p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"

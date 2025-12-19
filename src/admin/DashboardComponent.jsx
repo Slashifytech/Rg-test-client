@@ -28,7 +28,7 @@ const DashboardComponent = () => {
     vasPriceCount: "",
     partsPriceCount: "",
     labourPriceCount: "",
-    serviceTypeAmount: ""
+    serviceTypeAmount: "",
   });
   const [amcAssuredData, setAmcAssuredData] = useState({
     location: "",
@@ -60,10 +60,9 @@ const DashboardComponent = () => {
     totalRevenue: "",
   });
   const amcPath = "/amc-stats-data";
-  const amcAssuredPath = "/amc-assured-stats"
+  const amcAssuredPath = "/amc-assured-stats";
   const buyBackPath = "/buy-back-stats-data";
   const ewPolicyPath = "/ew-stats";
-
 
   const handleInputChange = (e, dataType) => {
     const { name, value } = e.target;
@@ -78,7 +77,7 @@ const DashboardComponent = () => {
         ...prevData,
         [name]: value,
       }));
-    }else if (dataType === "amcAssured") {
+    } else if (dataType === "amcAssured") {
       setAmcAssuredData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -108,7 +107,7 @@ const DashboardComponent = () => {
         vasPriceCount: res?.totalVasPrice,
         partsPriceCount: res?.totalPartsPrice,
         labourPriceCount: res?.totalLabourPrice,
-        serviceTypeAmount: res?.serviceTypeAmount
+        serviceTypeAmount: res?.serviceTypeAmount,
       }));
     } catch (error) {
       console.log(error);
@@ -124,7 +123,7 @@ const DashboardComponent = () => {
         amcAssuredData.startDate,
         amcAssuredData.endDate
       );
-  console.log(res);
+      console.log(res);
 
       setAmcAssuredData((prev) => ({
         ...prev,
@@ -181,7 +180,7 @@ const DashboardComponent = () => {
     amcData.location,
     amcData.vehicleModel,
   ]);
-    useEffect(() => {
+  useEffect(() => {
     getAmcAssuredData();
   }, [
     amcAssuredData.endDate,
@@ -228,11 +227,10 @@ const DashboardComponent = () => {
       vasPriceCount: amcData?.vasPriceCount,
       partsPriceCount: amcData?.partsPriceCount,
       labourPriceCount: amcData?.labourPriceCount,
-      serviceTypeAmount: amcData?.serviceTypeAmount
+      serviceTypeAmount: amcData?.serviceTypeAmount,
     },
   ];
 
-    
   const amcAssuredCardData = [
     {
       countData: amcAssuredData?.totalAmcAssured,
@@ -251,7 +249,7 @@ const DashboardComponent = () => {
       icon: icon,
     },
   ];
-  
+
   const buyBackCardData = [
     {
       countData: buyBackData?.totalBuyBack,
@@ -290,6 +288,33 @@ const DashboardComponent = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+ const freeServices = [];
+const pmsServices = [];
+
+const serviceData = amcCardData?.[2]?.serviceTypeAmount;
+if (serviceData && typeof serviceData === "object") {
+  Object.entries(serviceData).forEach(([key, value]) => {
+    const normalizedKey = key.toLowerCase();
+
+    if (normalizedKey.includes("free service")) {
+      freeServices.push({
+        label: key,
+        amount: value,
+      });
+    } 
+    else if (
+      normalizedKey.includes("preventive") ||
+      normalizedKey.includes("(pms)")
+    ) {
+      pmsServices.push({
+        label: key,
+        amount: value,
+      });
+    }
+  });
+}
+
   return (
     <>
       <div className="fixed">
@@ -359,13 +384,50 @@ const DashboardComponent = () => {
                 partsPriceCount={item.partsPriceCount}
                 labourPriceCount={item.labourPriceCount}
                 isAmcData={item.isAmcData}
-                serviceTypeAmount={item.serviceTypeAmount}
-                
+                // serviceTypeAmount={item.serviceTypeAmount}
               />
             ))}
           </div>
+          <div className="max-w-4xl border  rounded-md p-6 bg-white ml-8 sm:ml-[33%] md:ml-[20%] md:w-[70%] mb-9">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded bg-purple-600 flex items-center justify-center text-white text-sm">
+                📄
+              </div>
+              <h2 className="text-lg font-semibold text-gray-700">
+                AMC Expenses by Customer Upcoming Service Wise
+              </h2>
+            </div>
+            {console.log("test", pmsServices  )}
 
-    <div className="flex flex-row items-center gap-6 sm:ml-[28%] md:ml-[20%] mr-6  ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600">
+            <ul className="space-y-2">
+    {freeServices.length > 0 ? (
+      freeServices.map((item, index) => (
+        <li key={index}>
+          {item.label} – <span className="font-semibold">{item.amount}</span>
+        </li>
+      ))
+    ) : (
+      <li className="text-gray-400">No Free Services</li>
+    )}
+  </ul>
+
+  {/* PMS Services */}
+  <ul className="space-y-2">
+    {pmsServices.length > 0 ? (
+      pmsServices.map((item, index) => (
+        <li key={index}>
+          {item.label} – <span className="font-semibold">{item.amount}</span>
+        </li>
+      ))
+    ) : (
+      <li className="text-gray-400">No PMS Services</li>
+    )}
+  </ul>
+            </div>
+          </div>
+
+          <div className="flex flex-row items-center gap-6 sm:ml-[28%] md:ml-[20%] mr-6  ">
             <CustomSelect
               options={locationOption}
               name={"location"}

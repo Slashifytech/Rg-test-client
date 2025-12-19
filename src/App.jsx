@@ -196,7 +196,7 @@ const router = createBrowserRouter([
   },
   
   {
-    path: "/amc-view",
+    path: "/amc-view/:amcToken",
     element: (
         <ViewAmc></ViewAmc>
     ),
@@ -357,7 +357,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/invoice",
+    path: "/invoice/:invoiceToken",
     element: (
       // <ProtectedAdmin>
         <InvoiceView/>

@@ -36,13 +36,11 @@ const AmcApproval = () => {
         status: "pending",
       })
     );
-
-
   }, [page, perPage]);
-useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); 
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -108,19 +106,19 @@ const ApprovalCard = ({ item, index }) => {
   const dispatch = useDispatch();
   const [agentData, setAgentData] = useState();
   const [isReasonPopUp, setIsReasonPopUp] = useState(false);
-    const [isOpenExtPopup, setIsOpenExtPopup] = useState(false);
-  
+  const [isOpenExtPopup, setIsOpenExtPopup] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
   const openReasonPopUp = useCallback(() => setIsReasonPopUp(true));
   const closeReasonPopUp = useCallback(() => setIsReasonPopUp(false));
-    const closeExtPopup = useCallback(() => setIsOpenExtPopup(false), []);
+  const closeExtPopup = useCallback(() => setIsOpenExtPopup(false), []);
   const openPopUp = useCallback(() => setIsOpen(true));
   const closePopUp = useCallback(() => setIsOpen(false));
   const getAgentData = async () => {
     const data = await fetchUserById(item?.createdBy);
     setAgentData(data);
   };
- const openExtPopup = useCallback(() => {
+  const openExtPopup = useCallback(() => {
     setIsOpenExtPopup(true);
   }, []);
   useEffect(() => {
@@ -159,24 +157,20 @@ const ApprovalCard = ({ item, index }) => {
             : " Sent a request to approve the AMC of"}{" "}
           {item?.customerDetails?.customerName}
           <Link
-            to="/amc-view"
-            state={{ id: item?._id }}
+            to={`/amc-view/${item?._id}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mx-1 text-primary cursor-pointer underline"
           >
-            {" "}
-            View AMC{" "}
+            View AMC
           </Link>
-
-     {
-  item?.extendedPolicy?.at(-1)?.extendedStatus === "pending" && (
-    <span className="cursor-pointer underline" onClick={openExtPopup}>
-      View Extended Data
-    </span>
-  )
-}
-
+          {item?.extendedPolicy?.at(-1)?.extendedStatus === "pending" && (
+            <span className="cursor-pointer underline" onClick={openExtPopup}>
+              View Extended Data
+            </span>
+          )}
         </li>
-         
+
         <li className="md:w-[9%] w-[13%] text-center flex flex-col gap-2">
           {item?.isCancelReq === "reqCancel" ? (
             <Link
@@ -220,7 +214,6 @@ const ApprovalCard = ({ item, index }) => {
         id={item._id}
       />
       <ExtendedPolicyReadDataPopup
-      
         closePopUp={closeExtPopup}
         isPopUpOpen={isOpenExtPopup}
         item={item}

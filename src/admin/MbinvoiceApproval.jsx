@@ -19,26 +19,22 @@ const MbinvoiceApproval = () => {
   const [page, setPage] = useState(1);
 
   const perPage = 10;
-  const currentPage = invoices?.data?.currentPage
-  const totalPagesCount = invoices?.data?.totalPagesCount
-  const totalCount = invoices?.data?.totalInvoicesCount
+  const currentPage = invoices?.data?.currentPage;
+  const totalPagesCount = invoices?.data?.totalPagesCount;
+  const totalCount = invoices?.data?.totalInvoicesCount;
   const [loading, setLoading] = useState(false);
-
-
-
-
 
   useEffect(() => {
     setLoading(true);
 
     dispatch(
       fetchInvoices({
-    
-        page, perPage
+        page,
+        perPage,
       })
     );
     setLoading(false);
-  }, [dispatch, page, perPage ]);
+  }, [dispatch, page, perPage]);
 
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
@@ -52,9 +48,8 @@ const MbinvoiceApproval = () => {
         </span>
       </div>
 
-
       <p className="font-semibold text-[28px] md:ml-72 sm:ml-72 ml-6 pt-12">
-        Pending  List
+        Pending List
       </p>
       <div className="overflow-x-scroll w-full md:w-full md:overflow-hidden ">
         <ul className="bg-secondary text-[15px] py-7 flex flex-row justify-around items-center sm:w-[93%] w-[180%]  mr-10 md:ml-72 sm:ml-72 md:w-[75%]  gap-2 rounded-lg mt-8 h-[6vh]  text-black font-medium">
@@ -80,23 +75,20 @@ const MbinvoiceApproval = () => {
                 key={item._id}
                 item={item}
                 index={index + 1 + (currentPage - 1) * perPage}
-                
               />
             ))
           )}
         </div>
 
-
-          <div className="flex justify-center items-center  mt-9 mb-20 ml-28 ">
+        <div className="flex justify-center items-center  mt-9 mb-20 ml-28 ">
           <Pagination
-                currentPage={currentPage}
-                hasNextPage={currentPage * perPage < totalCount}
-                hasPreviousPage={currentPage > 1}
-                onPageChange={handlePageChange}
-                totalPagesCount={totalPagesCount}
-              />
-          </div>
-        
+            currentPage={currentPage}
+            hasNextPage={currentPage * perPage < totalCount}
+            hasPreviousPage={currentPage > 1}
+            onPageChange={handlePageChange}
+            totalPagesCount={totalPagesCount}
+          />
+        </div>
       </div>
     </>
   );
@@ -119,20 +111,27 @@ const ApprovalCard = ({ item, index }) => {
     getAgentData();
   }, []);
 
-  const handleApprovalStatus = async (invoiceId, approvalStatus, optionalData = null, message) => {
+  const handleApprovalStatus = async (
+    invoiceId,
+    approvalStatus,
+    optionalData = null,
+    message
+  ) => {
     try {
-      const res = await approvalStatusChange(invoiceId, approvalStatus, message);
+      const res = await approvalStatusChange(
+        invoiceId,
+        approvalStatus,
+        message
+      );
       toast.success(res?.message || "Invoice status changed");
       dispatch(fetchInvoices({}));
-
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "Something went wrong");
     }
   };
-  
+
   // Example usage
-  
 
   return (
     <>
@@ -143,12 +142,12 @@ const ApprovalCard = ({ item, index }) => {
           Invoice {item?.customerName} Id:{" "}
           <span className="font-medium">{item?.invoiceId || ""}</span>
           <Link
-            to="/invoice"
-            state={{ id: item?._id }}
+            to={`/invoice/${item?._id}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mx-1 text-primary cursor-pointer underline"
           >
-            {" "}
-            View Invoice{" "}
+            View Invoice
           </Link>
         </li>
 

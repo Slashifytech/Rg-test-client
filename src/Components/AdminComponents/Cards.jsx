@@ -11,11 +11,11 @@ const Cards = ({
   labourPriceCount,
   partsPriceCount,
   vasPriceCount,
-  serviceTypeAmount
+  // serviceTypeAmount
 }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  // const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const serviceTypeOrder = [
   "1st Free Service",
@@ -60,16 +60,16 @@ const Cards = ({
             <p>Total Parts Price: {partsPriceCount}</p>
 
             {/* Dropdown Toggle */}
-            <div
+            {/* <div
               className="cursor-pointer flex items-center justify-between border p-2 rounded bg-gray-100 w-[220px]"
               onClick={toggleDropdown}
             >
               <span>Total Service Type</span>
               <span className="ml-2">{isOpen ? "▲" : "▼"}</span>
-            </div>
+            </div> */}
 
             {/* Dropdown Content */}
-         {isOpen && (
+         {/* {isOpen && (
   <div className="absolute top-full left-0 mt-1 border p-2 rounded bg-white max-h-60 overflow-y-auto w-[350px] z-50 shadow-lg">
     {serviceTypeOrder.map((key) =>
       serviceTypeAmount[key] ? (
@@ -83,7 +83,7 @@ const Cards = ({
       ) : null
     )}
   </div>
-)}
+)} */}
           </div>
         )}
       </div>

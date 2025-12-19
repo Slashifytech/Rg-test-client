@@ -12,7 +12,6 @@ import RejectPopUp from "../RejectPopUp";
 import InvoicePopUp from "../InvoicePopUp";
 import { updateAMCStatus } from "../../features/AMCapi";
 
-
 const AmcCancelApproval = () => {
   const dispatch = useDispatch();
   const { amcLists } = useSelector((state) => state.amc);
@@ -37,13 +36,11 @@ const AmcCancelApproval = () => {
         status: "reqCancel",
       })
     );
-
-
   }, [page, perPage]);
-useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); 
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -52,7 +49,7 @@ useEffect(() => {
       <div></div>
 
       <p className="font-semibold text-[24px] md:ml-72 sm:ml-44 ml-6 ">
-        Pending Cancel AMC Request 
+        Pending Cancel AMC Request
       </p>
       <div className="overflow-x-scroll w-full md:w-full md:overflow-hidden ">
         <ul className="bg-secondary text-[15px] py-7 flex flex-row justify-around items-center sm:w-[93%] w-[180%]  mr-10 md:ml-72 sm:ml-44 md:w-[75%]  gap-2 rounded-lg mt-8 h-[6vh]  text-black font-medium">
@@ -149,12 +146,12 @@ const ApprovalCard = ({ item, index }) => {
             : " Sent a request to approve the AMC of"}{" "}
           {item?.customerDetails?.customerName}
           <Link
-            to="/amc-view"
-            state={{ id: item?._id }}
+            to={`/amc-view/${item?._id}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mx-1 text-primary cursor-pointer underline"
           >
-            {" "}
-            View AMC{" "}
+            View AMC
           </Link>
         </li>
 

@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import html2pdf from "html2pdf.js";
 import { getAMCbyId } from "../features/AMCapi";
 import Loader from "../Components/Loader";
@@ -19,8 +19,8 @@ const paragraphStyle = {
 };
 const ViewAmc = forwardRef(({ id }, ref) => {
   const [data, setData] = useState();
-  const location = useLocation();
-  const amcId = id ? id : location?.state?.id;
+  const {amcToken} = useParams();
+const amcId = id ? id : amcToken
 
   useEffect(() => {
     const fetchData = async () => {
