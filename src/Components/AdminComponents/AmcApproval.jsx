@@ -155,7 +155,7 @@ const ApprovalCard = ({ item, index }) => {
           {item?.isCancelReq === "reqCancel"
             ? "Sent a request to cancel the AMC of"
             : " Sent a request to approve the AMC of"}{" "}
-          {item?.customerDetails?.customerName}
+          {item?.customerDetails?.customerName} Vin Number - <b>{item?.vehicleDetails?.vinNumber} </b>
           <Link
             to={`/amc-view/${item?._id}`}
             target="_blank"
