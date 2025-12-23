@@ -357,7 +357,7 @@ const validateForm = () => {
                 </div>
                 <div>
                   <label className="font-semibold">
-                    Previously Customer Upcoming Services
+                    Previously Service Offered
                   </label>{" "}
                   <span className="text-red-500">*</span>
                   <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
@@ -374,7 +374,7 @@ const validateForm = () => {
                 </div>
                 {/* MULTI SELECT */}
                 <MultiSelectInput
-                  label="Customer Upcoming Package"
+                  label="Service Offered"
                   name="upcomingPackage"
                   value={formData.upcomingPackage}
                   onChange={handleChange}
