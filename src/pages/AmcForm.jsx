@@ -487,30 +487,26 @@ const AMCForm = () => {
     }
   }, [id]);
   useEffect(() => {
-    if (!amcByIdorStatus?.data) return;
+  if (!amcByIdorStatus?.data) return;
 
-    const vehicle = amcByIdorStatus?.data?.vehicleDetails || {};
-    const extended = amcByIdorStatus?.data?.extendedPolicy || {};
-    const amcStatus = amcByIdorStatus?.data?.amcStatus;
+  const data = amcByIdorStatus.data;
 
-    // Start with vehicle service data
-    let combinedUpcoming = [...(vehicle.custUpcomingService || [])];
+  // Always trust backend–calculated availableCredit
+  const availableCredit = Array.isArray(data.availableCredit)
+    ? data.availableCredit
+    : [];
 
-    // If approved, also include extendedPolicy.upcomingPackage
-    if (amcStatus === "approved" && Array.isArray(extended.upcomingPackage)) {
-      combinedUpcoming = [...combinedUpcoming, ...extended.upcomingPackage];
-    }
+  setAMCData((prev) => ({
+    ...prev,
+    ...data,
+    vehicleDetails: {
+      ...prev.vehicleDetails,
+      ...data.vehicleDetails,
+      custUpcomingService: availableCredit,
+    },
+  }));
+}, [amcByIdorStatus?.data]);
 
-    setAMCData((prev) => ({
-      ...prev,
-      ...amcByIdorStatus.data,
-      vehicleDetails: {
-        ...prev.vehicleDetails,
-        ...vehicle,
-        custUpcomingService: combinedUpcoming,
-      },
-    }));
-  }, [amcByIdorStatus?.data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
