@@ -201,17 +201,20 @@ export const ExtendedPolicyOpenForm = () => {
       setVinVerified(true);
       toast.success("VIN Verified Successfully!");
 
-      // ✅ Get available credit safely
-      const availableCredit = Array.isArray(fetchedData?.availableCredit)
-        ? fetchedData.availableCredit
-        : [];
+     const latestExtended =
+        Array.isArray(fetchedData.extendedPolicy) && fetchedData.extendedPolicy.length > 0
+          ? fetchedData.extendedPolicy[fetchedData.extendedPolicy.length - 1]
+          : null;
 
       // Auto-fill fields from VIN data
       setFormData((prev) => ({
         ...prev,
         validMileage: fetchedData?.vehicleDetails?.agreementValidMilage || "",
         extendedPolicyPeriod: "",
-        upcomingPackage: availableCredit,
+         upcomingPackage: latestExtended
+            ?.upcomingPackage ||
+          fetchedData?.vehicleDetails?.custUpcomingService ||
+          [],
       }));
     } catch (error) {
       setVinVerified(false);

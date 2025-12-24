@@ -100,10 +100,6 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
           ? item.extendedPolicy[item.extendedPolicy.length - 1]
           : null;
 
-      const availableCredit = Array.isArray(item.availableCredit)
-        ? item.availableCredit
-        : [];
-
       setFormData({
         extendedPolicyPeriod: latestExtended?.extendedPolicyPeriod || "",
         additionalPrice: latestExtended?.additionalPrice || "",
@@ -116,7 +112,10 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
           latestExtended?.validMileage ||
           item?.vehicleDetails?.agreementValidMilage ||
           "",
-        upcomingPackage: availableCredit, // 🔥 SINGLE SOURCE
+        upcomingPackage:  latestExtended
+            ?.upcomingPackage ||
+          item?.vehicleDetails?.custUpcomingService ||
+          [],
       });
     } else if (isPopUpOpen) {
       // Reset when popup opens with no existing data

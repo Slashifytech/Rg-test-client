@@ -488,13 +488,21 @@ const AMCForm = () => {
   }, [id]);
   useEffect(() => {
   if (!amcByIdorStatus?.data) return;
+    const vehicle = amcByIdorStatus?.data?.vehicleDetails || {};
+    const extended = amcByIdorStatus?.data?.extendedPolicy || {};
+    const amcStatus = amcByIdorStatus?.data?.amcStatus;
+
+    // Start with vehicle service data
+    let combinedUpcoming = [...(vehicle.custUpcomingService || [])];
+
+    // If approved, also include extendedPolicy.upcomingPackage
+    if (amcStatus === "approved" && Array.isArray(extended.upcomingPackage)) {
+      combinedUpcoming = [...combinedUpcoming, ...extended.upcomingPackage];
+    }
 
   const data = amcByIdorStatus.data;
 
   // Always trust backend–calculated availableCredit
-  const availableCredit = Array.isArray(data.availableCredit)
-    ? data.availableCredit
-    : [];
 
   setAMCData((prev) => ({
     ...prev,
@@ -502,7 +510,7 @@ const AMCForm = () => {
     vehicleDetails: {
       ...prev.vehicleDetails,
       ...data.vehicleDetails,
-      custUpcomingService: availableCredit,
+      custUpcomingService: combinedUpcoming,
     },
   }));
 }, [amcByIdorStatus?.data]);
