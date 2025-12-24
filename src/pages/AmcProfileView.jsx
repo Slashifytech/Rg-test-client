@@ -291,7 +291,7 @@ const pmsItems = normalizedServices
                   </span>
                   <span className="font-light mt-4">Expenses</span>
                   <span className="font-medium">
-                 {totalExpense.toFixed(2)  || "NA"}
+                 {totalExpense?.toFixed(2)  || "NA"}
                   </span>{" "}
                   <span className="font-light mt-4">
                     Total Credit (
@@ -398,7 +398,7 @@ const pmsItems = normalizedServices
                     </span>
                     <span className="font-light mt-4">Expenses</span>
 
-                    <span className="font-medium">{totalExpense.toFixed(2)  || "NA"}</span>
+                    <span className="font-medium">{totalExpense?.toFixed(2)  || "NA"}</span>
                   </span>
                 </div>
                 <div className="">
