@@ -92,7 +92,13 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
       // toast.error("Error deleting file. Please try again.");
     }
   };
-
+const pendingUpcomingPackage = Array.isArray(item?.extendedPolicy)
+  ? item.extendedPolicy.find(
+      (ep) => ep?.extendedStatus === "pending"
+    )?.upcomingPackage
+  : item?.extendedPolicy?.extendedStatus === "pending"
+  ? item.extendedPolicy.upcomingPackage
+  : [];
   useEffect(() => {
     if (isPopUpOpen && item) {
       const latestExtended =
@@ -112,10 +118,7 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
           latestExtended?.validMileage ||
           item?.vehicleDetails?.agreementValidMilage ||
           "",
-        upcomingPackage:  latestExtended
-            ?.upcomingPackage ||
-          item?.vehicleDetails?.custUpcomingService ||
-          [],
+        upcomingPackage: pendingUpcomingPackage|| [],
       });
     } else if (isPopUpOpen) {
       // Reset when popup opens with no existing data
@@ -129,19 +132,29 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
       });
     }
   }, [isPopUpOpen, item]);
+const extendedPolicies = Array.isArray(item?.extendedPolicy)
+  ? item.extendedPolicy
+  : item?.extendedPolicy
+  ? [item.extendedPolicy]
+  : [];
+const approvedExtendedServices = extendedPolicies
+  .filter(
+    (ep) =>
+      ep?.extendedStatus === "approved" &&
+      Array.isArray(ep?.upcomingPackage)
+  )
+  .flatMap((ep) => ep.upcomingPackage);
 
-  useEffect(() => {
-    // console.log("Existing Data:", item?.vehicleDetails?.custUpcomingService);
-    // console.log("Form Value Before Set:", formData.upcomingPackage);
-  }, [item]);
 
-  const existingServices = Array.isArray(item?.availableCredit)
-    ? item.availableCredit
-    : [];
+const usedServices = new Set([
+  ...(Array.isArray(item?.vehicleDetails?.custUpcomingService)
+    ? item.vehicleDetails.custUpcomingService
+    : []),
 
-  const filteredOptions = upcomingServiceOpt.filter(
-    (opt) => !existingServices.includes(opt.value)
-  );
+  ...approvedExtendedServices,
+]);
+
+
 
   const latestExtendedPolicy = item?.extendedPolicy
     ?.slice() // avoid mutating original array
@@ -389,7 +402,10 @@ export const ExtendedPolicyPopUp = ({ isPopUpOpen, closePopUp, item }) => {
                   name="upcomingPackage"
                   value={formData.upcomingPackage}
                   onChange={handleChange}
-                  options={filteredOptions}
+                 options={upcomingServiceOpt.filter(
+  (opt) => !usedServices.has(opt.value)
+)}
+
                 />
               </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import InputField, { FileUpload, MultiSelectInput } from "../Components/Input";
-import { extendedAMCOpen, getAMCbyId } from "../features/AMCapi";
+import { extendedAMCOpen, getAMCbyId, getAMCbyIdPublic } from "../features/AMCapi";
 import { toast } from "react-toastify";
 import {
   deleteObject,
@@ -187,7 +187,7 @@ export const ExtendedPolicyOpenForm = () => {
     setLoadingVin(true);
 
     try {
-      const res = await getAMCbyId(formData?.vinNumber, null);
+      const res = await getAMCbyIdPublic(formData?.vinNumber);
       const fetchedData = res?.data;
 
       if (!fetchedData) {
@@ -201,20 +201,12 @@ export const ExtendedPolicyOpenForm = () => {
       setVinVerified(true);
       toast.success("VIN Verified Successfully!");
 
-     const latestExtended =
-        Array.isArray(fetchedData.extendedPolicy) && fetchedData.extendedPolicy.length > 0
-          ? fetchedData.extendedPolicy[fetchedData.extendedPolicy.length - 1]
-          : null;
-
-      // Auto-fill fields from VIN data
+    
       setFormData((prev) => ({
         ...prev,
         validMileage: fetchedData?.vehicleDetails?.agreementValidMilage || "",
         extendedPolicyPeriod: "",
-         upcomingPackage: latestExtended
-            ?.upcomingPackage ||
-          fetchedData?.vehicleDetails?.custUpcomingService ||
-          [],
+         upcomingPackage: [],
       }));
     } catch (error) {
       setVinVerified(false);
@@ -225,6 +217,24 @@ export const ExtendedPolicyOpenForm = () => {
       setLoadingVin(false);
     }
   };
+
+
+
+const extendedPolicies = Array.isArray(item?.extendedPolicy)
+  ? item.extendedPolicy.flatMap((ep) =>
+      Array.isArray(ep?.upcomingPackage) ? ep.upcomingPackage : []
+    )
+  : [];
+
+
+console.log(extendedPolicies)
+const usedServices = new Set([
+  ...(Array.isArray(item?.vehicleDetails?.custUpcomingService)
+    ? item.vehicleDetails.custUpcomingService
+    : []),
+  ...extendedPolicies,
+]);
+
 
   return (
     <>
@@ -347,32 +357,34 @@ export const ExtendedPolicyOpenForm = () => {
                 </label>{" "}
                 <span className="text-red-500">*</span>
                 <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
-                <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
-  {
-    /* 1️⃣ LATEST EXTENDED POLICY (n-1) */
-    Array.isArray(item?.extendedPolicy) &&
-    item.extendedPolicy.length > 0 &&
-    Array.isArray(
-      item.extendedPolicy[item.extendedPolicy.length - 1]?.upcomingPackage
-    ) &&
-    item.extendedPolicy[item.extendedPolicy.length - 1].upcomingPackage
-      .length > 0
-      ? item.extendedPolicy[item.extendedPolicy.length - 1].upcomingPackage
-          .map((s) => s?.value ?? s)
-          .join(", ")
-
-      /* 2️⃣ ONLY IF NO EXTENDED POLICY EXISTS */
-      : (!Array.isArray(item?.extendedPolicy) ||
-          item.extendedPolicy.length === 0) &&
-        Array.isArray(item?.vehicleDetails?.custUpcomingService) &&
-        item.vehicleDetails.custUpcomingService.length > 0
-      ? item.vehicleDetails.custUpcomingService.join(", ")
-
-      /* 3️⃣ FALLBACK */
-      : "No data"
-  }
-</div>
-
+                 <div className="w-full h-auto px-3 flex items-center mt-1 bg-[#f1f1f1] rounded-md">
+                      {
+                        /* 1️⃣ Latest Extended Policy (n-1) */
+                        Array.isArray(item?.extendedPolicy) &&
+                        item.extendedPolicy.length > 0 &&
+                        Array.isArray(
+                          item.extendedPolicy[item.extendedPolicy.length - 1]
+                            ?.upcomingPackage
+                        ) &&
+                        item.extendedPolicy[item.extendedPolicy.length - 1]
+                          .upcomingPackage.length > 0
+                          ? item.extendedPolicy[
+                              item.extendedPolicy.length - 1
+                            ].upcomingPackage
+                              .map((s) => s?.value ?? s)
+                              .join(", ")
+                          : /* 2️⃣ Vehicle services ONLY when no extended policy exists */
+                          (!Array.isArray(item?.extendedPolicy) ||
+                              item.extendedPolicy.length === 0) &&
+                            Array.isArray(
+                              item?.vehicleDetails?.custUpcomingService
+                            ) &&
+                            item.vehicleDetails.custUpcomingService.length > 0
+                          ? item.vehicleDetails.custUpcomingService.join(", ")
+                          : /* 3️⃣ Fallback */
+                            "No data"
+                      }
+                    </div>
 
                 </div>
                 <div className="mt-6">
@@ -394,9 +406,9 @@ export const ExtendedPolicyOpenForm = () => {
                 name="upcomingPackage"
                 value={formData.upcomingPackage}
                 onChange={handleChange}
-                options={upcomingServiceOpt.filter(
-                  (opt) => !item?.availableCredit?.includes(opt.value)
-                )}
+                      options={upcomingServiceOpt.filter(
+                (opt) => !usedServices.has(opt.value)
+              )}
               />
             </div>
 
