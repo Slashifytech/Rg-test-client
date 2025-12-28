@@ -215,7 +215,7 @@ const AmcSalesForm = () => {
       placeholder: "Service Offered",
       label: "Service Offered",
       options: upcomingServiceOpt,
-      // required: true,
+      required: true,
     },
 
     {
