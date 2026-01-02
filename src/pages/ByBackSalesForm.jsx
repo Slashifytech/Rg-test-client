@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { FileUpload, GroupedInput } from "../Components/Input";
+import { GroupedInput } from "../Components/Input";
 import { useLocation, useNavigate } from "react-router-dom";
 import Nav from "../admin/Nav";
 import SideNav from "../agent/SideNav";
 import { useDispatch, useSelector } from "react-redux";
 import { createdDate, formatDate } from "../helper/commonHelperFunc";
 import { addNewBuyBack, updateBuyBack } from "../features/BuybackApi";
-import { departmentOpt, fuelType, locationOption, modelOption } from "../data";
+import { fuelType, locationOption, modelOption } from "../data";
 import { fetchbuyBackDataById } from "../features/BuyBackSlice";
 import Header from "../Components/Header";
-const BuyBackForm = () => {
+const BuyBackSalesForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,10 +42,6 @@ const BuyBackForm = () => {
       rmName: "",
       rmEmployeeId: "",
       gmEmail: "",
-       paymentScreenshot: "",
-       bookingId:"",
-       department:"",
-       paymentReceivedDateForPackage:""
     },
     createdBy: _id,
   });
@@ -131,20 +127,6 @@ const BuyBackForm = () => {
       label: "Validity Milage",
       required: true,
     },
-      {
-          name: "department",
-          type: "select",
-          placeholder: "Department",
-          label: "Department",
-          options: departmentOpt,
-          // required: true,
-        },
-         {
-      name: "bookingId",
-      type: "text",
-      placeholder: "Bookinng Id",
-      label: "Booking Id",
-    },
     {
       name: "rmName",
       type: "text",
@@ -185,16 +167,6 @@ const BuyBackForm = () => {
       label: "Agreement Valid Date ",
       required: true,
     },
-      {
-      name: "paymentReceivedDateForPackage",
-      type: "date",
-      placeholder: "Payment Received Date for Package",
-      label: "Payment Received Date for Package",
-      // required: true,
-      limitDate: true,
-       required: true,
-    },
-   
     {
       name: "totalPayment",
       type: "text",
@@ -211,8 +183,6 @@ const BuyBackForm = () => {
       required: true,
     },
 
- 
-  
     {
       name: "rmEmployeeId",
       type: "text",
@@ -389,11 +359,8 @@ const BuyBackForm = () => {
       return;
     }
     try {
-       const path = "/add-new-buy-back"
-      let res;
-      res = id
-        ? await updateBuyBack(buyBack, id)
-        : await addNewBuyBack(path, buyBack);
+      const path = "/add-new-sales-buy-back";
+      const res = await addNewBuyBack(path, buyBack);
       toast.success(res?.message || "Buyback Added successfully");
       navigate(-1);
     } catch (error) {
@@ -404,18 +371,14 @@ const BuyBackForm = () => {
 
   return (
     <>
-      <div className="fixed">
-        <div className="absolute">
-          {roleType === "0" ? <Nav /> : roleType === "2" ? <SideNav /> : null}
-        </div>
-      </div>
-
-      <div>
-        <Header />
-      </div>
-
-      <span className="flex md:flex-row flex-col md:items-center justify-between md:mx-36 mx-6 font-head md:pt-10 ">
-        <p className="md:text-[23px] text-[18px] font-semibold pt-20 md:ml-[13.5%] sm:ml-[25%]">
+      <img
+        src={logo}
+        alt="img"
+        className="w-32 h-20 rounded-full ml-6"
+        loading="lazy"
+      />
+      <span className="flex md:flex-row flex-col md:items-center justify-between md:mx-20 mx-6 font-head  ">
+        <p className="md:text-[23px] text-[18px] font-semibold pt-12 ">
           Add New Buy Back
         </p>
         <p className="md:text-[18px] text-[16px] font-medium md:pt-12 pt-4 sm:ml-[25%]">
@@ -424,8 +387,8 @@ const BuyBackForm = () => {
         </p>
       </span>
 
-      <div className="sm:ml-[26.5%] md:ml-[21%]  w-full">
-        <p className="text-[20px] font-head font-semibold mt-5">
+      <div className="sm:ml-[9.5%] md:ml-[5%]  w-full">
+        <p className="text-[20px] font-head font-semibold mt-5 md:ml-0 ml-6">
           Customer Personal Details
         </p>
         <GroupedInput
@@ -456,26 +419,6 @@ const BuyBackForm = () => {
             });
           }}
         />
-        <div className="mt-6 w-96">
-          <FileUpload
-            imp={true}
-            label="Payment/Ledger Screensort"
-            onFileSelect={(file) => handleFileSelect("paymentScreenshot", file)}
-            deleteFile={() =>
-              deleteFile(
-                buyBack.vehicleDetails.paymentScreenshot,
-                "paymentScreenshot"
-              )
-            }
-            name="paymentScreenshot"
-            fileUrl={buyBack.vehicleDetails.paymentScreenshot}
-          />
-          {errors.paymentScreenshot && (
-            <p className="text-red-500 mt-1 text-sm">
-              {errors.paymentScreenshot}
-            </p>
-          )}
-        </div>
         <div
           onClick={handleSubmit}
           className="bg-primary text-white mt-16 rounded-md px-6 py-2 cursor-pointer w-28 text-center mb-20"
@@ -487,4 +430,4 @@ const BuyBackForm = () => {
   );
 };
 
-export default BuyBackForm;
+export default BuyBackSalesForm;

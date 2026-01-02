@@ -462,8 +462,9 @@ const EwForm = () => {
       return;
     }
     try {
+      const path = "/add-new-ew"
       let res;
-      res = id ? await updateEw(ewData, id) : await addNewEw(ewData);
+      res = id ? await updateEw(ewData, id) : await addNewEw(path, ewData);
       toast.success(res?.message || "EW Added successfully");
       navigate(-1);
     } catch (error) {
