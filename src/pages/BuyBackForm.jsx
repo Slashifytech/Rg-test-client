@@ -480,7 +480,7 @@ const BuyBackForm = () => {
           Add New Buy Back
         </p>
         <p className="md:text-[18px] text-[16px] font-medium md:pt-12 pt-4 sm:ml-[25%]">
-          AMC Issue Date -{" "}
+          Buyback Issue Date -{" "}
           {id ? formatDate(buyBackByIdorStatus?.createdAt) : formattedDate}
         </p>
       </span>
