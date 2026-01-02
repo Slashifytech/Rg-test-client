@@ -7,7 +7,7 @@ import SideNav from "../agent/SideNav";
 import { useDispatch, useSelector } from "react-redux";
 import { createdDate, formatDate } from "../helper/commonHelperFunc";
 import { addNewBuyBack, updateBuyBack } from "../features/BuybackApi";
-import { fuelType, locationOption, modelOption } from "../data";
+import { departmentOpt, fuelType, locationOption, modelOption } from "../data";
 import { fetchbuyBackDataById } from "../features/BuyBackSlice";
 import Header from "../Components/Header";
 import { logo } from "../assets";
