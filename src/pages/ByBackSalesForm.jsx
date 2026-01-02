@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { GroupedInput } from "../Components/Input";
+import { FileUpload, GroupedInput } from "../Components/Input";
 import { useLocation, useNavigate } from "react-router-dom";
 import Nav from "../admin/Nav";
 import SideNav from "../agent/SideNav";
@@ -10,6 +10,15 @@ import { addNewBuyBack, updateBuyBack } from "../features/BuybackApi";
 import { fuelType, locationOption, modelOption } from "../data";
 import { fetchbuyBackDataById } from "../features/BuyBackSlice";
 import Header from "../Components/Header";
+import { logo } from "../assets";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import { storage } from "../../Util/fireBase";
 const BuyBackSalesForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -42,11 +51,14 @@ const BuyBackSalesForm = () => {
       rmName: "",
       rmEmployeeId: "",
       gmEmail: "",
+        paymentScreenshot: "",
+       bookingId:"",
+       department:"",
+       paymentReceivedDateForPackage:""
     },
     createdBy: _id,
   });
-
-  const rightFields = [
+ const rightFields = [
     {
       name: "customerName",
       type: "text",
@@ -127,6 +139,20 @@ const BuyBackSalesForm = () => {
       label: "Validity Milage",
       required: true,
     },
+      {
+          name: "department",
+          type: "select",
+          placeholder: "Department",
+          label: "Department",
+          options: departmentOpt,
+          // required: true,
+        },
+         {
+      name: "bookingId",
+      type: "text",
+      placeholder: "Bookinng Id",
+      label: "Booking Id",
+    },
     {
       name: "rmName",
       type: "text",
@@ -167,6 +193,16 @@ const BuyBackSalesForm = () => {
       label: "Agreement Valid Date ",
       required: true,
     },
+      {
+      name: "paymentReceivedDateForPackage",
+      type: "date",
+      placeholder: "Payment Received Date for Package",
+      label: "Payment Received Date for Package",
+      // required: true,
+      limitDate: true,
+       required: true,
+    },
+   
     {
       name: "totalPayment",
       type: "text",
@@ -183,6 +219,8 @@ const BuyBackSalesForm = () => {
       required: true,
     },
 
+ 
+  
     {
       name: "rmEmployeeId",
       type: "text",
@@ -337,6 +375,58 @@ const BuyBackSalesForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+
+   const handleFileSelect = async (name, file) => {
+      // console.log("Selected file:", file);
+      if (!file) return;
+  
+      // const storageRef = ref(storage, `files/${file?.name}`);
+      const uniqueFileName = `${uuidv4()}-${file.name}`;
+      const storageRef = ref(storage, `files/rgbuyback/${uniqueFileName}`);
+      try {
+        const snapshot = await uploadBytes(storageRef, file);
+        console.log("Uploaded file:", snapshot);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        console.log("File available at:", downloadURL);
+  
+        setBuyBack((prevData) => ({
+          ...prevData,
+          vehicleDetails: {
+            ...prevData.vehicleDetails,
+            paymentScreenshot: downloadURL,
+          },
+        }));
+  
+        toast.success("File uploaded successfully!");
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        toast.error("Error uploading file. Please try again.");
+      }
+    };
+  
+    const deleteFile = async (fileUrl, uploadType) => {
+      if (!fileUrl) return;
+  
+      const storageRef = ref(storage, fileUrl);
+  
+      try {
+        // toast.success("File deleted successfully!");
+  
+        setBuyBack((prevData) => ({
+          ...prevData,
+          vehicleDetails: {
+            ...prevData.vehicleDetails,
+            paymentScreenshot: "",
+          },
+        }));
+  
+        await deleteObject(storageRef);
+      } catch (error) {
+        console.error("Error deleting file:", error);
+        // toast.error("Error deleting file. Please try again.");
+      }
+    };
+
   useEffect(() => {
     if (id) {
       dispatch(fetchbuyBackDataById({ id }));
@@ -419,6 +509,27 @@ const BuyBackSalesForm = () => {
             });
           }}
         />
+          <div className="mt-6 w-96">
+          <FileUpload
+            imp={true}
+            label="Payment/Ledger Screensort"
+            onFileSelect={(file) => handleFileSelect("paymentScreenshot", file)}
+            deleteFile={() =>
+              deleteFile(
+                buyBack.vehicleDetails.paymentScreenshot,
+                "paymentScreenshot"
+              )
+            }
+            name="paymentScreenshot"
+            fileUrl={buyBack.vehicleDetails.paymentScreenshot}
+          />
+          {errors.paymentScreenshot && (
+            <p className="text-red-500 mt-1 text-sm">
+              {errors.paymentScreenshot}
+            </p>
+          )}
+        </div>
+        
         <div
           onClick={handleSubmit}
           className="bg-primary text-white mt-16 rounded-md px-6 py-2 cursor-pointer w-28 text-center mb-20"

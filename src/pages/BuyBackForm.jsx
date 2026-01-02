@@ -10,6 +10,14 @@ import { addNewBuyBack, updateBuyBack } from "../features/BuybackApi";
 import { departmentOpt, fuelType, locationOption, modelOption } from "../data";
 import { fetchbuyBackDataById } from "../features/BuyBackSlice";
 import Header from "../Components/Header";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import { storage } from "../../Util/fireBase";
 const BuyBackForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -366,6 +374,59 @@ const BuyBackForm = () => {
     // Return true if no errors
     return Object.keys(newErrors).length === 0;
   };
+
+
+     const handleFileSelect = async (name, file) => {
+        // console.log("Selected file:", file);
+        if (!file) return;
+    
+        // const storageRef = ref(storage, `files/${file?.name}`);
+        const uniqueFileName = `${uuidv4()}-${file.name}`;
+        const storageRef = ref(storage, `files/rgbuyback/${uniqueFileName}`);
+        try {
+          const snapshot = await uploadBytes(storageRef, file);
+          console.log("Uploaded file:", snapshot);
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          console.log("File available at:", downloadURL);
+    
+          setBuyBack((prevData) => ({
+            ...prevData,
+            vehicleDetails: {
+              ...prevData.vehicleDetails,
+              paymentScreenshot: downloadURL,
+            },
+          }));
+    
+          toast.success("File uploaded successfully!");
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          toast.error("Error uploading file. Please try again.");
+        }
+      };
+    
+      const deleteFile = async (fileUrl, uploadType) => {
+        if (!fileUrl) return;
+    
+        const storageRef = ref(storage, fileUrl);
+    
+        try {
+          // toast.success("File deleted successfully!");
+    
+          setBuyBack((prevData) => ({
+            ...prevData,
+            vehicleDetails: {
+              ...prevData.vehicleDetails,
+              paymentScreenshot: "",
+            },
+          }));
+    
+          await deleteObject(storageRef);
+        } catch (error) {
+          console.error("Error deleting file:", error);
+          // toast.error("Error deleting file. Please try again.");
+        }
+      };
+  
 
   useEffect(() => {
     if (id) {

@@ -17,6 +17,7 @@ import {
 import Header from "../Components/Header";
 import { fetchEwById } from "../features/EwSlice";
 import { addNewEw, updateEw } from "../features/EwApi";
+import { logo } from "../assets";
 const EwSalesForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -473,18 +474,15 @@ const EwSalesForm = () => {
   };
   return (
     <>
-      <div className="fixed">
-        <div className="absolute">
-          {roleType === "0" ? <Nav /> : roleType === "2" ? <SideNav /> : null}
-        </div>
-      </div>
+      <img
+             src={logo}
+             alt="img"
+             className="w-32 h-20 rounded-full ml-6"
+             loading="lazy"
+           />
 
-      <div>
-        <Header />
-      </div>
-
-      <span className="flex md:flex-row flex-col md:items-center justify-between md:mx-36 mx-6 font-head md:pt-10 ">
-        <p className="md:text-[23px] text-[18px] font-semibold pt-20 md:ml-[13.5%] sm:ml-[25%]">
+      <span className="flex md:flex-row flex-col md:items-center justify-between md:mx-20 mx-6 font-head  ">
+        <p className="md:text-[23px] text-[18px] font-semibold pt-12 ">
           Add New EW Warranty
         </p>
         <p className="md:text-[18px] text-[16px] font-medium md:pt-12 pt-4 sm:ml-[25%]">
@@ -493,7 +491,7 @@ const EwSalesForm = () => {
         </p>
       </span>
 
-      <div className="sm:ml-[26.5%] md:ml-[21%]  w-full">
+      <div className="sm:ml-[9.5%] md:ml-[5%]  w-full">
         <p className="text-[20px] font-head font-semibold mt-5">
           Customer Personal Details
         </p>
