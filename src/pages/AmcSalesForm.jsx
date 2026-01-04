@@ -569,7 +569,10 @@ const AmcSalesForm = () => {
         },
         createdBy: "",
       });
-      navigate("/submitted-amc-form");
+      navigate("/submitted-form", {
+  state: { path: "/sales/new-amc" }
+});
+
     } catch (error) {
       toast.error(
         error?.response?.data?.message ||

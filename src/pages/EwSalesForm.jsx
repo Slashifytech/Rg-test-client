@@ -466,7 +466,9 @@ const EwSalesForm = () => {
         const path = "/add-new-sales-ew"
       const res = await addNewEw(path, ewData);
       toast.success(res?.message || "EW Added successfully");
-      navigate(-1);
+        navigate("/submitted-form", {
+  state: { path: "/sales/new-ew" }
+});
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
       console.log("Error:", error);

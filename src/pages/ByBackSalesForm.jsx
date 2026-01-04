@@ -452,7 +452,9 @@ const BuyBackSalesForm = () => {
       const path = "/add-new-sales-buy-back";
       const res = await addNewBuyBack(path, buyBack);
       toast.success(res?.message || "Buyback Added successfully");
-      navigate(-1);
+      navigate("/submitted-form", {
+  state: { path: "/sales/new-buyback" }
+});
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
       console.log("Error:", error);

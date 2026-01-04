@@ -67,7 +67,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/submitted-amc-form",
+    path: "/submitted-form",
     element: (
         <SubmitPage/>
     ),
