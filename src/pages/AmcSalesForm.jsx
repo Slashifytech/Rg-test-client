@@ -632,7 +632,7 @@ const AmcSalesForm = () => {
             });
           }}
         />
-        <div className=" md:mt-[-80px] mt-6 w-96 ">
+        <div className=" mt-6 w-96 ">
           <FileUpload
             imp={true}
             label="Payment/Ledger Screensort"

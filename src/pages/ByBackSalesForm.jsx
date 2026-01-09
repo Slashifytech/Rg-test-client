@@ -58,7 +58,7 @@ const BuyBackSalesForm = () => {
     },
     createdBy: _id,
   });
- const rightFields = [
+  const leftFields = [
     {
       name: "customerName",
       type: "text",
@@ -66,6 +66,8 @@ const BuyBackSalesForm = () => {
       label: "Customer Name",
       required: true,
     },
+        { name: "address", type: "text", placeholder: "Address", label: "Address" },
+
     {
       name: "contact",
       type: "number",
@@ -73,65 +75,54 @@ const BuyBackSalesForm = () => {
       label: "Contact",
       required: true,
     },
-    {
-      name: "pan",
-      type: "text",
-      placeholder: "Pan Number",
-      label: "Pan Number",
-    },
-    {
-      name: "zipCode",
-      type: "number",
-      placeholder: "Zip Code",
-      label: "Zip Code",
-    },
-  ];
-  const leftFields = [
-    { name: "address", type: "text", placeholder: "Address", label: "Address" },
-    {
+  {
       name: "email",
       type: "email",
       placeholder: "Email",
       label: "Email",
       required: true,
     },
+  
+  ];
+  const rightFields = [
     {
-      name: "customerGst",
-      type: "text",
-      placeholder: "Customer Gst",
-      label: "Customer Gst",
+      name: "zipCode",
+      type: "number",
+      placeholder: "Zip Code",
+      label: "Zip Code",
     },
-    {
+   {
       name: "stateCode",
       type: "text",
       placeholder: "State Code",
       label: "State Code",
     },
+     {
+      name: "pan",
+      type: "text",
+      placeholder: "Pan Number",
+      label: "Pan Number",
+    },
+    
+     {
+      name: "customerGst",
+      type: "text",
+      placeholder: "Customer Gst Number",
+      label: "Customer Gst Number",
+    },
   ];
   const rightVehicleFields = [
-    {
-      name: "fuelType",
-      type: "select",
-      placeholder: "Fuel Type",
-      label: "Fuel Type",
-      options: fuelType,
-      required: true,
-    },
-    {
-      name: "agreementStartDate",
+   
+     {
+      name: "paymentReceivedDateForPackage",
       type: "date",
-      placeholder: "Agreement Start Date",
-      label: "Agreement Start Date",
-      required: true,
+      placeholder: "Payment Received Date for Package",
+      label: "Payment Received Date for Package",
+      // required: true,
+      limitDate: true,
+       required: true,
     },
 
-    {
-      name: "deliveryDate",
-      type: "date",
-      placeholder: "Delivery Date",
-      label: "Delivery Date",
-      required: true,
-    },
     {
       name: "validityMilage",
       type: "text",
@@ -139,19 +130,19 @@ const BuyBackSalesForm = () => {
       label: "Validity Milage",
       required: true,
     },
-      {
-          name: "department",
-          type: "select",
-          placeholder: "Department",
-          label: "Department",
-          options: departmentOpt,
-          // required: true,
-        },
+     
          {
       name: "bookingId",
       type: "text",
       placeholder: "Bookinng Id",
       label: "Booking Id",
+    },
+     {
+      name: "totalPayment",
+      type: "text",
+      placeholder: "Total Payment",
+      label: "Total Payment",
+      required: true,
     },
     {
       name: "rmName",
@@ -160,13 +151,26 @@ const BuyBackSalesForm = () => {
       label: "Name of Relationship Manager / Service Advisor",
       required: true,
     },
-
+   {
+      name: "rmEmployeeId",
+      type: "text",
+      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
+      label: "Employee Id of Relationship Manager/ Service Advisor",
+      required: true,
+    },
+  
     {
       name: "rmEmail",
       type: "email",
       placeholder: " Relationship Manager/ Service Advisor Email Id",
       label: "Email Id of Relationship Manager/ Service Advisor ",
       required: true,
+    },
+      {
+      name: "gmEmail",
+      type: "email",
+      placeholder: "General Manager Email Id",
+      label: "General Manager Email",
     },
   ];
 
@@ -179,6 +183,14 @@ const BuyBackSalesForm = () => {
       options: modelOption,
       required: true,
     },
+     {
+      name: "fuelType",
+      type: "select",
+      placeholder: "Fuel Type",
+      label: "Fuel Type",
+      options: fuelType,
+      required: true,
+    },
     {
       name: "vinNumber",
       type: "text",
@@ -186,28 +198,18 @@ const BuyBackSalesForm = () => {
       label: "Vin Number",
       required: true,
     },
+     {
+      name: "agreementStartDate",
+      type: "date",
+      placeholder: "Agreement Start Date",
+      label: "Agreement Start Date",
+      required: true,
+    },
     {
       name: "agreementValidDate",
       type: "date",
       placeholder: "Agreement Valid Date",
       label: "Agreement Valid Date ",
-      required: true,
-    },
-      {
-      name: "paymentReceivedDateForPackage",
-      type: "date",
-      placeholder: "Payment Received Date for Package",
-      label: "Payment Received Date for Package",
-      // required: true,
-      limitDate: true,
-       required: true,
-    },
-   
-    {
-      name: "totalPayment",
-      type: "text",
-      placeholder: "Total Payment",
-      label: "Total Payment",
       required: true,
     },
     {
@@ -219,21 +221,29 @@ const BuyBackSalesForm = () => {
       required: true,
     },
 
- 
-  
     {
-      name: "rmEmployeeId",
-      type: "text",
-      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
-      label: "Employee Id of Relationship Manager/ Service Advisor",
+      name: "deliveryDate",
+      type: "date",
+      placeholder: "Delivery Date",
+      label: "Delivery Date",
       required: true,
     },
-    {
-      name: "gmEmail",
-      type: "email",
-      placeholder: "General Manager Email Id",
-      label: "General Manager Email",
-    },
+     {
+          name: "department",
+          type: "select",
+          placeholder: "Department",
+          label: "Department",
+          options: departmentOpt,
+          // required: true,
+        },
+    
+   
+   
+    
+
+ 
+  
+ 
   ];
   const [errors, setErrors] = useState({});
   const id = location?.state?.docId;

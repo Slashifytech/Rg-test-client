@@ -74,7 +74,7 @@ const EwSalesForm = () => {
     createdBy: _id,
   });
 
-  const rightFields = [
+ const leftFields = [
     {
       name: "customerName",
       type: "text",
@@ -82,6 +82,8 @@ const EwSalesForm = () => {
       label: "Customer Name",
       required: true,
     },
+        { name: "address", type: "text", placeholder: "Address", label: "Address" },
+
     {
       name: "contact",
       type: "number",
@@ -89,17 +91,19 @@ const EwSalesForm = () => {
       label: "Contact",
       required: true,
     },
-    {
-      name: "pan",
-      type: "text",
-      placeholder: "Pan Number",
-      label: "Pan Number",
+     {
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      label: "Email",
+      required: true,
     },
+  
     {
-      name: "state",
-      type: "text",
-      placeholder: "State",
-      label: "State",
+      name: "dob",
+      type: "date",
+      placeholder: "D.O.B",
+      label: "D.O.B",
     },
     {
       name: "zipCode",
@@ -108,33 +112,34 @@ const EwSalesForm = () => {
       label: "Zip Code",
     },
   ];
-  const leftFields = [
-    { name: "address", type: "text", placeholder: "Address", label: "Address" },
-    {
-      name: "email",
-      type: "email",
-      placeholder: "Email",
-      label: "Email",
-      required: true,
+  const rightFields = [
+   
+     {
+      name: "city",
+      type: "text",
+      placeholder: "City",
+      label: "City",
     },
-    {
-      name: "dob",
-      type: "date",
-      placeholder: "D.O.B",
-      label: "D.O.B",
+      {
+      name: "state",
+      type: "text",
+      placeholder: "State",
+      label: "State",
     },
+      {
+      name: "pan",
+      type: "text",
+      placeholder: "Pan Number",
+      label: "Pan Number",
+    },
+  
     {
       name: "customerGst",
       type: "text",
       placeholder: "Customer Gst",
       label: "Customer Gst",
     },
-    {
-      name: "city",
-      type: "text",
-      placeholder: "City",
-      label: "City",
-    },
+   
     {
       name: "stateCode",
       type: "text",
@@ -143,28 +148,26 @@ const EwSalesForm = () => {
     },
   ];
   const rightEwFields = [
-    {
-      name: "planType",
-      type: "select",
-      placeholder: "Plan Type",
-      label: "Plan Type",
-      options: PlanOption,
-      required: true,
-      customText:
-        "(Plan Type A : New care & Plan Type B : Used or Pre - owned warranty)",
-    },
-    {
+      {
       name: "registrationType",
       type: "select",
       placeholder: "Registration Type",
       label: "Registration Type",
       options: regTypeOption,
     },
+    
+  
     {
       name: "startKm",
       type: "text",
       placeholder: "Start Kilometers",
       label: "Start Kilometers",
+    },
+       {
+      name: "endKm",
+      type: "text",
+      placeholder: "End Kilometers",
+      label: "End Kilometers",
     },
     {
       name: "ewStatus",
@@ -182,6 +185,15 @@ const EwSalesForm = () => {
       required: true,
     },
     {
+      name: "planType",
+      type: "select",
+      placeholder: "Plan Type",
+      label: "Plan Type",
+      options: PlanOption,
+      required: true,
+      customText: "(Plan Type A : New care & Plan Type B : Used or Pre - owned warranty)"
+    },
+    {
       name: "planSubType",
       type: "select",
       placeholder: "Plan Sub Type",
@@ -196,12 +208,8 @@ const EwSalesForm = () => {
       label:
         "Warranty Coverage Period (Kms/Hours) Whichever occurs earlier: Period",
     },
-    {
-      name: "endKm",
-      type: "text",
-      placeholder: "End Kilometers",
-      label: "End Kilometers",
-    },
+ 
+    
   ];
   const rightVehicleFields = [
     {
@@ -227,27 +235,27 @@ const EwSalesForm = () => {
       label: "Location of the Dealer",
       required: true,
     },
-    {
-      name: "engineNumber",
-      type: "text",
-      placeholder: "Engine Number",
-      label: "Engine Number",
-      required: true,
-    },
-    {
-      name: "fuelType",
-      type: "select",
-      placeholder: "Fuel Type",
-      label: "Fuel Type",
-      options: fuelType,
-      required: true,
-    },
-
+   
     {
       name: "rmEmail",
       type: "email",
       placeholder: " Relationship Manager/ Service Advisor Email Id",
       label: "Email Id of Relationship Manager/ Service Advisor ",
+      required: true,
+    },
+      {
+      name: "rmName",
+      type: "text",
+      placeholder: "Relationship Manager / Service Advisor Name",
+      label: "Name of Relationship Manager / Service Advisor",
+      required: true,
+    },
+
+    {
+      name: "rmEmployeeId",
+      type: "text",
+      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
+      label: "Employee Id of Relationship Manager/ Service Advisor",
       required: true,
     },
     {
@@ -267,25 +275,19 @@ const EwSalesForm = () => {
       options: modelOption,
       required: true,
     },
+      {
+      name: "fuelType",
+      type: "select",
+      placeholder: "Fuel Type",
+      label: "Fuel Type",
+      options: fuelType,
+      required: true,
+    },
     {
       name: "registrationNumber",
       type: "text",
       placeholder: "Registration Number",
       label: "Registration Number",
-      required: true,
-    },
-    {
-      name: "presentKm",
-      type: "text",
-      placeholder: "Present Kilometers",
-      label: "Present Kilometers",
-      required: true,
-    },
-    {
-      name: "warrantyLimit",
-      type: "text",
-      placeholder: "Warranty Limit",
-      label: "Warranty Limit",
       required: true,
     },
     {
@@ -295,22 +297,33 @@ const EwSalesForm = () => {
       label: "Vin Number",
       required: true,
     },
-
-    {
-      name: "rmName",
+     {
+      name: "engineNumber",
       type: "text",
-      placeholder: "Relationship Manager / Service Advisor Name",
-      label: "Name of Relationship Manager / Service Advisor",
+      placeholder: "Engine Number",
+      label: "Engine Number",
       required: true,
     },
-
-    {
-      name: "rmEmployeeId",
+  
+   {
+      name: "warrantyLimit",
       type: "text",
-      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
-      label: "Employee Id of Relationship Manager/ Service Advisor",
+      placeholder: "Warranty Limit",
+      label: "Warranty Limit",
       required: true,
     },
+    {
+
+      name: "presentKm",
+      type: "text",
+      placeholder: "Present Kilometers",
+      label: "Present Kilometers",
+      required: true,
+    },
+ 
+    
+
+  
   ];
   const [errors, setErrors] = useState({});
 
