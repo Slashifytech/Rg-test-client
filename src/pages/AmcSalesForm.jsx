@@ -245,12 +245,7 @@ const AmcSalesForm = () => {
       placeholder: "General Manager Email Id",
       label: "General Manager Email",
     },
-    {
-      name: "salesTeamEmail",
-      type: "email",
-      placeholder: "Sales Team Email",
-      label: "Sales Team Email",
-    },
+  
     {
       name: "department",
       type: "select",
@@ -295,6 +290,9 @@ const AmcSalesForm = () => {
         ...prev[section],
         [name]: value,
       };
+        if (name === "rmEmail") {
+      updatedSection.salesTeamEmail = value;
+    }
       if (name === "agreementPeriod") {
         updatedSection.MaximumValidPMS = parseFloat(value) || 0;
       }
