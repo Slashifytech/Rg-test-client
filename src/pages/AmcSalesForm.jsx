@@ -288,7 +288,8 @@ const AmcSalesForm = () => {
     setAMCData((prev) => {
       const updatedSection = {
         ...prev[section],
-        [name]: value,
+             [name]: name === "agreementPeriod" ? Number(value) || 0 : value,
+
       };
         if (name === "rmEmail") {
       updatedSection.salesTeamEmail = value;
