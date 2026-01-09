@@ -236,6 +236,20 @@ const EwSalesForm = () => {
       required: true,
     },
    
+{
+      name: "rmName",
+      type: "text",
+      placeholder: "Relationship Manager / Service Advisor Name",
+      label: "Name of Relationship Manager / Service Advisor",
+      required: true,
+    },
+     {
+      name: "rmEmployeeId",
+      type: "text",
+      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
+      label: "Employee Id of Relationship Manager/ Service Advisor",
+      required: true,
+    },
     {
       name: "rmEmail",
       type: "email",
@@ -243,21 +257,7 @@ const EwSalesForm = () => {
       label: "Email Id of Relationship Manager/ Service Advisor ",
       required: true,
     },
-      {
-      name: "rmName",
-      type: "text",
-      placeholder: "Relationship Manager / Service Advisor Name",
-      label: "Name of Relationship Manager / Service Advisor",
-      required: true,
-    },
-
-    {
-      name: "rmEmployeeId",
-      type: "text",
-      placeholder: "Employee Id of Relationship Manager/ Service Advisor",
-      label: "Employee Id of Relationship Manager/ Service Advisor",
-      required: true,
-    },
+      
     {
       name: "gmEmail",
       type: "email",
