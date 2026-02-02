@@ -21,7 +21,8 @@ import { RiUpload2Fill } from "react-icons/ri";
 import Papa from "papaparse";
 import { IoMdDownload } from "react-icons/io";
 import { downloadCsvData } from "../../Util/UtilityFunction";
-import ThirdRoleSideNav from "../../../rg-prod/src/agent/ThirdRoleSideNav";
+import ThirdRoleSideNav from "../agent/ThirdRoleSideNav";
+
 const AdminAmcList = () => {
   const { _id, roleType } = useSelector((state) => state.users?.users);
   const userId = roleType === "2" ? _id : null;
@@ -281,7 +282,7 @@ const handleFileUpload = async (event) => {
     <>
       <div className="fixed">
         <span className="absolute">
-          {roleType === "2" ? <SideNav /> : roleType === "3" ? <ThirdRoleSideNav /> :  <Nav />}
+          {roleType === "2" ? <SideNav /> : roleType === "3" ? <ThirdRoleSideNav/> :  <Nav />}
         </span>
       </div>
       <div>
