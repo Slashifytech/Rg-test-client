@@ -839,7 +839,8 @@ export function CustomTableFour({
                     {formatDate(row.data.createdAt)}
                   </Typography>
                 </td>
-                {row.type !== "ewPolicy" && (
+                 
+       {roleType !== "3" && row.type !== "ewPolicy" && (
                   <td className="p-4">
                     <Typography
                       as="a"
@@ -857,7 +858,8 @@ export function CustomTableFour({
                     </Typography>
                   </td>
                 )}
-                {!row?.data?.isDisabled && redirectLink === "/amc-view" && (
+              
+                {roleType !== "3" && !row?.data?.isDisabled && redirectLink === "/amc-view" && (
                   <td className="p-4">
                     <Typography
                       variant="small"
@@ -991,15 +993,18 @@ export function CustomTableFour({
                             Resubmit
                           </span>
                         )}
-
+ {
+        roleType !== "3" &&
                         <span
                           onClick={() => openPopUp(row?.data?._id)}
                           className="bg-primary text-white rounded-md px-6 py-1 cursor-pointer"
                         >
                           Cancel
                         </span>
+}
                       </div>
                     </Typography>
+                  
                   </td>
                 ) : roleType === "0" &&
                   row?.data?.isDisabled === true &&
